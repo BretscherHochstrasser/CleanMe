@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
+import timber.log.Timber
 
 /**
  * Service to handle to collect the device usage time and trigger notifications.
@@ -48,6 +49,7 @@ class DeviceUsageService : Service() {
     }
 
     private fun startObserveDeviceStateState() {
+        Timber.i("Start observing device state")
         observing = true
         startForeground(NotificationHelper.NOTIFICATION_ID, notificationHelper.createNotification())
         if (deviceInUse) {
@@ -58,6 +60,7 @@ class DeviceUsageService : Service() {
     }
 
     private fun stopObserveDeviceState() {
+        Timber.i("Stop observing device state")
         screenStateReceiver.unregister(this)
         if (deviceInUse) {
             onDeviceUseStop()
@@ -67,6 +70,7 @@ class DeviceUsageService : Service() {
     }
 
     private fun resetDeviceUsageStats() {
+        Timber.i("Resetting device usage stats")
         usageStats.reset()
         if(observing) {
             lastScreenOnTime = System.currentTimeMillis()
@@ -75,6 +79,7 @@ class DeviceUsageService : Service() {
     }
 
     private fun onDeviceUseStart() {
+        Timber.d("Detected device usage start")
         usageStats.screenOnCount++
         lastScreenOnTime = System.currentTimeMillis()
         statsUpdater.start()
@@ -82,14 +87,19 @@ class DeviceUsageService : Service() {
     }
 
     private fun onDeviceUseStop() {
-        updateDeviceUsageTime()
+        Timber.d("Detected device usage stop")
         statsUpdater.stop()
+        updateDeviceUsageTime()
     }
 
     private fun updateDeviceUsageTime() {
         val additionalScreenOnDuration = System.currentTimeMillis() - lastScreenOnTime
-        usageStats.deviceUseDuration += additionalScreenOnDuration
         lastScreenOnTime = System.currentTimeMillis()
+        Timber.d("Additional device use time: %dms", additionalScreenOnDuration)
+
+        usageStats.deviceUseDuration += additionalScreenOnDuration
+        Timber.d("Updated stats: %s", usageStats.toString())
+
         notificationHelper.updateNotification()
     }
 

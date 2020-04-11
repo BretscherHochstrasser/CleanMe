@@ -1,5 +1,6 @@
 package ch.bretscherhochstrasser.cleanme
 
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -12,20 +13,24 @@ class RepeatingUpdater(private val onUpdate: () -> Unit, private val interval: L
 
     fun start() {
         if (!started) {
-            val triggerTask = object : TimerTask() {
+            Timber.d("Starting repeating updater")
+            val callbackTask = object : TimerTask() {
                 override fun run() {
+                    Timber.d("Repeating updater triggered")
                     onUpdate()
                 }
             }
             timer = Timer()
-            timer.schedule(triggerTask, interval, interval)
+            timer.schedule(callbackTask, interval, interval)
             started = true
         }
     }
 
     fun stop() {
         if (started) {
-           timer.cancel()
+            Timber.d("Stopping repeating updater")
+            timer.cancel()
+            started = false
         }
     }
 

@@ -36,5 +36,8 @@ class DeviceUsageStats(private val context: Context) {
         deviceUseDuration = 0
     }
 
+    override fun toString(): String {
+        return String.format("DeviceUsageStats[screenOnCount=%d, deviceUseDuration=%dms]", screenOnCount, deviceUseDuration)
+    }
 
 }

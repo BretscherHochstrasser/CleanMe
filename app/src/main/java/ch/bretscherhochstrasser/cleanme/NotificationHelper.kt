@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import org.threeten.bp.Duration
+import timber.log.Timber
 
 /**
  * Handles creation and updates to notifications
@@ -37,6 +38,7 @@ class NotificationHelper(private val context: Context) {
     }
 
     fun updateNotification() {
+        Timber.d("Updating notification")
         NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, createNotification())
     }
 
@@ -50,6 +52,7 @@ class NotificationHelper(private val context: Context) {
             val notificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(notificationChannel)
+            Timber.d("Notification channel '%s' created", CHANNEL_ID)
         }
     }
 
