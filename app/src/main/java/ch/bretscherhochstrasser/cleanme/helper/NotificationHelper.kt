@@ -1,4 +1,4 @@
-package ch.bretscherhochstrasser.cleanme
+package ch.bretscherhochstrasser.cleanme.helper
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -7,6 +7,8 @@ import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import ch.bretscherhochstrasser.cleanme.R
+import ch.bretscherhochstrasser.cleanme.deviceusage.IDeviceUsageStats
 import org.threeten.bp.Duration
 import timber.log.Timber
 
@@ -20,16 +22,17 @@ class NotificationHelper(private val context: Context) {
         private const val CHANNEL_ID = "service_notification"
     }
 
-    private val usageStats = DeviceUsageStats(context)
-
-    fun createNotification(): Notification {
-        val screenOnDuration = Duration.ofMillis(usageStats.deviceUseDuration)
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+    fun createNotification(deviceUsageStats: IDeviceUsageStats): Notification {
+        val screenOnDuration = Duration.ofMillis(deviceUsageStats.deviceUseDuration)
+        val builder = NotificationCompat.Builder(
+            context,
+            CHANNEL_ID
+        )
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle("Counting screen on time")
             .setContentText(
                 String.format(
-                    "Screen on count: %d, total %02d:%02d", usageStats.screenOnCount,
+                    "Screen on count: %d, total %02d:%02d", deviceUsageStats.screenOnCount,
                     screenOnDuration.toHours(), screenOnDuration.toMinutes() % 60
                 )
             )
@@ -37,9 +40,10 @@ class NotificationHelper(private val context: Context) {
         return builder.build()
     }
 
-    fun updateNotification() {
+    fun updateNotification(deviceUsageStats: IDeviceUsageStats) {
         Timber.d("Updating notification")
-        NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, createNotification())
+        NotificationManagerCompat.from(context)
+            .notify(NOTIFICATION_ID, createNotification(deviceUsageStats))
     }
 
     fun createNotificationChannel() {
@@ -52,7 +56,10 @@ class NotificationHelper(private val context: Context) {
             val notificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(notificationChannel)
-            Timber.d("Notification channel '%s' created", CHANNEL_ID)
+            Timber.d(
+                "Notification channel '%s' created",
+                CHANNEL_ID
+            )
         }
     }
 

@@ -1,4 +1,4 @@
-package ch.bretscherhochstrasser.cleanme
+package ch.bretscherhochstrasser.cleanme.deviceusage
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -11,7 +11,8 @@ import timber.log.Timber
  */
 class ScreenStateReceiver(
     private val onScreenOn: () -> Unit,
-    val onScreenOff: () -> Unit) : BroadcastReceiver() {
+    val onScreenOff: () -> Unit
+) : BroadcastReceiver() {
 
     fun register(context: Context) {
         val intentFilter = IntentFilter()

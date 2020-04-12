@@ -1,10 +1,10 @@
-package ch.bretscherhochstrasser.cleanme
+package ch.bretscherhochstrasser.cleanme.helper
 
 import timber.log.Timber
 import java.util.*
 
 /**
- * A repeating trigger that can be started/stopped.
+ * A repeating updated that can be started/stopped.
  */
 class RepeatingUpdater(private val onUpdate: () -> Unit, private val interval: Long) {
 
