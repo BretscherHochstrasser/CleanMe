@@ -3,9 +3,11 @@ package ch.bretscherhochstrasser.cleanme.service
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import ch.bretscherhochstrasser.cleanme.AppSettings
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageObserver
 import ch.bretscherhochstrasser.cleanme.deviceusage.IDeviceUsageStats
 import ch.bretscherhochstrasser.cleanme.helper.NotificationHelper
+import ch.bretscherhochstrasser.cleanme.overlay.ParticleOverlayManager
 
 /**
  * Service to handle to collect the device usage time and trigger notifications.
@@ -20,8 +22,9 @@ class CleanMeService : Service() {
     }
 
     private val observer = DeviceUsageObserver(this)
-    private val notificationHelper =
-        NotificationHelper(this)
+    private val overlayManager = ParticleOverlayManager(this)
+    private val notificationHelper = NotificationHelper(this)
+    private val settings = AppSettings(this)
 
     override fun onCreate() {
         super.onCreate()
@@ -58,6 +61,17 @@ class CleanMeService : Service() {
 
     private fun onDeviceUsageUpdate(deviceUsageStats: IDeviceUsageStats) {
         notificationHelper.updateNotification(deviceUsageStats)
+        if (settings.overlayEnabled) {
+            overlayManager.showOverlay()
+            overlayManager.update(deviceUsageStats.deviceUseDuration, settings.cleanIntervalMillis)
+        } else {
+            overlayManager.hideOverlay()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        overlayManager.hideOverlay()
     }
 
 }
