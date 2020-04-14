@@ -1,35 +1,37 @@
 package ch.bretscherhochstrasser.cleanme.helper
 
+import android.os.Handler
+import android.os.Looper
 import timber.log.Timber
-import java.util.*
 
 /**
- * A repeating updated that can be started/stopped.
+ * A repeating updater based on a [Handler] that can be started/stopped and always triggers
+ * the [onUpdate] function on the UI thread.
  */
 class RepeatingUpdater(private val onUpdate: () -> Unit, private val interval: Long) {
 
     private var started = false
-    private lateinit var timer: Timer
+    private var handler = Handler(Looper.getMainLooper())
+    private var callback = Runnable(::onCallback)
 
     fun start() {
         if (!started) {
             Timber.d("Starting repeating updater")
-            val callbackTask = object : TimerTask() {
-                override fun run() {
-                    Timber.d("Repeating updater triggered")
-                    onUpdate()
-                }
-            }
-            timer = Timer()
-            timer.schedule(callbackTask, interval, interval)
+            handler.postDelayed(callback, interval)
             started = true
         }
+    }
+
+    private fun onCallback() {
+        Timber.d("Update triggered")
+        onUpdate()
+        handler.postDelayed(callback, interval)
     }
 
     fun stop() {
         if (started) {
             Timber.d("Stopping repeating updater")
-            timer.cancel()
+            handler.removeCallbacks(callback)
             started = false
         }
     }
