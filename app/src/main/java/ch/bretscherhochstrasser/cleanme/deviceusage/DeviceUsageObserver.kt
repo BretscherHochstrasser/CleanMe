@@ -61,6 +61,7 @@ class DeviceUsageObserver(
         if (deviceInUse) {
             onDeviceUseStop()
         }
+        observing = false
     }
 
     private fun onDeviceUseStart() {
