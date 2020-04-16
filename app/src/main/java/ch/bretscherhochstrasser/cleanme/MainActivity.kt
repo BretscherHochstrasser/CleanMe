@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             invokeService(CleanMeService.ACTION_STOP_OBSERVE_DEVICE_STATE)
         }
         findViewById<Button>(R.id.button_reset_stats).setOnClickListener {
-            invokeService(CleanMeService.ACTION_RESET_USAGE_STATS)
+            deviceUsageStatsManager.resetStats()
         }
         enableOverlaySwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

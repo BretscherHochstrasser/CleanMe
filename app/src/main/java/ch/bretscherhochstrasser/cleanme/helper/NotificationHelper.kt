@@ -8,7 +8,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import ch.bretscherhochstrasser.cleanme.R
-import ch.bretscherhochstrasser.cleanme.deviceusage.IDeviceUsageStats
+import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
 import org.threeten.bp.Duration
 import timber.log.Timber
 
@@ -22,7 +22,7 @@ class NotificationHelper(private val context: Context) {
         private const val CHANNEL_ID = "service_notification"
     }
 
-    fun createNotification(deviceUsageStats: IDeviceUsageStats): Notification {
+    fun createNotification(deviceUsageStats: DeviceUsageStats): Notification {
         val screenOnDuration = Duration.ofMillis(deviceUsageStats.deviceUseDuration)
         val builder = NotificationCompat.Builder(
             context,
@@ -40,7 +40,7 @@ class NotificationHelper(private val context: Context) {
         return builder.build()
     }
 
-    fun updateNotification(deviceUsageStats: IDeviceUsageStats) {
+    fun updateNotification(deviceUsageStats: DeviceUsageStats) {
         Timber.d("Updating notification")
         NotificationManagerCompat.from(context)
             .notify(NOTIFICATION_ID, createNotification(deviceUsageStats))

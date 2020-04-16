@@ -37,5 +37,8 @@ dependencies {
 
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.3'
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-service:2.2.0'
 }
 

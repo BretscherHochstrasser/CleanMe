@@ -3,23 +3,22 @@ package ch.bretscherhochstrasser.cleanme.deviceusage
 import android.content.Context
 import android.os.Build
 import android.os.PowerManager
+import androidx.lifecycle.Observer
 import ch.bretscherhochstrasser.cleanme.helper.RepeatingUpdater
 import timber.log.Timber
 
 /**
- * Observes the device usage.
- * The gathered device usage statistics is accessible through [deviceUsageStats] and is actively
- * propagated on update with the [onDeviceUsageUpdateListener].
+ * Observes the device usage by listening for screen on/off broadcasts with a [ScreenStateReceiver]
+ * and adds the device use time periodically to the [DeviceUsageStatsManager].
  */
-class DeviceUsageObserver(private val context: Context) {
+class DeviceUsageObserver(
+    private val context: Context,
+    private val usageStatsManager: DeviceUsageStatsManager
+) {
 
     companion object {
         private const val STATS_UPDATE_INTERVAL = 30000L
     }
-
-    val deviceUsageStats: IDeviceUsageStats
-        get() = deviceStats
-    private val deviceStats = DeviceUsageStatsImpl(context)
 
     private val statsUpdater =
         RepeatingUpdater(
@@ -27,12 +26,18 @@ class DeviceUsageObserver(private val context: Context) {
             STATS_UPDATE_INTERVAL
         )
 
-    var observing: Boolean = false
+    var observing = false
         private set
     private lateinit var screenStateReceiver: ScreenStateReceiver
+
     private var lastScreenOnTime: Long = 0
 
-    var onDeviceUsageUpdateListener: ((IDeviceUsageStats) -> Unit)? = null
+    private var statsResetObserver = Observer<DeviceUsageStats> {
+        // if the device use duration has been reset, we reset the last ScreenOnTime
+        if (it.deviceUseDuration == 0L) {
+            lastScreenOnTime = System.currentTimeMillis()
+        }
+    }
 
     fun startObserveDeviceStateState() {
         Timber.i("Start observing device state")
@@ -46,31 +51,23 @@ class DeviceUsageObserver(private val context: Context) {
                 ::onDeviceUseStop
             )
         screenStateReceiver.register(context)
+        usageStatsManager.deviceUsageStats.observeForever(statsResetObserver)
     }
 
     fun stopObserveDeviceState() {
         Timber.i("Stop observing device state")
+        usageStatsManager.deviceUsageStats.removeObserver(statsResetObserver)
         screenStateReceiver.unregister(context)
         if (deviceInUse) {
             onDeviceUseStop()
         }
     }
 
-    fun resetDeviceUsageStats() {
-        Timber.i("Resetting device usage stats")
-        deviceStats.reset()
-        if (observing) {
-            lastScreenOnTime = System.currentTimeMillis()
-            onDeviceUsageUpdateListener?.invoke(deviceStats)
-        }
-    }
-
     private fun onDeviceUseStart() {
         Timber.d("Detected device usage start")
-        deviceStats.screenOnCount++
+        usageStatsManager.incrementScreenOnCount()
         lastScreenOnTime = System.currentTimeMillis()
         statsUpdater.start()
-        onDeviceUsageUpdateListener?.invoke(deviceStats)
     }
 
     private fun onDeviceUseStop() {
@@ -83,11 +80,7 @@ class DeviceUsageObserver(private val context: Context) {
         val additionalScreenOnDuration = System.currentTimeMillis() - lastScreenOnTime
         lastScreenOnTime = System.currentTimeMillis()
         Timber.d("Additional device use time: %dms", additionalScreenOnDuration)
-
-        deviceStats.deviceUseDuration += additionalScreenOnDuration
-        Timber.d("Updated stats: %s", deviceUsageStats.toString())
-
-        onDeviceUsageUpdateListener?.invoke(deviceStats)
+        usageStatsManager.addDeviceUseDuration(additionalScreenOnDuration)
     }
 
     private val deviceInUse: Boolean
