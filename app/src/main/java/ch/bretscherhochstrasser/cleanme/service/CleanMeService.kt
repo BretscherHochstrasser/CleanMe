@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
-import ch.bretscherhochstrasser.cleanme.AppSettings
+import ch.bretscherhochstrasser.cleanme.appSettings
 import ch.bretscherhochstrasser.cleanme.deviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageObserver
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
@@ -30,7 +30,6 @@ class CleanMeService : LifecycleService() {
     }
     private val overlayManager = ParticleOverlayManager(this)
     private val notificationHelper = NotificationHelper(this)
-    private val settings = AppSettings(this)
 
     override fun onCreate() {
         super.onCreate()
@@ -70,9 +69,12 @@ class CleanMeService : LifecycleService() {
 
     private fun onDeviceUsageUpdate(deviceUsageStats: DeviceUsageStats) {
         notificationHelper.updateNotification(deviceUsageStats)
-        if (settings.overlayEnabled) {
+        if (appSettings.overlayEnabled) {
             overlayManager.showOverlay()
-            overlayManager.update(deviceUsageStats.deviceUseDuration, settings.cleanIntervalMillis)
+            overlayManager.update(
+                deviceUsageStats.deviceUseDuration,
+                appSettings.cleanIntervalMillis
+            )
         } else {
             overlayManager.hideOverlay()
         }

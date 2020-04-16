@@ -11,7 +11,9 @@ import timber.log.Timber
  */
 class App : Application() {
 
+    //TODO: Solve global singletons better once there is DI added
     val deviceUsageStatsManager = DeviceUsageStatsManager(this)
+    val appSettings = AppSettings(this)
 
     override fun onCreate() {
         super.onCreate()
@@ -25,3 +27,6 @@ class App : Application() {
 
 val Context.deviceUsageStatsManager
     get() = (applicationContext as App).deviceUsageStatsManager
+
+val Context.appSettings
+    get() = (applicationContext as App).appSettings

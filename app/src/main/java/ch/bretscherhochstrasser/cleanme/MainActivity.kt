@@ -16,8 +16,6 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_CODE_OVERLAY_SETTINGS = 2345
     }
 
-    private var settings = AppSettings(this)
-
     private val enableOverlaySwitch: Switch?
         get() = findViewById(R.id.switch_overlay_enabled)
 
@@ -36,16 +34,16 @@ class MainActivity : AppCompatActivity() {
         }
         enableOverlaySwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                checkDrawOverlayPermission { settings.overlayEnabled = true }
+                checkDrawOverlayPermission { appSettings.overlayEnabled = true }
             } else {
-                settings.overlayEnabled = false
+                appSettings.overlayEnabled = false
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        enableOverlaySwitch?.isChecked = settings.overlayEnabled
+        enableOverlaySwitch?.isChecked = appSettings.overlayEnabled
     }
 
     private fun invokeService(action: String) {
@@ -78,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_OVERLAY_SETTINGS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // if so check once again if we have permission
             val canDrawOverlays = Settings.canDrawOverlays(this)
-            settings.overlayEnabled = canDrawOverlays
+            appSettings.overlayEnabled = canDrawOverlays
             enableOverlaySwitch?.isChecked = canDrawOverlays
         }
     }
