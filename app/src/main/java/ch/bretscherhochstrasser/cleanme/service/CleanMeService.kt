@@ -21,6 +21,7 @@ class CleanMeService : LifecycleService() {
     companion object {
         const val ACTION_START_OBSERVE_DEVICE_STATE = "ACTION_START_OBSERVE_DEVICE_STATE"
         const val ACTION_STOP_OBSERVE_DEVICE_STATE = "ACTION_STOP_OBSERVE_DEVICE_STATE"
+        const val ACTION_REFRESH_OVERLAY = "ACTION_REFRESH_OVERLAY"
     }
 
     private val observer by lazy {
@@ -63,13 +64,21 @@ class CleanMeService : LifecycleService() {
                     stopSelf()
                 }
             }
+            ACTION_REFRESH_OVERLAY -> refreshOverlay(deviceUsageStatsManager.deviceUsageStats.valueNN)
         }
         return START_NOT_STICKY
     }
 
     private fun onDeviceUsageUpdate(deviceUsageStats: DeviceUsageStats) {
-        notificationHelper.updateNotification(deviceUsageStats)
-        if (appSettings.overlayEnabled) {
+        // only handle device usage stats if currently in observing state
+        if (observer.observing) {
+            notificationHelper.updateNotification(deviceUsageStats)
+            refreshOverlay(deviceUsageStats)
+        }
+    }
+
+    private fun refreshOverlay(deviceUsageStats: DeviceUsageStats) {
+        if (appSettings.overlayEnabled && observer.observing) {
             overlayManager.showOverlay()
             overlayManager.update(
                 deviceUsageStats.deviceUseDuration,

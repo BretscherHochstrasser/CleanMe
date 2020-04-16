@@ -34,9 +34,13 @@ class MainActivity : AppCompatActivity() {
         }
         enableOverlaySwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                checkDrawOverlayPermission { appSettings.overlayEnabled = true }
+                checkDrawOverlayPermission {
+                    appSettings.overlayEnabled = true
+                    invokeService(CleanMeService.ACTION_REFRESH_OVERLAY)
+                }
             } else {
                 appSettings.overlayEnabled = false
+                invokeService(CleanMeService.ACTION_REFRESH_OVERLAY)
             }
         }
     }
@@ -78,6 +82,7 @@ class MainActivity : AppCompatActivity() {
             val canDrawOverlays = Settings.canDrawOverlays(this)
             appSettings.overlayEnabled = canDrawOverlays
             enableOverlaySwitch?.isChecked = canDrawOverlays
+            invokeService(CleanMeService.ACTION_REFRESH_OVERLAY)
         }
     }
 
