@@ -37,7 +37,9 @@ class ParticleOverlayView(context: Context) : View(context) {
     }
 
     fun popParticle(): Particle {
-        return particles.pop()
+        val particle = particles.pop()
+        invalidate()
+        return particle
     }
 
     override fun draw(canvas: Canvas?) {
