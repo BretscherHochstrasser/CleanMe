@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.provider.Settings
 import android.widget.Button
 import android.widget.Switch
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import ch.bretscherhochstrasser.cleanme.helper.formatHoursAndMinutes
 import ch.bretscherhochstrasser.cleanme.service.CleanMeService
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +19,12 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_CODE_OVERLAY_SETTINGS = 2345
     }
 
+    private val useTime: TextView?
+        get() = findViewById(R.id.text_use_time)
+
+    private val enableObserverSwitch: Switch?
+        get() = findViewById(R.id.switch_observer_enabled)
+
     private val enableOverlaySwitch: Switch?
         get() = findViewById(R.id.switch_overlay_enabled)
 
@@ -23,15 +32,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<Button>(R.id.button_start_service).setOnClickListener {
-            invokeService(CleanMeService.ACTION_START_OBSERVE_DEVICE_STATE)
-        }
-        findViewById<Button>(R.id.button_stop_service).setOnClickListener {
-            invokeService(CleanMeService.ACTION_STOP_OBSERVE_DEVICE_STATE)
-        }
+        serviceState.observingDeviceUsage.observe(this, Observer {
+            enableObserverSwitch?.isChecked = it
+        })
+
+        deviceUsageStatsManager.deviceUsageStats.observe(this, Observer {
+            useTime?.text = formatHoursAndMinutes(it.deviceUseDuration)
+        })
+
         findViewById<Button>(R.id.button_reset_stats).setOnClickListener {
             deviceUsageStatsManager.resetStats()
         }
+
+        enableObserverSwitch?.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                invokeService(CleanMeService.ACTION_START_OBSERVE_DEVICE_STATE)
+            } else {
+                invokeService(CleanMeService.ACTION_STOP_OBSERVE_DEVICE_STATE)
+            }
+        }
+
         enableOverlaySwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 checkDrawOverlayPermission {

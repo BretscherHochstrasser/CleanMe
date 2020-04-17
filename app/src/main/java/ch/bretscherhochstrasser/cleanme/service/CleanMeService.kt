@@ -11,6 +11,7 @@ import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
 import ch.bretscherhochstrasser.cleanme.helper.NotificationHelper
 import ch.bretscherhochstrasser.cleanme.helper.valueNN
 import ch.bretscherhochstrasser.cleanme.overlay.ParticleOverlayManager
+import ch.bretscherhochstrasser.cleanme.serviceState
 
 /**
  * Service to handle to collect the device usage time and trigger notifications.
@@ -49,17 +50,19 @@ class CleanMeService : LifecycleService() {
         super.onStartCommand(intent, flags, startId)
         when (intent?.action) {
             ACTION_START_OBSERVE_DEVICE_STATE -> {
-                if (!observer.observing) {
+                if (!serviceState.observingDeviceUsage.valueNN) {
                     startForeground(
                         NotificationHelper.NOTIFICATION_ID,
                         notificationHelper.createNotification(deviceUsageStatsManager.deviceUsageStats.valueNN)
                     )
                     observer.startObserveDeviceStateState()
+                    serviceState.observingDeviceUsage.value = true
                 }
             }
             ACTION_STOP_OBSERVE_DEVICE_STATE -> {
-                if (observer.observing) {
+                if (serviceState.observingDeviceUsage.valueNN) {
                     observer.stopObserveDeviceState()
+                    serviceState.observingDeviceUsage.value = false
                     stopForeground(true)
                     stopSelf()
                 }
@@ -71,14 +74,14 @@ class CleanMeService : LifecycleService() {
 
     private fun onDeviceUsageUpdate(deviceUsageStats: DeviceUsageStats) {
         // only handle device usage stats if currently in observing state
-        if (observer.observing) {
+        if (serviceState.observingDeviceUsage.valueNN) {
             notificationHelper.updateNotification(deviceUsageStats)
             refreshOverlay(deviceUsageStats)
         }
     }
 
     private fun refreshOverlay(deviceUsageStats: DeviceUsageStats) {
-        if (appSettings.overlayEnabled && observer.observing) {
+        if (appSettings.overlayEnabled && serviceState.observingDeviceUsage.valueNN) {
             overlayManager.showOverlay()
             overlayManager.update(
                 deviceUsageStats.deviceUseDuration,

@@ -9,7 +9,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
-import org.threeten.bp.Duration
 import timber.log.Timber
 
 /**
@@ -23,7 +22,6 @@ class NotificationHelper(private val context: Context) {
     }
 
     fun createNotification(deviceUsageStats: DeviceUsageStats): Notification {
-        val screenOnDuration = Duration.ofMillis(deviceUsageStats.deviceUseDuration)
         val builder = NotificationCompat.Builder(
             context,
             CHANNEL_ID
@@ -32,8 +30,8 @@ class NotificationHelper(private val context: Context) {
             .setContentTitle("Counting screen on time")
             .setContentText(
                 String.format(
-                    "Screen on count: %d, total %02d:%02d", deviceUsageStats.screenOnCount,
-                    screenOnDuration.toHours(), screenOnDuration.toMinutes() % 60
+                    "Screen on count: %d, total %s", deviceUsageStats.screenOnCount,
+                    formatHoursAndMinutes(deviceUsageStats.deviceUseDuration)
                 )
             )
             .setPriority(NotificationCompat.PRIORITY_MIN)

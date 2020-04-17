@@ -26,8 +26,6 @@ class DeviceUsageObserver(
             STATS_UPDATE_INTERVAL
         )
 
-    var observing = false
-        private set
     private lateinit var screenStateReceiver: ScreenStateReceiver
 
     private var lastScreenOnTime: Long = 0
@@ -41,7 +39,6 @@ class DeviceUsageObserver(
 
     fun startObserveDeviceStateState() {
         Timber.i("Start observing device state")
-        observing = true
         if (deviceInUse) {
             onDeviceUseStart()
         }
@@ -61,7 +58,6 @@ class DeviceUsageObserver(
         if (deviceInUse) {
             onDeviceUseStop()
         }
-        observing = false
     }
 
     private fun onDeviceUseStart() {

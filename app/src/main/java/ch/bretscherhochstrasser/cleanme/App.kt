@@ -3,6 +3,7 @@ package ch.bretscherhochstrasser.cleanme
 import android.app.Application
 import android.content.Context
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
+import ch.bretscherhochstrasser.cleanme.service.ServiceState
 import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
 
@@ -13,6 +14,7 @@ class App : Application() {
 
     //TODO: Solve global singletons better once there is DI added
     val deviceUsageStatsManager = DeviceUsageStatsManager(this)
+    val serviceState = ServiceState()
     val appSettings = AppSettings(this)
 
     override fun onCreate() {
@@ -27,6 +29,9 @@ class App : Application() {
 
 val Context.deviceUsageStatsManager
     get() = (applicationContext as App).deviceUsageStatsManager
+
+val Context.serviceState
+    get() = (applicationContext as App).serviceState
 
 val Context.appSettings
     get() = (applicationContext as App).appSettings
