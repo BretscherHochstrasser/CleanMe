@@ -74,8 +74,8 @@ class CleanMeService : LifecycleService() {
                         NotificationHelper.NOTIFICATION_ID,
                         notificationHelper.createNotification(deviceUsageStatsManager.deviceUsageStats.valueNN)
                     )
-                    observer.startObserveDeviceStateState()
                     serviceState.observingDeviceUsage.value = true
+                    observer.startObserveDeviceState()
                 }
             }
             ACTION_STOP_OBSERVE_DEVICE_STATE -> {

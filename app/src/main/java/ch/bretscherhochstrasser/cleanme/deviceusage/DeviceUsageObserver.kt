@@ -39,7 +39,7 @@ class DeviceUsageObserver(
         }
     }
 
-    fun startObserveDeviceStateState() {
+    fun startObserveDeviceState() {
         Timber.i("Start observing device state")
         if (deviceInUse) {
             onDeviceUseStart()
