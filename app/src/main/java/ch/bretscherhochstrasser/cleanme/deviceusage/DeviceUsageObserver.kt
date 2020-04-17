@@ -6,11 +6,13 @@ import android.os.PowerManager
 import androidx.lifecycle.Observer
 import ch.bretscherhochstrasser.cleanme.helper.RepeatingUpdater
 import timber.log.Timber
+import toothpick.InjectConstructor
 
 /**
  * Observes the device usage by listening for screen on/off broadcasts with a [ScreenStateReceiver]
  * and adds the device use time periodically to the [DeviceUsageStatsManager].
  */
+@InjectConstructor
 class DeviceUsageObserver(
     private val context: Context,
     private val usageStatsManager: DeviceUsageStatsManager

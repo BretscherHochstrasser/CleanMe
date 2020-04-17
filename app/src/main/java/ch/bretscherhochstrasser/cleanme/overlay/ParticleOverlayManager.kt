@@ -6,21 +6,22 @@ import android.os.Build
 import android.provider.Settings
 import android.view.WindowManager
 import timber.log.Timber
+import toothpick.InjectConstructor
 
 /**
  * Handles the particle overlay, calculates the particle count from device usage time, and generates
  * the randomly generated particles.
  */
-class ParticleOverlayManager(private val context: Context) {
+@InjectConstructor
+class ParticleOverlayManager(
+    private val context: Context,
+    private val particleGenerator: ParticleGenerator,
+    private val windowManager: WindowManager
+) {
 
     companion object {
         private const val MAX_PARTICLES = 50
     }
-
-    private val windowManager
-        get() = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
-    private val particleGenerator = ParticleGenerator()
 
     private lateinit var particleOverlay: ParticleOverlayView
 

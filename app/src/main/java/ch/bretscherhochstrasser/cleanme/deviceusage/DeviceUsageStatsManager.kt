@@ -4,13 +4,18 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import timber.log.Timber
+import toothpick.InjectConstructor
+import javax.inject.Singleton
 
 /**
  * Manager for the [DeviceUsageStats]. Handles persistence of stat data and provides
  * [LiveData] to observe updates.
  */
-class DeviceUsageStatsManager(private val context: Context) {
+@Singleton
+@InjectConstructor
+class DeviceUsageStatsManager(@AppContext private val context: Context) {
 
     companion object {
         private const val PREF_NAME = "device_usage_stats"
@@ -21,11 +26,8 @@ class DeviceUsageStatsManager(private val context: Context) {
     val deviceUsageStats: LiveData<DeviceUsageStats>
         get() = mutableDeviceUsageStats
 
-    private val mutableDeviceUsageStats by lazy {
-        // we must be lazy because context is not ready on creation time.
-        // TODO: might be non-lazy once we have dependency injection
+    private val mutableDeviceUsageStats =
         MutableLiveData(DeviceUsageStats(screenOnCount, deviceUseDuration))
-    }
 
     private val usageStatPrefs: SharedPreferences
         get() {

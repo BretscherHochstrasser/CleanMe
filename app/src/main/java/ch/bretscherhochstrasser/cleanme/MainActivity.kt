@@ -10,14 +10,24 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
+import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.helper.formatHoursAndMinutes
 import ch.bretscherhochstrasser.cleanme.service.CleanMeService
+import ch.bretscherhochstrasser.cleanme.service.ServiceState
+import toothpick.ktp.KTP
+import toothpick.ktp.delegate.inject
+import toothpick.smoothie.lifecycle.closeOnDestroy
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val REQUEST_CODE_OVERLAY_SETTINGS = 2345
     }
+
+    private val appSettings: AppSettings by inject()
+    private val serviceState: ServiceState by inject()
+    private val deviceUsageStatsManager: DeviceUsageStatsManager by inject()
 
     private val useTime: TextView?
         get() = findViewById(R.id.text_use_time)
@@ -30,6 +40,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        KTP.openScopes(ApplicationScope::class.java, this)
+            .closeOnDestroy(this)
+            .inject(this)
+
         setContentView(R.layout.activity_main)
 
         serviceState.observingDeviceUsage.observe(this, Observer {

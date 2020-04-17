@@ -1,10 +1,12 @@
 package ch.bretscherhochstrasser.cleanme.overlay
 
+import toothpick.InjectConstructor
 import java.util.*
 
 /**
  * Generator for randomized [Particle]s
  */
+@InjectConstructor
 class ParticleGenerator {
 
     private val random = Random(System.currentTimeMillis())

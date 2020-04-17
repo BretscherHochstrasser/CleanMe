@@ -2,12 +2,17 @@ package ch.bretscherhochstrasser.cleanme
 
 import android.content.Context
 import android.content.SharedPreferences
+import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import org.threeten.bp.Duration
+import toothpick.InjectConstructor
+import javax.inject.Singleton
 
 /**
  * Utility to access app settings stored in preferences
  */
-class AppSettings(private val context: Context) {
+@Singleton
+@InjectConstructor
+class AppSettings(@AppContext private val context: Context) {
 
     companion object {
         private const val PREF_NAME = "app_settings"

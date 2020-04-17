@@ -10,10 +10,12 @@ import androidx.core.app.NotificationManagerCompat
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
 import timber.log.Timber
+import toothpick.InjectConstructor
 
 /**
  * Handles creation and updates to notifications
  */
+@InjectConstructor
 class NotificationHelper(private val context: Context) {
 
     companion object {
