@@ -6,7 +6,6 @@ import android.os.IBinder
 import android.view.WindowManager
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
-import ch.bretscherhochstrasser.cleanme.AppSettings
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageObserver
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
@@ -14,6 +13,7 @@ import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.helper.NotificationHelper
 import ch.bretscherhochstrasser.cleanme.helper.valueNN
 import ch.bretscherhochstrasser.cleanme.overlay.ParticleOverlayManager
+import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import toothpick.ktp.KTP
 import toothpick.ktp.binding.bind
 import toothpick.ktp.binding.module
@@ -34,12 +34,7 @@ class CleanMeService : LifecycleService() {
     private val serviceState: ServiceState by inject()
     private val deviceUsageStatsManager: DeviceUsageStatsManager by inject()
     private val appSettings: AppSettings by inject()
-
-    private val observer by lazy {
-        // we must initialize lazy deviceUsageStatsManager cannot be accessed during context
-        // creation time. TODO: might be non-lazy once we have dependency injection
-        DeviceUsageObserver(this, deviceUsageStatsManager)
-    }
+    private val observer: DeviceUsageObserver by inject()
     private val overlayManager: ParticleOverlayManager by inject()
     private val notificationHelper: NotificationHelper by inject()
 
