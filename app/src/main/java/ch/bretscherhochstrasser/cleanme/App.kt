@@ -2,6 +2,7 @@ package ch.bretscherhochstrasser.cleanme
 
 import android.app.Application
 import android.content.Context
+import androidx.core.app.NotificationManagerCompat
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -24,6 +25,11 @@ class App : Application() {
         KTP.openScope(ApplicationScope::class.java)
             .installModules(module {
                 bind<Context>().withName(AppContext::class).toInstance { this@App }
+                bind<NotificationManagerCompat>().toProviderInstance {
+                    NotificationManagerCompat.from(
+                        this@App
+                    )
+                }
             }).inject(this)
     }
 

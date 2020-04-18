@@ -37,6 +37,7 @@ class CleanMeService : LifecycleService() {
     private val observer: DeviceUsageObserver by inject()
     private val overlayManager: ParticleOverlayManager by inject()
     private val notificationHelper: NotificationHelper by inject()
+    private val reminderManager: ReminderManager by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -49,7 +50,7 @@ class CleanMeService : LifecycleService() {
             })
             .inject(this)
 
-        notificationHelper.createNotificationChannel()
+        notificationHelper.createNotificationChannels()
         deviceUsageStatsManager.deviceUsageStats.observe(this, Observer {
             onDeviceUsageUpdate(it)
         })
@@ -66,8 +67,8 @@ class CleanMeService : LifecycleService() {
             ACTION_START_OBSERVE_DEVICE_STATE -> {
                 if (!serviceState.observingDeviceUsage.valueNN) {
                     startForeground(
-                        NotificationHelper.NOTIFICATION_ID,
-                        notificationHelper.createNotification(deviceUsageStatsManager.deviceUsageStats.valueNN)
+                        NotificationHelper.NOTIFICATION_ID_SERVICE,
+                        notificationHelper.createServiceNotification(deviceUsageStatsManager.deviceUsageStats.valueNN)
                     )
                     serviceState.observingDeviceUsage.value = true
                     observer.startObserveDeviceState()
@@ -89,7 +90,8 @@ class CleanMeService : LifecycleService() {
     private fun onDeviceUsageUpdate(deviceUsageStats: DeviceUsageStats) {
         // only handle device usage stats if currently in observing state
         if (serviceState.observingDeviceUsage.valueNN) {
-            notificationHelper.updateNotification(deviceUsageStats)
+            notificationHelper.updateServiceNotification(deviceUsageStats)
+            reminderManager.showReminderIfRequired(deviceUsageStats)
             refreshOverlay(deviceUsageStats)
         }
     }

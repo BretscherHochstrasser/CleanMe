@@ -8,6 +8,7 @@ import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.databinding.ActivityMainBinding
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.helper.formatHoursAndMinutes
+import ch.bretscherhochstrasser.cleanme.service.ReminderManager
 import ch.bretscherhochstrasser.cleanme.settings.SettingsActivity
 import toothpick.ktp.KTP
 import toothpick.ktp.delegate.inject
@@ -16,6 +17,7 @@ import toothpick.smoothie.lifecycle.closeOnDestroy
 class MainActivity : AppCompatActivity() {
 
     private val deviceUsageStatsManager: DeviceUsageStatsManager by inject()
+    private val reminderManager: ReminderManager by inject()
 
     private lateinit var binding: ActivityMainBinding
 
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.buttonResetStats.setOnClickListener {
             deviceUsageStatsManager.resetStats()
+            reminderManager.reset()
         }
 
         binding.buttonSettings.setOnClickListener {
