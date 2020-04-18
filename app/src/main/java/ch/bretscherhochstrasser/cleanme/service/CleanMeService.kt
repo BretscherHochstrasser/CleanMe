@@ -99,7 +99,7 @@ class CleanMeService : LifecycleService() {
             overlayManager.showOverlay()
             overlayManager.update(
                 deviceUsageStats.deviceUseDuration,
-                appSettings.cleanIntervalMillis
+                appSettings.cleanInterval.durationMillis
             )
         } else {
             overlayManager.hideOverlay()

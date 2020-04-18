@@ -29,6 +29,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -41,6 +44,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    implementation 'com.google.android.material:material:1.2.0-alpha06'
+
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.3'
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
@@ -51,4 +56,3 @@ dependencies {
     implementation 'com.github.stephanenicolas.toothpick:smoothie-lifecycle-ktp:3.1.0'
     kapt 'com.github.stephanenicolas.toothpick:toothpick-compiler:3.1.0'
 }
-

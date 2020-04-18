@@ -5,6 +5,7 @@ import android.graphics.PixelFormat
 import android.os.Build
 import android.provider.Settings
 import android.view.WindowManager
+import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import timber.log.Timber
 import toothpick.InjectConstructor
 
@@ -16,12 +17,9 @@ import toothpick.InjectConstructor
 class ParticleOverlayManager(
     private val context: Context,
     private val particleGenerator: ParticleGenerator,
+    private val appSettings: AppSettings,
     private val windowManager: WindowManager
 ) {
-
-    companion object {
-        private const val MAX_PARTICLES = 50
-    }
 
     private lateinit var particleOverlay: ParticleOverlayView
 
@@ -74,7 +72,7 @@ class ParticleOverlayManager(
         val limitedDeviceUsageTime = deviceUsageTime.coerceAtMost(timeUntilMaxParticles)
         // for now we only to linear particle creation
         val relativeProgress = limitedDeviceUsageTime.toDouble() / timeUntilMaxParticles
-        val targetParticleCount = (MAX_PARTICLES * relativeProgress).toInt()
+        val targetParticleCount = (appSettings.maxOverlayParticleCount * relativeProgress).toInt()
         Timber.d(
             "Target particle count %d (%.0f%%) for %dms device usage",
             targetParticleCount, relativeProgress * 100, deviceUsageTime

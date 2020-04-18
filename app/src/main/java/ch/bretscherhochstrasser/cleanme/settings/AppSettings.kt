@@ -1,9 +1,8 @@
-package ch.bretscherhochstrasser.cleanme
+package ch.bretscherhochstrasser.cleanme.settings
 
 import android.content.Context
 import android.content.SharedPreferences
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
-import org.threeten.bp.Duration
 import toothpick.InjectConstructor
 import javax.inject.Singleton
 
@@ -18,8 +17,9 @@ class AppSettings(@AppContext private val context: Context) {
         private const val PREF_NAME = "app_settings"
         private const val PREF_OVERLAY_ENABLED = "overlay_enabled"
         private const val PREF_CLEAN_INTERVAL = "clean_interval"
+        private const val PREF_MAX_OVERLAY_PARTICLE_COUNT = "max_overlay_particle_count"
 
-        private const val DEFAULT_CLEAN_INTERVAL = 15 // 15 min for initial testing
+        private const val DEFAULT_MAX_OVERLAY_PARTICLE_COUNT = 25
     }
 
     private val settings: SharedPreferences
@@ -41,18 +41,32 @@ class AppSettings(@AppContext private val context: Context) {
     /**
      * Clean interval in minutes
      */
-    var cleanIntervalMinutes: Int
+    var cleanInterval: CleanInterval
         get() {
-            return settings.getInt(PREF_CLEAN_INTERVAL, DEFAULT_CLEAN_INTERVAL)
+            return CleanInterval.fromMinutes(
+                settings.getInt(
+                    PREF_CLEAN_INTERVAL,
+                    CleanInterval.TWO_HOURS.durationMinutes
+                )
+            )
         }
         set(value) {
-            check(value > 0) { "clean interval must be a positive value" }
-            settings.edit().putInt(PREF_CLEAN_INTERVAL, value).apply()
+            settings.edit().putInt(PREF_CLEAN_INTERVAL, value.durationMinutes).apply()
         }
 
     /**
-     * Clean interval in milliseconds (read-only)
+     * Maximum number of overlay particles to show
      */
-    val cleanIntervalMillis: Long
-        get() = Duration.ofMinutes(cleanIntervalMinutes.toLong()).toMillis()
+    var maxOverlayParticleCount: Int
+        get() {
+            return settings.getInt(
+                PREF_MAX_OVERLAY_PARTICLE_COUNT,
+                DEFAULT_MAX_OVERLAY_PARTICLE_COUNT
+            )
+        }
+        set(value) {
+            check(value > 0) { "max overlay particle count must be a positive value" }
+            settings.edit().putInt(PREF_MAX_OVERLAY_PARTICLE_COUNT, value).apply()
+        }
+
 }

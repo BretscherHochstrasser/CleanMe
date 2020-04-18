@@ -17,7 +17,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginBottom="16dp"
         android:ems="10"
-        android:text="Use time since last clean"
+        android:text="@string/main_label_use_time"
         app:layout_constraintBottom_toTopOf="@+id/text_use_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,26 +35,12 @@
         android:layout_marginBottom="16dp"
         android:ems="10"
         android:gravity="center_horizontal"
-        android:text="-- : --"
         android:textSize="30sp"
+        tools:text="-- : --"
         app:layout_constraintBottom_toTopOf="@+id/button_reset_stats"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_use_time" />
-
-    <Switch
-        android:id="@+id/switch_observer_enabled"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="16dp"
-        android:text="Track device usage"
-        app:layout_constraintBottom_toTopOf="@+id/switch_overlay_enabled"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_reset_stats"
@@ -62,22 +48,24 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="32dp"
-        android:text="Reset use time"
-        app:layout_constraintBottom_toTopOf="@+id/switch_observer_enabled"
+        android:text="@string/main_button_clean_reset"
+        app:layout_constraintBottom_toTopOf="@+id/button_settings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_use_time" />
 
-    <Switch
-        android:id="@+id/switch_overlay_enabled"
-        android:layout_width="0dp"
+    <Button
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:id="@+id/button_settings"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        android:layout_marginBottom="32dp"
-        android:text="Enable Overlay"
+        android:layout_marginBottom="16dp"
+        android:text="@string/settings_title"
+        app:icon="@drawable/ic_settings_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

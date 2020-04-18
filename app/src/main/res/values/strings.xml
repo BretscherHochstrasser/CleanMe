@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Clean Me</string>
+
+    <string name="main_label_use_time">Device use time since last cleaning</string>
+    <string name="main_button_clean_reset">Clean now / Reset usage</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_section_title_general">General</string>
+    <string name="settings_switch_label_track_device_usage">Track device use time</string>
+    <string name="settings_description_track_device_usage">CleanMe must track the device use time (screen-on-time) to remind you when it is time to clean your device</string>
+    <string name="settings_section_title_reminder">Clean Reminder</string>
+    <string name="settings_label_clean_interval">Remind me to clean my device after %s of use</string>
+    <string name="settings_button_edit_clean_interval">edit clean reminder interval</string>
+    <string name="settings_section_title_overlay">Particle Overlay</string>
+    <string name="settings_switch_enable_overlay_label">Show particle screen overlay</string>
+    <string name="settings_description_enable_overlay">The overlay displays an ever increasing number of grime particles on the screen on top all application over time</string>
+    <string name="settings_label_max_particles">Maximum number of overlay particles: %d</string>
+    <string name="settings_description_max_particles">The maximum number of overlay grime particles to show at time of maximum dirtiness (time to clean)</string>
+
+    <string name="clean_interval_30min">30 minutes</string>
+    <string name="clean_interval_1hour">1 hour</string>
+    <string name="clean_interval_2hours">2 hours</string>
+    <string name="clean_interval_4hours">4 hours</string>
+    <string name="clean_interval_6hours">6 hours</string>
+
 </resources>
