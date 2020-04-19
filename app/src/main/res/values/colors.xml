@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <!--
+        Material.io colors created with:
+        https://material.io/resources/color/#!/?view.left=0&view.right=0&secondary.color=1DE9B6&primary.color=00ACC1
+    -->
+    <color name="primaryColor">#00acc1</color>
+    <color name="primaryLightColor">#5ddef4</color>
+    <color name="primaryDarkColor">#007c91</color>
+    <color name="secondaryColor">#1de9b6</color>
+    <color name="secondaryLightColor">#6effe8</color>
 </resources>
