@@ -65,7 +65,7 @@ class NotificationHelper(
             context,
             CHANNEL_ID_REMINDER
         )
-            .setSmallIcon(R.drawable.ic_sparkle_24dp)
+            .setSmallIcon(R.drawable.ic_drop_24dp)
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)

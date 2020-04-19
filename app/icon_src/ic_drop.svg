@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" sodipodi:docname="ic_drop.svg"
+    inkscape:version="1.0beta2 (2b71d25, 2019-12-03)" id="svg4458" version="1.1"
+    viewBox="0 0 6.3499998 6.3500002" height="24" width="24">
+    <defs id="defs4452" />
+    <sodipodi:namedview inkscape:window-maximized="0" inkscape:window-y="26" inkscape:window-x="0"
+        inkscape:window-height="774" inkscape:window-width="1280" width="24px" units="px"
+        showgrid="true" inkscape:document-rotation="0" inkscape:current-layer="layer1"
+        inkscape:document-units="mm" inkscape:cy="13.197575" inkscape:cx="10.294044"
+        inkscape:zoom="22.4" inkscape:pageshadow="2" inkscape:pageopacity="0.0" borderopacity="1.0"
+        bordercolor="#666666" pagecolor="#ffffff" id="base">
+        <inkscape:grid id="grid4466" type="xygrid" />
+    </sodipodi:namedview>
+    <metadata id="metadata4455">
+        <rdf:RDF>
+            <cc:Work rdf:about="">
+                <dc:format>image/svg+xml</dc:format>
+                <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+                <dc:title></dc:title>
+            </cc:Work>
+        </rdf:RDF>
+    </metadata>
+    <g id="layer1" inkscape:groupmode="layer" inkscape:label="Layer 1">
+        <path
+            style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458300000000001px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+            d="m 3.175,0.83733894 c 0,0 -1.6697579,1.89239236 -1.6697579,3.00556426 0,0.7871314 0.556586,1.6697579 1.6697579,1.6697579 1.1131719,0 1.6697579,-0.8826265 1.6697579,-1.6697579 C 4.8447579,2.7297313 3.175,0.83733894 3.175,0.83733894 Z"
+            id="path3880" inkscape:connector-curvature="0" sodipodi:nodetypes="cszsc" />
+    </g>
+</svg>
