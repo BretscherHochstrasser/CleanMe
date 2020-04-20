@@ -2,6 +2,7 @@ package ch.bretscherhochstrasser.cleanme.service
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.IBinder
 import android.view.WindowManager
 import androidx.lifecycle.LifecycleService
@@ -13,6 +14,9 @@ import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.helper.NotificationHelper
 import ch.bretscherhochstrasser.cleanme.helper.valueNN
 import ch.bretscherhochstrasser.cleanme.overlay.ParticleOverlayManager
+import ch.bretscherhochstrasser.cleanme.service.CleanMeService.Companion.refresh
+import ch.bretscherhochstrasser.cleanme.service.CleanMeService.Companion.start
+import ch.bretscherhochstrasser.cleanme.service.CleanMeService.Companion.stop
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import toothpick.ktp.KTP
 import toothpick.ktp.binding.bind
@@ -22,13 +26,36 @@ import toothpick.ktp.delegate.inject
 /**
  * Service to handle to collect the device usage time and trigger notifications.
  * It needs to be a foreground service to be able to track device state continuously.
+ * Use the utility functions [start], [stop], [refresh] to invoke service commands.
  */
 class CleanMeService : LifecycleService() {
 
     companion object {
-        const val ACTION_START_OBSERVE_DEVICE_STATE = "ACTION_START_OBSERVE_DEVICE_STATE"
-        const val ACTION_STOP_OBSERVE_DEVICE_STATE = "ACTION_STOP_OBSERVE_DEVICE_STATE"
-        const val ACTION_REFRESH_OVERLAY = "ACTION_REFRESH_OVERLAY"
+        private const val ACTION_START = "ACTION_START"
+        private const val ACTION_STOP = "ACTION_STOP"
+        private const val ACTION_REFRESH = "ACTION_REFRESH"
+
+        fun start(context: Context) {
+            startWithAction(ACTION_START, context)
+        }
+
+        fun stop(context: Context) {
+            startWithAction(ACTION_STOP, context)
+        }
+
+        fun refresh(context: Context) {
+            startWithAction(ACTION_REFRESH, context)
+        }
+
+        private fun startWithAction(action: String, context: Context) {
+            val intent = Intent(context, CleanMeService::class.java)
+            intent.action = action
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(intent)
+            } else {
+                context.startService(intent)
+            }
+        }
     }
 
     private val serviceState: ServiceState by inject()
@@ -64,7 +91,7 @@ class CleanMeService : LifecycleService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         when (intent?.action) {
-            ACTION_START_OBSERVE_DEVICE_STATE -> {
+            ACTION_START -> {
                 if (!serviceState.observingDeviceUsage.valueNN) {
                     startForeground(
                         NotificationHelper.NOTIFICATION_ID_SERVICE,
@@ -74,7 +101,7 @@ class CleanMeService : LifecycleService() {
                     observer.startObserveDeviceState()
                 }
             }
-            ACTION_STOP_OBSERVE_DEVICE_STATE -> {
+            ACTION_STOP -> {
                 if (serviceState.observingDeviceUsage.valueNN) {
                     observer.stopObserveDeviceState()
                     serviceState.observingDeviceUsage.value = false
@@ -82,7 +109,7 @@ class CleanMeService : LifecycleService() {
                     stopSelf()
                 }
             }
-            ACTION_REFRESH_OVERLAY -> refreshOverlay(deviceUsageStatsManager.deviceUsageStats.valueNN)
+            ACTION_REFRESH -> refreshOverlay(deviceUsageStatsManager.deviceUsageStats.valueNN)
         }
         return START_NOT_STICKY
     }

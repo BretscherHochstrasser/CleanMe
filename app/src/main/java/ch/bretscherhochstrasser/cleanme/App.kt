@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
+import ch.bretscherhochstrasser.cleanme.service.CleanMeService
 import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
 import toothpick.ktp.KTP
@@ -31,6 +32,8 @@ class App : Application() {
                     )
                 }
             }).inject(this)
+
+        CleanMeService.start(this)
     }
 
 }

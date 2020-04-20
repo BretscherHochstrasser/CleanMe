@@ -44,9 +44,9 @@ class SettingsActivity : AppCompatActivity() {
         })
         binding.switchTrackDeviceUsage.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                invokeService(CleanMeService.ACTION_START_OBSERVE_DEVICE_STATE)
+                CleanMeService.start(this)
             } else {
-                invokeService(CleanMeService.ACTION_STOP_OBSERVE_DEVICE_STATE)
+                CleanMeService.stop(this)
             }
         }
 
@@ -60,7 +60,7 @@ class SettingsActivity : AppCompatActivity() {
                 val selectedCleanInterval = CleanInterval.values()[which]
                 appSettings.cleanInterval = selectedCleanInterval
                 setCleanIntervalLabel(selectedCleanInterval)
-                invokeService(CleanMeService.ACTION_REFRESH_OVERLAY)
+                CleanMeService.refresh(this)
                 dialog.dismiss()
             }.show()
         }
@@ -70,17 +70,17 @@ class SettingsActivity : AppCompatActivity() {
                 overlayPermissionHelper.checkDrawOverlayPermission()
             } else {
                 appSettings.overlayEnabled = false
-                invokeService(CleanMeService.ACTION_REFRESH_OVERLAY)
+                CleanMeService.refresh(this)
             }
         }
         overlayPermissionHelper.onPermissionGranted = {
             appSettings.overlayEnabled = true
-            invokeService(CleanMeService.ACTION_REFRESH_OVERLAY)
+            CleanMeService.refresh(this)
         }
         overlayPermissionHelper.onPermissionDenied = {
             binding.switchOverlayEnabled.isChecked = false
             appSettings.overlayEnabled = false
-            invokeService(CleanMeService.ACTION_REFRESH_OVERLAY)
+            CleanMeService.refresh(this)
         }
 
         binding.sliderMaxOverlayParticles.addOnChangeListener { _, value, fromUser ->
@@ -94,7 +94,7 @@ class SettingsActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(slider: Slider) {
                 appSettings.maxOverlayParticleCount = slider.value.toInt()
-                invokeService(CleanMeService.ACTION_REFRESH_OVERLAY)
+                CleanMeService.refresh(this@SettingsActivity)
             }
         })
         binding.sliderMaxOverlayParticles.setLabelFormatter {
@@ -118,12 +118,6 @@ class SettingsActivity : AppCompatActivity() {
     private fun setMaxParticleLabel(maxParticleCount: Int) {
         binding.labelMaxOverlayParticles.text =
             getString(R.string.settings_label_max_particles, maxParticleCount)
-    }
-
-    private fun invokeService(action: String) {
-        val intent = Intent(this, CleanMeService::class.java)
-        intent.action = action
-        startService(intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
