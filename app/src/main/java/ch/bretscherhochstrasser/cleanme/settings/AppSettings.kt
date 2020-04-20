@@ -18,6 +18,7 @@ class AppSettings(@AppContext private val context: Context) {
         private const val PREF_OVERLAY_ENABLED = "overlay_enabled"
         private const val PREF_CLEAN_INTERVAL = "clean_interval"
         private const val PREF_MAX_OVERLAY_PARTICLE_COUNT = "max_overlay_particle_count"
+        private const val PREF_START_ON_BOOT = "start_on_boot"
 
         private const val DEFAULT_MAX_OVERLAY_PARTICLE_COUNT = 25
     }
@@ -67,6 +68,20 @@ class AppSettings(@AppContext private val context: Context) {
         set(value) {
             check(value > 0) { "max overlay particle count must be a positive value" }
             settings.edit().putInt(PREF_MAX_OVERLAY_PARTICLE_COUNT, value).apply()
+        }
+
+    /**
+     * Start app on device boot
+     */
+    var startOnBoot: Boolean
+        get() {
+            return settings.getBoolean(
+                PREF_START_ON_BOOT,
+                false
+            )
+        }
+        set(value) {
+            settings.edit().putBoolean(PREF_START_ON_BOOT, value).apply()
         }
 
 }

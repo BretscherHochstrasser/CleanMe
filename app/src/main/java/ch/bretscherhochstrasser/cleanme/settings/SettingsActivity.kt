@@ -50,6 +50,10 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+        binding.switchStartOnBoot.setOnCheckedChangeListener { _, isChecked ->
+            appSettings.startOnBoot = isChecked
+        }
+
         binding.buttonEditCleanInterval.setOnClickListener {
             MaterialAlertDialogBuilder(this).setSingleChoiceItems(
                 CleanInterval.getTextValues(
@@ -105,6 +109,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         binding.switchOverlayEnabled.isChecked = appSettings.overlayEnabled
+        binding.switchStartOnBoot.isChecked = appSettings.startOnBoot
         setCleanIntervalLabel(appSettings.cleanInterval)
         binding.sliderMaxOverlayParticles.value = appSettings.maxOverlayParticleCount.toFloat()
         setMaxParticleLabel(appSettings.maxOverlayParticleCount)

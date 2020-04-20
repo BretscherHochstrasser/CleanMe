@@ -35,6 +35,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings_description_track_device_usage" />
 
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_start_on_boot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/settings_switch_label_start_on_boot" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_description_start_on_boot" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
