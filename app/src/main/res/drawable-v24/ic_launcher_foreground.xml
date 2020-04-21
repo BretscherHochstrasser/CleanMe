@@ -35,8 +35,8 @@
         android:pathData="m67.733,15.875c0,0 -37.042,41.981 -37.042,66.675 0,17.462 12.347,37.042 37.042,37.042 24.694,0 37.042,-19.58 37.042,-37.042 0,-24.694 -37.042,-66.675 -37.042,-66.675z"
         android:strokeAlpha="1"
         android:strokeLineJoin="miter"
-        android:strokeWidth="0.264583"
-        android:fillColor="#00acc1"
+        android:strokeWidth="0.26458300000000001"
+        android:fillColor="#1de9b6"
         android:strokeColor="#00000000"
         android:fillAlpha="1"
         android:strokeLineCap="butt" />
