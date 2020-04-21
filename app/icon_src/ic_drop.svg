@@ -2,31 +2,30 @@
 <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg"
     xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" sodipodi:docname="ic_drop.svg"
-    inkscape:version="1.0beta2 (2b71d25, 2019-12-03)" id="svg4458" version="1.1"
-    viewBox="0 0 6.3499998 6.3500002" height="24" width="24">
-    <defs id="defs4452" />
-    <sodipodi:namedview inkscape:window-maximized="0" inkscape:window-y="26" inkscape:window-x="0"
-        inkscape:window-height="774" inkscape:window-width="1280" width="24px" units="px"
-        showgrid="true" inkscape:document-rotation="0" inkscape:current-layer="layer1"
-        inkscape:document-units="mm" inkscape:cy="13.197575" inkscape:cx="10.294044"
-        inkscape:zoom="22.4" inkscape:pageshadow="2" inkscape:pageopacity="0.0" borderopacity="1.0"
-        bordercolor="#666666" pagecolor="#ffffff" id="base">
-        <inkscape:grid id="grid4466" type="xygrid" />
-    </sodipodi:namedview>
-    <metadata id="metadata4455">
-        <rdf:RDF>
-            <cc:Work rdf:about="">
-                <dc:format>image/svg+xml</dc:format>
-                <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-                <dc:title></dc:title>
-            </cc:Work>
-        </rdf:RDF>
-    </metadata>
-    <g id="layer1" inkscape:groupmode="layer" inkscape:label="Layer 1">
-        <path
-            style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458300000000001px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-            d="m 3.175,0.83733894 c 0,0 -1.6697579,1.89239236 -1.6697579,3.00556426 0,0.7871314 0.556586,1.6697579 1.6697579,1.6697579 1.1131719,0 1.6697579,-0.8826265 1.6697579,-1.6697579 C 4.8447579,2.7297313 3.175,0.83733894 3.175,0.83733894 Z"
-            id="path3880" inkscape:connector-curvature="0" sodipodi:nodetypes="cszsc" />
-    </g>
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="24" height="24"
+    viewBox="0 0 6.3499998 6.3500002" version="1.1" id="svg4458"
+    inkscape:version="1.0beta2 (2b71d25, 2019-12-03)" sodipodi:docname="ic_drop.svg">
+  <defs id="defs4452" />
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0"
+      inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="22.4"
+      inkscape:cx="7.1020797" inkscape:cy="12.394004" inkscape:document-units="mm"
+      inkscape:current-layer="layer1" inkscape:document-rotation="0" showgrid="true" units="px"
+      width="24px" inkscape:window-width="1280" inkscape:window-height="774" inkscape:window-x="0"
+      inkscape:window-y="26" inkscape:window-maximized="0">
+    <inkscape:grid type="xygrid" id="grid4466" />
+  </sodipodi:namedview>
+  <metadata id="metadata4455">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">
+    <path sodipodi:nodetypes="cszsc" inkscape:connector-curvature="0" id="path3880"
+        d="m 3.175,0.52916669 c 0,0 -1.889881,2.14186501 -1.889881,3.40178571 0,0.8908983 0.6299604,1.8898809 1.889881,1.8898809 1.2599205,0 1.8898809,-0.9989826 1.8898809,-1.8898809 C 5.0648809,2.6710317 3.175,0.52916669 3.175,0.52916669 Z"
+        style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.29946200000000001px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+  </g>
 </svg>

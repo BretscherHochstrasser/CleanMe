@@ -10,6 +10,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import ch.bretscherhochstrasser.cleanme.MainActivity
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
@@ -44,6 +46,8 @@ class NotificationHelper(
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
             .setContentText(text)
+            .setColor(ContextCompat.getColor(context, R.color.primaryColor))
+            .setShowWhen(false)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setContentIntent(mainActivityPendingIntent)
         return builder.build()
@@ -68,6 +72,10 @@ class NotificationHelper(
             .setSmallIcon(R.drawable.ic_drop_24dp)
             .setContentTitle(title)
             .setContentText(message)
+            .setColor(ContextCompat.getColor(context, R.color.primaryColor))
+            .setLargeIcon(
+                ContextCompat.getDrawable(context, R.drawable.ic_drop_reminder)?.toBitmap()
+            )
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(mainActivityPendingIntent)
             .setAutoCancel(true)
