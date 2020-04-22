@@ -5,17 +5,20 @@ import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
-import ch.bretscherhochstrasser.cleanme.service.CleanMeService
+import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
 import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
 import toothpick.ktp.KTP
 import toothpick.ktp.binding.bind
 import toothpick.ktp.binding.module
+import toothpick.ktp.delegate.inject
 
 /**
  * Application class, contains global initialization stuff
  */
 class App : Application() {
+
+    private val serviceHelper: ServiceHelper by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -33,7 +36,7 @@ class App : Application() {
                 }
             }).inject(this)
 
-        CleanMeService.start(this)
+        serviceHelper.startObserveDeviceUsage()
     }
 
 }

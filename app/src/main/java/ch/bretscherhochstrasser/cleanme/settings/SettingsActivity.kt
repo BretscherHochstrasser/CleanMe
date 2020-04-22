@@ -9,8 +9,7 @@ import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.databinding.ActivitySettingsBinding
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionHelper
-import ch.bretscherhochstrasser.cleanme.service.CleanMeService
-import ch.bretscherhochstrasser.cleanme.service.ServiceState
+import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
 import toothpick.ktp.KTP
@@ -21,7 +20,7 @@ import toothpick.smoothie.lifecycle.closeOnDestroy
 
 class SettingsActivity : AppCompatActivity() {
 
-    private val serviceState: ServiceState by inject()
+    private val serviceHelper: ServiceHelper by inject()
     private val overlayPermissionHelper: OverlayPermissionHelper by inject()
     private val appSettings: AppSettings by inject()
 
@@ -39,14 +38,14 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        serviceState.observingDeviceUsage.observe(this, Observer {
+        serviceHelper.observingDeviceUsage.observe(this, Observer {
             binding.switchTrackDeviceUsage.isChecked = it
         })
         binding.switchTrackDeviceUsage.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                CleanMeService.start(this)
+                serviceHelper.startObserveDeviceUsage()
             } else {
-                CleanMeService.stop(this)
+                serviceHelper.stopObserveDeviceUsage()
             }
         }
 
@@ -64,7 +63,7 @@ class SettingsActivity : AppCompatActivity() {
                 val selectedCleanInterval = CleanInterval.values()[which]
                 appSettings.cleanInterval = selectedCleanInterval
                 setCleanIntervalLabel(selectedCleanInterval)
-                CleanMeService.refresh(this)
+                serviceHelper.refresh()
                 dialog.dismiss()
             }.show()
         }
@@ -74,17 +73,17 @@ class SettingsActivity : AppCompatActivity() {
                 overlayPermissionHelper.checkDrawOverlayPermission()
             } else {
                 appSettings.overlayEnabled = false
-                CleanMeService.refresh(this)
+                serviceHelper.refresh()
             }
         }
         overlayPermissionHelper.onPermissionGranted = {
             appSettings.overlayEnabled = true
-            CleanMeService.refresh(this)
+            serviceHelper.refresh()
         }
         overlayPermissionHelper.onPermissionDenied = {
             binding.switchOverlayEnabled.isChecked = false
             appSettings.overlayEnabled = false
-            CleanMeService.refresh(this)
+            serviceHelper.refresh()
         }
 
         binding.sliderMaxOverlayParticles.addOnChangeListener { _, value, fromUser ->
@@ -98,7 +97,7 @@ class SettingsActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(slider: Slider) {
                 appSettings.maxOverlayParticleCount = slider.value.toInt()
-                CleanMeService.refresh(this@SettingsActivity)
+                serviceHelper.refresh()
             }
         })
         binding.sliderMaxOverlayParticles.setLabelFormatter {

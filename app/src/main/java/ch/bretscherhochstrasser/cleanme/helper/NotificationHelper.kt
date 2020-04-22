@@ -7,15 +7,20 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import ch.bretscherhochstrasser.cleanme.MainActivity
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
+import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
+import ch.bretscherhochstrasser.cleanme.settings.AppSettings
+import ch.bretscherhochstrasser.cleanme.settings.SettingsActivity
 import timber.log.Timber
 import toothpick.InjectConstructor
 
@@ -25,7 +30,9 @@ import toothpick.InjectConstructor
 @InjectConstructor
 class NotificationHelper(
     @AppContext private val context: Context,
-    private val notificationManager: NotificationManagerCompat
+    private val notificationManager: NotificationManagerCompat,
+    private val serviceHelper: ServiceHelper,
+    private val appSettings: AppSettings
 ) {
 
     companion object {
@@ -39,10 +46,7 @@ class NotificationHelper(
         val title = context.getString(R.string.notification_service_title)
         val formattedUseTime = formatHoursAndMinutes(deviceUsageStats.deviceUseDuration)
         val text = context.getString(R.string.notification_service_text, formattedUseTime)
-        val builder = NotificationCompat.Builder(
-            context,
-            CHANNEL_ID_SERVICE
-        )
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID_SERVICE)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
             .setContentText(text)
@@ -50,6 +54,36 @@ class NotificationHelper(
             .setShowWhen(false)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setContentIntent(mainActivityPendingIntent)
+
+        // only show the show/hide action if the overlay permission is given to the app
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+            || Settings.canDrawOverlays(context)
+        ) {
+            if (appSettings.overlayEnabled) {
+                builder.addAction(
+                    R.drawable.ic_overlay_off_24dp,
+                    context.getString(R.string.notification_service_action_hide_overlay),
+                    serviceHelper.hideOverlayPendingIntent
+                )
+            } else {
+                builder.addAction(
+                    R.drawable.ic_overlay_on_24dp,
+                    context.getString(R.string.notification_service_action_show_overlay),
+                    serviceHelper.showOverlayPendingIntent
+                )
+            }
+        }
+
+        val settingsIntent = Intent(context, SettingsActivity::class.java)
+        val settingsPendingIntent: PendingIntent? = TaskStackBuilder.create(context)
+            .addNextIntentWithParentStack(settingsIntent)
+            .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        builder.addAction(
+            R.drawable.ic_settings_24dp,
+            context.getString(R.string.notification_service_action_settings),
+            settingsPendingIntent
+        )
         return builder.build()
     }
 
@@ -65,10 +99,7 @@ class NotificationHelper(
         Timber.d("Showing reminder notification")
         val title = context.getString(R.string.notification_reminder_title)
         val message = context.getString(R.string.notification_reminder_text)
-        val builder = NotificationCompat.Builder(
-            context,
-            CHANNEL_ID_REMINDER
-        )
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID_REMINDER)
             .setSmallIcon(R.drawable.ic_drop_24dp)
             .setContentTitle(title)
             .setContentText(message)
