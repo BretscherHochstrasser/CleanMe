@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Clean Me</string>
 
-    <string name="main_label_use_time">Device use time since last cleaning</string>
-    <string name="main_button_clean_reset">Clean now / Reset usage</string>
+    <string name="main_label_time_until_clean">use time remaining until clean reminder</string>
+    <string name="main_label_time_since_interval">use time since clean reminder</string>
+    <string name="main_button_clean_reset">Clean now</string>
 
     <string name="settings_title">Settings</string>
     <string name="settings_section_title_general">General</string>
@@ -27,8 +28,9 @@
 
     <string name="notification_channel_name_service">Service notifications</string>
     <string name="notification_channel_name_reminder">Reminder notifications</string>
-    <string name="notification_service_title">Tracking device usage</string>
-    <string name="notification_service_text">Device use time since last clean: %s</string>
+    <string name="notification_service_title">Clean Me is running</string>
+    <string name="notification_service_text_time_until_clean">Use time until next clean: %s</string>
+    <string name="notification_service_text_time_since_interval">Use time since clean reminder: %s</string>
     <string name="notification_service_action_hide_overlay">Hide overlay</string>
     <string name="notification_service_action_show_overlay">Show overlay</string>
     <string name="notification_service_action_settings">Settings</string>

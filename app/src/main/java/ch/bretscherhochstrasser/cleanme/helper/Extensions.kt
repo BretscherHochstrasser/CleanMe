@@ -10,9 +10,13 @@ val <T> LiveData<T>.valueNN: T
     get() = this.value!!
 
 /**
- * Formats a duration in milliseconds to format HH:mm
+ * Formats a remaining duration in milliseconds to count down format HH:mm.
+ * A negative value will result in a format +HH:mm
  */
-fun formatHoursAndMinutes(millis: Long): String {
+fun formatCountdownHoursAndMinutes(millis: Long): String {
     val duration = Duration.ofMillis(millis)
-    return String.format("%02d:%02d", duration.toHours(), duration.toMinutes() % 60)
+    var formatted =
+        String.format("%02d:%02d", duration.abs().toHours(), duration.abs().toMinutes() % 60)
+    if (duration.isNegative) formatted = "+$formatted"
+    return formatted
 }

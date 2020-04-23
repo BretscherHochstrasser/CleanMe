@@ -6,57 +6,86 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/label_use_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:text="@string/main_label_use_time"
-        app:layout_constraintBottom_toTopOf="@+id/text_use_time"
+    <com.mikhaellopez.circularfillableloaders.CircularFillableLoaders
+        android:id="@+id/progress_wave_time_until_clean"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_launcher_background"
+        app:cfl_border="false"
+        app:cfl_progress="80"
+        app:cfl_wave_amplitude="0.03"
+        app:cfl_wave_color="@color/secondaryColor"
+        app:layout_constraintBottom_toBottomOf="@+id/progress_circle_time_until_clean"
+        app:layout_constraintEnd_toEndOf="@+id/progress_circle_time_until_clean"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/progress_circle_time_until_clean"
+        app:layout_constraintTop_toTopOf="@+id/progress_circle_time_until_clean" />
+
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/progress_circle_time_until_clean"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:cpb_background_progressbar_color="@android:color/transparent"
+        app:cpb_background_progressbar_width="16dp"
+        app:cpb_progress="66"
+        app:cpb_progress_direction="to_left"
+        app:cpb_progressbar_color="@color/secondaryColor"
+        app:cpb_progressbar_width="6dp"
+        app:cpb_round_border="true"
+        app:layout_constraintBottom_toTopOf="@+id/button_reset_stats"
+        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="200dp"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintWidth_max="200dp" />
 
     <TextView
-        android:id="@+id/text_use_time"
-        android:layout_width="wrap_content"
+        android:id="@+id/label_time_until_clean"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center_horizontal"
+        android:text="@string/main_label_time_until_clean"
+        app:layout_constraintEnd_toEndOf="@+id/progress_wave_time_until_clean"
+        app:layout_constraintStart_toStartOf="@+id/progress_wave_time_until_clean"
+        app:layout_constraintTop_toBottomOf="@+id/progress_circle_time_until_clean"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <TextView
+        android:id="@+id/text_time_until_clean"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="center_horizontal"
         android:textSize="30sp"
-        tools:text="-- : --"
-        app:layout_constraintBottom_toTopOf="@+id/button_reset_stats"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_use_time" />
+        android:textColor="@color/design_default_color_on_primary"
+        app:layout_constraintBottom_toBottomOf="@+id/progress_wave_time_until_clean"
+        app:layout_constraintEnd_toEndOf="@+id/progress_wave_time_until_clean"
+        app:layout_constraintStart_toStartOf="@+id/progress_wave_time_until_clean"
+        app:layout_constraintTop_toTopOf="@+id/progress_wave_time_until_clean"
+        tools:text="-- : --" />
 
     <Button
         android:id="@+id/button_reset_stats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp"
         android:text="@string/main_button_clean_reset"
         app:layout_constraintBottom_toTopOf="@+id/button_settings"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_use_time" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_circle_time_until_clean" />
 
     <Button
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:id="@+id/button_settings"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

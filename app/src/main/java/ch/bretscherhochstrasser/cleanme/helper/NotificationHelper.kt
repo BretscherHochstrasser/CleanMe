@@ -44,8 +44,17 @@ class NotificationHelper(
 
     fun createServiceNotification(deviceUsageStats: DeviceUsageStats): Notification {
         val title = context.getString(R.string.notification_service_title)
-        val formattedUseTime = formatHoursAndMinutes(deviceUsageStats.deviceUseDuration)
-        val text = context.getString(R.string.notification_service_text, formattedUseTime)
+        val timeUntilClean =
+            appSettings.cleanInterval.durationMillis - deviceUsageStats.deviceUseDuration
+        val formattedUseTime = formatCountdownHoursAndMinutes(timeUntilClean)
+        val text = if (timeUntilClean > 0) {
+            context.getString(R.string.notification_service_text_time_until_clean, formattedUseTime)
+        } else {
+            context.getString(
+                R.string.notification_service_text_time_since_interval,
+                formattedUseTime
+            )
+        }
         val builder = NotificationCompat.Builder(context, CHANNEL_ID_SERVICE)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
