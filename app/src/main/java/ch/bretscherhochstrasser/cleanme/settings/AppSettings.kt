@@ -15,6 +15,8 @@ class AppSettings(@AppContext private val context: Context) {
 
     companion object {
         private const val PREF_NAME = "app_settings"
+
+        private const val PREF_SERVICE_ENABLED = "service_enabled"
         private const val PREF_OVERLAY_ENABLED = "overlay_enabled"
         private const val PREF_CLEAN_INTERVAL = "clean_interval"
         private const val PREF_MAX_OVERLAY_PARTICLE_COUNT = "max_overlay_particle_count"
@@ -26,6 +28,17 @@ class AppSettings(@AppContext private val context: Context) {
     private val settings: SharedPreferences
         get() {
             return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        }
+
+    /**
+     * Indicates whether the overlay should be shown or not
+     */
+    var serviceEnabled: Boolean
+        get() {
+            return settings.getBoolean(PREF_SERVICE_ENABLED, true)
+        }
+        set(value) {
+            settings.edit().putBoolean(PREF_SERVICE_ENABLED, value).apply()
         }
 
     /**

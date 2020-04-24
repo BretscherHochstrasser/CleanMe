@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.databinding.ActivitySettingsBinding
@@ -38,10 +37,8 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        serviceHelper.observingDeviceUsage.observe(this, Observer {
-            binding.switchTrackDeviceUsage.isChecked = it
-        })
         binding.switchTrackDeviceUsage.setOnCheckedChangeListener { _, isChecked ->
+            appSettings.serviceEnabled = isChecked
             if (isChecked) {
                 serviceHelper.startObserveDeviceUsage()
             } else {
@@ -107,6 +104,7 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        binding.switchTrackDeviceUsage.isChecked = appSettings.serviceEnabled
         binding.switchOverlayEnabled.isChecked = appSettings.overlayEnabled
         binding.switchStartOnBoot.isChecked = appSettings.startOnBoot
         setCleanIntervalLabel(appSettings.cleanInterval)

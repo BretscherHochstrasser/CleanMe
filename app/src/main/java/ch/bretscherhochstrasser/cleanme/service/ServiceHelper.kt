@@ -4,7 +4,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.lifecycle.MutableLiveData
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import toothpick.InjectConstructor
 import javax.inject.Singleton
@@ -21,8 +20,6 @@ class ServiceHelper(@AppContext private val context: Context) {
         private const val REQUEST_CODE_SHOW_OVERLAY = 10
         private const val REQUEST_CODE_HIDE_OVERLAY = 20
     }
-
-    val observingDeviceUsage = MutableLiveData(false)
 
     fun startObserveDeviceUsage() {
         startWithAction(CleanMeService.ACTION_START)

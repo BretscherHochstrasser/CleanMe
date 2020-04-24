@@ -34,7 +34,7 @@ class DeviceBootReceiver : BroadcastReceiver() {
     }
 
     private fun autoStartServiceIfNeeded() {
-        if (appSettings.startOnBoot) {
+        if (appSettings.serviceEnabled && appSettings.startOnBoot) {
             Timber.d("Auto starting service")
             serviceHelper.startObserveDeviceUsage()
         }

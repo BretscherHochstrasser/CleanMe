@@ -6,6 +6,7 @@ import androidx.core.app.NotificationManagerCompat
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
+import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
 import toothpick.ktp.KTP
@@ -19,6 +20,7 @@ import toothpick.ktp.delegate.inject
 class App : Application() {
 
     private val serviceHelper: ServiceHelper by inject()
+    private val appSettings: AppSettings by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -36,7 +38,9 @@ class App : Application() {
                 }
             }).inject(this)
 
-        serviceHelper.startObserveDeviceUsage()
+        if (appSettings.serviceEnabled) {
+            serviceHelper.startObserveDeviceUsage()
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package ch.bretscherhochstrasser.cleanme.service
 
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
@@ -14,6 +15,7 @@ import ch.bretscherhochstrasser.cleanme.helper.NotificationHelper
 import ch.bretscherhochstrasser.cleanme.helper.valueNN
 import ch.bretscherhochstrasser.cleanme.overlay.ParticleOverlayManager
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
+import timber.log.Timber
 import toothpick.ktp.KTP
 import toothpick.ktp.binding.bind
 import toothpick.ktp.binding.module
@@ -34,13 +36,14 @@ class CleanMeService : LifecycleService() {
         const val ACTION_HIDE_OVERLAY = "HIDE_OVERLAY"
     }
 
-    private val serviceHelper: ServiceHelper by inject()
     private val deviceUsageStatsManager: DeviceUsageStatsManager by inject()
     private val appSettings: AppSettings by inject()
     private val observer: DeviceUsageObserver by inject()
     private val overlayManager: ParticleOverlayManager by inject()
     private val notificationHelper: NotificationHelper by inject()
     private val reminderManager: ReminderManager by inject()
+
+    private var observingDeviceUsage = false
 
     override fun onCreate() {
         super.onCreate()
@@ -67,24 +70,8 @@ class CleanMeService : LifecycleService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         when (intent?.action) {
-            ACTION_START -> {
-                if (!serviceHelper.observingDeviceUsage.valueNN) {
-                    startForeground(
-                        NotificationHelper.NOTIFICATION_ID_SERVICE,
-                        notificationHelper.createServiceNotification(deviceUsageStatsManager.deviceUsageStats.valueNN)
-                    )
-                    serviceHelper.observingDeviceUsage.value = true
-                    observer.startObserveDeviceState()
-                }
-            }
-            ACTION_STOP -> {
-                if (serviceHelper.observingDeviceUsage.valueNN) {
-                    observer.stopObserveDeviceState()
-                    serviceHelper.observingDeviceUsage.value = false
-                    stopForeground(true)
-                    stopSelf()
-                }
-            }
+            ACTION_START -> startIfNotObserving()
+            ACTION_STOP -> stopIfObserving()
             ACTION_REFRESH -> refresh()
             ACTION_SHOW_OVERLAY -> {
                 appSettings.overlayEnabled = true
@@ -95,7 +82,31 @@ class CleanMeService : LifecycleService() {
                 refresh()
             }
         }
-        return START_NOT_STICKY
+        if (intent == null && appSettings.serviceEnabled) {
+            Timber.d("STICKY service restart occurred")
+            startIfNotObserving()
+        }
+        return Service.START_STICKY
+    }
+
+    private fun startIfNotObserving() {
+        if (!observingDeviceUsage) {
+            startForeground(
+                NotificationHelper.NOTIFICATION_ID_SERVICE,
+                notificationHelper.createServiceNotification(deviceUsageStatsManager.deviceUsageStats.valueNN)
+            )
+            observingDeviceUsage = true
+            observer.startObserveDeviceState()
+        }
+    }
+
+    private fun stopIfObserving() {
+        if (observingDeviceUsage) {
+            observer.stopObserveDeviceState()
+            observingDeviceUsage = false
+            stopForeground(true)
+            stopSelf()
+        }
     }
 
     private fun refresh() {
@@ -104,7 +115,7 @@ class CleanMeService : LifecycleService() {
 
     private fun onDeviceUsageUpdate(deviceUsageStats: DeviceUsageStats) {
         // only handle device usage stats if currently in observing state
-        if (serviceHelper.observingDeviceUsage.valueNN) {
+        if (observingDeviceUsage) {
             notificationHelper.updateServiceNotification(deviceUsageStats)
             reminderManager.showReminderIfRequired(deviceUsageStats)
             refreshOverlay(deviceUsageStats)
@@ -112,7 +123,7 @@ class CleanMeService : LifecycleService() {
     }
 
     private fun refreshOverlay(deviceUsageStats: DeviceUsageStats) {
-        if (appSettings.overlayEnabled && serviceHelper.observingDeviceUsage.valueNN) {
+        if (appSettings.overlayEnabled && observingDeviceUsage) {
             overlayManager.showOverlay()
             overlayManager.update(
                 deviceUsageStats.deviceUseDuration,
