@@ -60,6 +60,7 @@ class CleanMeService : LifecycleService() {
         deviceUsageStatsManager.deviceUsageStats.observe(this, Observer {
             onDeviceUsageUpdate(it)
         })
+        Timber.d("Service created")
     }
 
     override fun onBind(intent: Intent): IBinder {
@@ -111,6 +112,10 @@ class CleanMeService : LifecycleService() {
 
     private fun refresh() {
         onDeviceUsageUpdate(deviceUsageStatsManager.deviceUsageStats.valueNN)
+        if (!observingDeviceUsage) {
+            stopForeground(true)
+            stopSelf()
+        }
     }
 
     private fun onDeviceUsageUpdate(deviceUsageStats: DeviceUsageStats) {
@@ -137,6 +142,7 @@ class CleanMeService : LifecycleService() {
     override fun onDestroy() {
         super.onDestroy()
         overlayManager.hideOverlay()
+        Timber.d("Service destroyed")
     }
 
 }
