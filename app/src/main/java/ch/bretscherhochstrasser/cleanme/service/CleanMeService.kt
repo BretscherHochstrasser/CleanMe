@@ -111,7 +111,9 @@ class CleanMeService : LifecycleService() {
     }
 
     private fun refresh() {
-        onDeviceUsageUpdate(deviceUsageStatsManager.deviceUsageStats.valueNN)
+        // trigger an update of the device usage stats to trigger a refresh of all live data
+        // observers including this service
+        deviceUsageStatsManager.updateUsageStats()
         if (!observingDeviceUsage) {
             stopForeground(true)
             stopSelf()

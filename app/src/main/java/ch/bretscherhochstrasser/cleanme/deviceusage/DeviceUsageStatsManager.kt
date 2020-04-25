@@ -62,7 +62,7 @@ class DeviceUsageStatsManager(@AppContext private val context: Context) {
         updateUsageStats()
     }
 
-    private fun updateUsageStats() {
+    fun updateUsageStats() {
         Timber.d("Updated stats: %s", deviceUsageStats.toString())
         mutableDeviceUsageStats.value = DeviceUsageStats(screenOnCount, deviceUseDuration)
     }
