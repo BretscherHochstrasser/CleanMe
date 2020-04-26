@@ -56,11 +56,12 @@ class NotificationHelper(
             )
         }
         val builder = NotificationCompat.Builder(context, CHANNEL_ID_SERVICE)
-            .setSmallIcon(R.drawable.ic_notification)
+            .setSmallIcon(R.drawable.ic_drop_24dp)
             .setContentTitle(title)
             .setContentText(text)
             .setColor(ContextCompat.getColor(context, R.color.primaryColor))
             .setShowWhen(false)
+            .setOnlyAlertOnce(true)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setContentIntent(mainActivityPendingIntent)
 
