@@ -9,4 +9,8 @@
     <color name="primaryDarkColor">#007c91</color>
     <color name="secondaryColor">#1de9b6</color>
     <color name="secondaryLightColor">#6effe8</color>
+    <color name="secondaryDarkColor">#00b686</color>
+    <color name="onPrimaryColor">#FFFFFF</color>
+    <color name="onSecondaryColor">#000000</color>
+    <color name="errorColor">#F4511E</color>
 </resources>

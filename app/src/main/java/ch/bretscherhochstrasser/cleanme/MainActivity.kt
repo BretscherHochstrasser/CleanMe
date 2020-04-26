@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             onUpdateDeviceStats(it)
         })
 
-        binding.buttonResetStats.setOnClickListener {
+        binding.buttonReset.setOnClickListener {
             deviceUsageStatsManager.resetStats()
             reminderManager.reset()
         }
@@ -58,20 +58,32 @@ class MainActivity : AppCompatActivity() {
                 .coerceAtMost(100f)
 
         val waveProgress = (100 - remainingPercent.toInt()).coerceAtLeast(0)
-        binding.progressWaveTimeUntilClean.setProgress(waveProgress)
+        binding.progressHourglass.setProgress(waveProgress)
 
         if (remainingPercent > 0) {
-            binding.progressCircleTimeUntilClean.setProgressWithAnimation(remainingPercent, 750L)
-            binding.progressCircleTimeUntilClean.progressBarColor =
-                getCompatColor(R.color.secondaryColor)
+            binding.progressCircle.setProgressWithAnimation(remainingPercent, 750L)
+            binding.progressCircle.backgroundProgressBarColor =
+                getCompatColor(android.R.color.transparent)
             binding.labelTimeUntilClean.setText(R.string.main_label_time_until_clean)
-            binding.progressWaveTimeUntilClean.setAmplitudeRatio(0.03f)
+            binding.progressHourglass.setAmplitudeRatio(0.03f)
         } else {
-            binding.progressCircleTimeUntilClean.progress = 100f
-            binding.progressCircleTimeUntilClean.progressBarColor =
-                getCompatColor(R.color.design_default_color_error)
+            binding.progressCircle.progress = 0f
+            binding.progressCircle.backgroundProgressBarColor =
+                getCompatColor(R.color.errorColor)
             binding.labelTimeUntilClean.setText(R.string.main_label_time_since_interval)
-            binding.progressWaveTimeUntilClean.setAmplitudeRatio(0f)
+            binding.progressHourglass.setAmplitudeRatio(0f)
+        }
+
+        if (remainingPercent < 50) {
+            binding.textTimeUntilClean.setTextColor(getCompatColor(R.color.onPrimaryColor))
+        } else {
+            binding.textTimeUntilClean.setTextColor(getCompatColor(R.color.onSecondaryColor))
+        }
+
+        if (remainingPercent < 25) {
+            binding.labelTimeUntilClean.setTextColor(getCompatColor(R.color.onPrimaryColor))
+        } else {
+            binding.labelTimeUntilClean.setTextColor(getCompatColor(R.color.onSecondaryColor))
         }
     }
 

@@ -7,81 +7,130 @@
     tools:context=".MainActivity">
 
     <com.mikhaellopez.circularfillableloaders.CircularFillableLoaders
-        android:id="@+id/progress_wave_time_until_clean"
+        android:id="@+id/progress_hourglass"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:src="@drawable/ic_launcher_background"
         app:cfl_border="false"
-        app:cfl_progress="80"
+        app:cfl_progress="50"
         app:cfl_wave_amplitude="0.03"
         app:cfl_wave_color="@color/secondaryColor"
-        app:layout_constraintBottom_toBottomOf="@+id/progress_circle_time_until_clean"
-        app:layout_constraintEnd_toEndOf="@+id/progress_circle_time_until_clean"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/progress_circle_time_until_clean"
-        app:layout_constraintTop_toTopOf="@+id/progress_circle_time_until_clean" />
+        app:layout_constraintBottom_toBottomOf="@+id/progress_circle"
+        app:layout_constraintEnd_toEndOf="@+id/progress_circle"
+        app:layout_constraintStart_toStartOf="@+id/progress_circle"
+        app:layout_constraintTop_toTopOf="@+id/progress_circle" />
 
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
-        android:id="@+id/progress_circle_time_until_clean"
+        android:id="@+id/progress_circle"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         app:cpb_background_progressbar_color="@android:color/transparent"
-        app:cpb_background_progressbar_width="16dp"
+        app:cpb_background_progressbar_width="8dp"
         app:cpb_progress="66"
         app:cpb_progress_direction="to_left"
         app:cpb_progressbar_color="@color/secondaryColor"
-        app:cpb_progressbar_width="6dp"
+        app:cpb_progressbar_width="8dp"
         app:cpb_round_border="true"
-        app:layout_constraintBottom_toTopOf="@+id/button_reset_stats"
+        app:layout_constraintBottom_toTopOf="@+id/button_reset"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_max="200dp"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHeight_max="280dp"
+        app:layout_constraintHeight_min="180dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread"
-        app:layout_constraintWidth_max="200dp" />
+        app:layout_constraintWidth_max="280dp"
+        app:layout_constraintWidth_min="180dp" />
 
-    <TextView
-        android:id="@+id/label_time_until_clean"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:gravity="center_horizontal"
-        android:text="@string/main_label_time_until_clean"
-        app:layout_constraintEnd_toEndOf="@+id/progress_wave_time_until_clean"
-        app:layout_constraintStart_toStartOf="@+id/progress_wave_time_until_clean"
-        app:layout_constraintTop_toBottomOf="@+id/progress_circle_time_until_clean"
-        app:layout_constraintVertical_chainStyle="spread" />
+    <Space
+        android:id="@+id/space_top"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/text_time_until_clean"
+        app:layout_constraintStart_toStartOf="@+id/progress_hourglass"
+        app:layout_constraintTop_toTopOf="@+id/progress_hourglass"
+        app:layout_constraintVertical_weight="4" />
 
     <TextView
         android:id="@+id/text_time_until_clean"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_height="0dp"
         android:gravity="center_horizontal"
-        android:textSize="30sp"
         android:textColor="@color/design_default_color_on_primary"
-        app:layout_constraintBottom_toBottomOf="@+id/progress_wave_time_until_clean"
-        app:layout_constraintEnd_toEndOf="@+id/progress_wave_time_until_clean"
-        app:layout_constraintStart_toStartOf="@+id/progress_wave_time_until_clean"
-        app:layout_constraintTop_toTopOf="@+id/progress_wave_time_until_clean"
-        tools:text="-- : --" />
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@id/space_bottom_start"
+        app:layout_constraintEnd_toEndOf="@+id/progress_hourglass"
+        app:layout_constraintStart_toStartOf="@+id/progress_hourglass"
+        app:layout_constraintTop_toBottomOf="@+id/space_top"
+        app:layout_constraintVertical_weight="5"
+        tools:text="04:37" />
+
+    <Space
+        android:id="@+id/space_bottom_start"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/progress_hourglass"
+        app:layout_constraintEnd_toStartOf="@id/label_time_until_clean"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="@+id/progress_hourglass"
+        app:layout_constraintTop_toBottomOf="@+id/text_time_until_clean"
+        app:layout_constraintVertical_weight="6" />
+
+    <Space
+        android:id="@+id/space_bottom_end"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/space_bottom_start"
+        app:layout_constraintEnd_toEndOf="@id/progress_hourglass"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/label_time_until_clean"
+        app:layout_constraintTop_toTopOf="@id/space_bottom_start" />
+
+    <Space
+        android:id="@+id/space_bottom_center_bottom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/progress_hourglass"
+        app:layout_constraintEnd_toStartOf="@id/space_bottom_end"
+        app:layout_constraintStart_toEndOf="@id/space_bottom_start"
+        app:layout_constraintTop_toBottomOf="@id/label_time_until_clean"
+        app:layout_constraintVertical_weight="1.5" />
+
+    <TextView
+        android:id="@+id/label_time_until_clean"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="@string/main_label_time_until_clean"
+        android:textColor="@color/design_default_color_on_primary"
+        app:autoSizeMaxTextSize="18sp"
+        app:autoSizeMinTextSize="5sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@id/space_bottom_center_bottom"
+        app:layout_constraintEnd_toStartOf="@id/space_bottom_end"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintStart_toEndOf="@id/space_bottom_start"
+        app:layout_constraintTop_toBottomOf="@+id/text_time_until_clean"
+        app:layout_constraintVertical_weight="3" />
 
     <Button
-        android:id="@+id/button_reset_stats"
+        android:id="@+id/button_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="@string/main_button_clean_reset"
         app:layout_constraintBottom_toTopOf="@+id/button_settings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progress_circle_time_until_clean" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_circle" />
 
     <Button
         android:id="@+id/button_settings"
