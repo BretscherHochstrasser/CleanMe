@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         binding.progressWaveTimeUntilClean.setProgress(waveProgress)
 
         if (remainingPercent > 0) {
-            binding.progressCircleTimeUntilClean.setProgressWithAnimation(remainingPercent)
+            binding.progressCircleTimeUntilClean.setProgressWithAnimation(remainingPercent, 750L)
             binding.progressCircleTimeUntilClean.progressBarColor =
                 getCompatColor(R.color.secondaryColor)
             binding.labelTimeUntilClean.setText(R.string.main_label_time_until_clean)
