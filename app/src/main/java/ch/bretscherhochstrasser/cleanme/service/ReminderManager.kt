@@ -42,5 +42,6 @@ class ReminderManager(
      */
     fun reset() {
         reminderShown = false
+        notificationHelper.hideReminderNotification()
     }
 }

@@ -123,6 +123,10 @@ class NotificationHelper(
         notificationManager.notify(NOTIFICATION_ID_REMINDER, builder.build())
     }
 
+    fun hideReminderNotification() {
+        notificationManager.cancel(NOTIFICATION_ID_REMINDER)
+    }
+
     fun createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceNotificationChannel = NotificationChannel(
