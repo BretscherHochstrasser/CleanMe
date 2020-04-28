@@ -56,7 +56,7 @@ class NotificationHelper(
             )
         }
         val builder = NotificationCompat.Builder(context, CHANNEL_ID_SERVICE)
-            .setSmallIcon(R.drawable.ic_drop_24dp)
+            .setSmallIcon(R.drawable.ic_drop_clock_24dp)
             .setContentTitle(title)
             .setContentText(text)
             .setColor(ContextCompat.getColor(context, R.color.primaryColor))
