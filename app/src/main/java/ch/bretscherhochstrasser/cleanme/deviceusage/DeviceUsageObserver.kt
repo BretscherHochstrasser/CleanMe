@@ -19,7 +19,7 @@ class DeviceUsageObserver(
 ) {
 
     companion object {
-        private const val STATS_UPDATE_INTERVAL = 30000L
+        private const val STATS_UPDATE_INTERVAL = 10000L
     }
 
     private val statsUpdater =
