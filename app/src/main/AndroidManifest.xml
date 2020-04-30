@@ -34,6 +34,11 @@
             android:exported="false" />
 
         <receiver
+            android:name=".notification.NotificationActionReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
             android:name=".autostart.DeviceBootReceiver"
             android:enabled="true"
             android:exported="true">

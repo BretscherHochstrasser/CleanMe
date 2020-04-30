@@ -11,8 +11,8 @@ import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageObserver
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
-import ch.bretscherhochstrasser.cleanme.helper.NotificationHelper
 import ch.bretscherhochstrasser.cleanme.helper.valueNN
+import ch.bretscherhochstrasser.cleanme.notification.NotificationHelper
 import ch.bretscherhochstrasser.cleanme.overlay.ParticleOverlayManager
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import timber.log.Timber
@@ -31,8 +31,6 @@ class CleanMeService : LifecycleService() {
     companion object {
         const val ACTION_START = "ACTION_START"
         const val ACTION_STOP = "ACTION_STOP"
-        const val ACTION_SHOW_OVERLAY = "SHOW_OVERLAY"
-        const val ACTION_HIDE_OVERLAY = "HIDE_OVERLAY"
     }
 
     private val deviceUsageStatsManager: DeviceUsageStatsManager by inject()
@@ -72,14 +70,6 @@ class CleanMeService : LifecycleService() {
         when (intent?.action) {
             ACTION_START -> startIfNotObserving()
             ACTION_STOP -> stopIfObserving()
-            ACTION_SHOW_OVERLAY -> {
-                appSettings.overlayEnabled = true
-                refresh()
-            }
-            ACTION_HIDE_OVERLAY -> {
-                appSettings.overlayEnabled = false
-                refresh()
-            }
         }
         if (intent == null && appSettings.serviceEnabled) {
             Timber.d("STICKY service restart occurred")
@@ -106,10 +96,6 @@ class CleanMeService : LifecycleService() {
             stopForeground(true)
             stopSelf()
         }
-    }
-
-    private fun refresh() {
-        onDeviceUsageUpdate(deviceUsageStatsManager.deviceUsageStats.valueNN)
     }
 
     private fun onDeviceUsageUpdate(deviceUsageStats: DeviceUsageStats) {

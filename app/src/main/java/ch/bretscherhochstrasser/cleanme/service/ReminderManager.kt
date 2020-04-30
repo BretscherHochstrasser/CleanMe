@@ -1,7 +1,7 @@
 package ch.bretscherhochstrasser.cleanme.service
 
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
-import ch.bretscherhochstrasser.cleanme.helper.NotificationHelper
+import ch.bretscherhochstrasser.cleanme.notification.NotificationHelper
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import timber.log.Timber
 import toothpick.InjectConstructor

@@ -1,4 +1,4 @@
-package ch.bretscherhochstrasser.cleanme.helper
+package ch.bretscherhochstrasser.cleanme.notification
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -18,7 +18,7 @@ import ch.bretscherhochstrasser.cleanme.MainActivity
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
-import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
+import ch.bretscherhochstrasser.cleanme.helper.formatCountdownHoursAndMinutes
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import ch.bretscherhochstrasser.cleanme.settings.SettingsActivity
 import timber.log.Timber
@@ -31,7 +31,6 @@ import toothpick.InjectConstructor
 class NotificationHelper(
     @AppContext private val context: Context,
     private val notificationManager: NotificationManagerCompat,
-    private val serviceHelper: ServiceHelper,
     private val appSettings: AppSettings
 ) {
 
@@ -46,7 +45,10 @@ class NotificationHelper(
         val title = context.getString(R.string.notification_service_title)
         val timeUntilClean =
             appSettings.cleanInterval.durationMillis - deviceUsageStats.deviceUseDuration
-        val formattedUseTime = formatCountdownHoursAndMinutes(timeUntilClean)
+        val formattedUseTime =
+            formatCountdownHoursAndMinutes(
+                timeUntilClean
+            )
         val text = if (timeUntilClean > 0) {
             context.getString(R.string.notification_service_text_time_until_clean, formattedUseTime)
         } else {
@@ -55,7 +57,10 @@ class NotificationHelper(
                 formattedUseTime
             )
         }
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID_SERVICE)
+        val builder = NotificationCompat.Builder(
+            context,
+            CHANNEL_ID_SERVICE
+        )
             .setSmallIcon(R.drawable.ic_drop_clock_24dp)
             .setContentTitle(title)
             .setContentText(text)
@@ -73,13 +78,13 @@ class NotificationHelper(
                 builder.addAction(
                     R.drawable.ic_overlay_off_24dp,
                     context.getString(R.string.notification_service_action_hide_overlay),
-                    serviceHelper.hideOverlayPendingIntent
+                    NotificationActionReceiver.hideOverlayPendingIntent(context)
                 )
             } else {
                 builder.addAction(
                     R.drawable.ic_overlay_on_24dp,
                     context.getString(R.string.notification_service_action_show_overlay),
-                    serviceHelper.showOverlayPendingIntent
+                    NotificationActionReceiver.getShowOverlayPendingIntent(context)
                 )
             }
         }
@@ -109,7 +114,10 @@ class NotificationHelper(
         Timber.d("Showing reminder notification")
         val title = context.getString(R.string.notification_reminder_title)
         val message = context.getString(R.string.notification_reminder_text)
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID_REMINDER)
+        val builder = NotificationCompat.Builder(
+            context,
+            CHANNEL_ID_REMINDER
+        )
             .setSmallIcon(R.drawable.ic_drop_24dp)
             .setContentTitle(title)
             .setContentText(message)
