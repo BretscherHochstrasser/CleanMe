@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 /**
  * Holds the current state of the [CleanMeService], provides utility functions to invoke commands
- * on the service: [startObserveDeviceUsage], [stopObserveDeviceUsage], [refresh] and provide pending intent for notification actions
+ * on the service: [startObserveDeviceUsage], [stopObserveDeviceUsage], and provide pending intent for notification actions
  */
 @Singleton
 @InjectConstructor
@@ -22,18 +22,14 @@ class ServiceHelper(@AppContext private val context: Context) {
     }
 
     fun startObserveDeviceUsage() {
-        startWithAction(CleanMeService.ACTION_START)
+        startForegroundWithAction(CleanMeService.ACTION_START)
     }
 
     fun stopObserveDeviceUsage() {
-        startWithAction(CleanMeService.ACTION_STOP)
+        startForegroundWithAction(CleanMeService.ACTION_STOP)
     }
 
-    fun refresh() {
-        startWithAction(CleanMeService.ACTION_REFRESH)
-    }
-
-    private fun startWithAction(action: String) {
+    private fun startForegroundWithAction(action: String) {
         val startIntent = getIntent(action)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(startIntent)

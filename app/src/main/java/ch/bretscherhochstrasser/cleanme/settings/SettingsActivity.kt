@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.databinding.ActivitySettingsBinding
+import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionHelper
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -22,6 +23,7 @@ class SettingsActivity : AppCompatActivity() {
     private val serviceHelper: ServiceHelper by inject()
     private val overlayPermissionHelper: OverlayPermissionHelper by inject()
     private val appSettings: AppSettings by inject()
+    private val usageStatsManager: DeviceUsageStatsManager by inject()
 
     private lateinit var binding: ActivitySettingsBinding
 
@@ -60,7 +62,7 @@ class SettingsActivity : AppCompatActivity() {
                 val selectedCleanInterval = CleanInterval.values()[which]
                 appSettings.cleanInterval = selectedCleanInterval
                 setCleanIntervalLabel(selectedCleanInterval)
-                serviceHelper.refresh()
+                triggerUiRefresh()
                 dialog.dismiss()
             }.show()
         }
@@ -70,17 +72,17 @@ class SettingsActivity : AppCompatActivity() {
                 overlayPermissionHelper.checkDrawOverlayPermission()
             } else {
                 appSettings.overlayEnabled = false
-                serviceHelper.refresh()
+                triggerUiRefresh()
             }
         }
         overlayPermissionHelper.onPermissionGranted = {
             appSettings.overlayEnabled = true
-            serviceHelper.refresh()
+            triggerUiRefresh()
         }
         overlayPermissionHelper.onPermissionDenied = {
             binding.switchOverlayEnabled.isChecked = false
             appSettings.overlayEnabled = false
-            serviceHelper.refresh()
+            triggerUiRefresh()
         }
 
         binding.sliderMaxOverlayParticles.addOnChangeListener { _, value, fromUser ->
@@ -94,7 +96,7 @@ class SettingsActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(slider: Slider) {
                 appSettings.maxOverlayParticleCount = slider.value.toInt()
-                serviceHelper.refresh()
+                triggerUiRefresh()
             }
         })
         binding.sliderMaxOverlayParticles.setLabelFormatter {
@@ -110,6 +112,10 @@ class SettingsActivity : AppCompatActivity() {
         setCleanIntervalLabel(appSettings.cleanInterval)
         binding.sliderMaxOverlayParticles.value = appSettings.maxOverlayParticleCount.toFloat()
         setMaxParticleLabel(appSettings.maxOverlayParticleCount)
+    }
+
+    private fun triggerUiRefresh() {
+        usageStatsManager.updateUsageStats()
     }
 
     private fun setCleanIntervalLabel(cleanInterval: CleanInterval) {

@@ -31,7 +31,6 @@ class CleanMeService : LifecycleService() {
     companion object {
         const val ACTION_START = "ACTION_START"
         const val ACTION_STOP = "ACTION_STOP"
-        const val ACTION_REFRESH = "ACTION_REFRESH"
         const val ACTION_SHOW_OVERLAY = "SHOW_OVERLAY"
         const val ACTION_HIDE_OVERLAY = "HIDE_OVERLAY"
     }
@@ -73,7 +72,6 @@ class CleanMeService : LifecycleService() {
         when (intent?.action) {
             ACTION_START -> startIfNotObserving()
             ACTION_STOP -> stopIfObserving()
-            ACTION_REFRESH -> refresh()
             ACTION_SHOW_OVERLAY -> {
                 appSettings.overlayEnabled = true
                 refresh()
@@ -111,13 +109,7 @@ class CleanMeService : LifecycleService() {
     }
 
     private fun refresh() {
-        // trigger an update of the device usage stats to trigger a refresh of all live data
-        // observers including this service
-        deviceUsageStatsManager.updateUsageStats()
-        if (!observingDeviceUsage) {
-            stopForeground(true)
-            stopSelf()
-        }
+        onDeviceUsageUpdate(deviceUsageStatsManager.deviceUsageStats.valueNN)
     }
 
     private fun onDeviceUsageUpdate(deviceUsageStats: DeviceUsageStats) {
