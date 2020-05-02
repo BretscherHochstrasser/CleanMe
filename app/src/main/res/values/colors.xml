@@ -13,4 +13,5 @@
     <color name="onPrimaryColor">#FFFFFF</color>
     <color name="onSecondaryColor">#000000</color>
     <color name="errorColor">#F4511E</color>
+    <color name="onBackgroundLightColor">#cccccc</color>
 </resources>
