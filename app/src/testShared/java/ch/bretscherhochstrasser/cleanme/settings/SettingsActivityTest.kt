@@ -16,6 +16,7 @@ import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -41,6 +42,7 @@ class SettingsActivityTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         // clean interval and max particle count must be set, so the activity can start
+        whenever(mockAppSettings.serviceEnabled).thenReturn(true)
         whenever(mockAppSettings.cleanInterval).thenReturn(CleanInterval.TWO_HOURS)
         whenever(mockAppSettings.maxOverlayParticleCount).thenReturn(25)
         Toothpick.openScope(ApplicationScope::class.java)
@@ -57,12 +59,21 @@ class SettingsActivityTest {
         whenever(mockAppSettings.serviceEnabled).thenReturn(true)
 
         launchActivity<SettingsActivity>().use {
+            onView(withId(R.id.switch_start_on_boot)).check(matches(isEnabled()))
+            onView(withId(R.id.button_edit_clean_interval)).check(matches(isEnabled()))
+            onView(withId(R.id.switch_overlay_enabled)).check(matches(isEnabled()))
+            onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
+
             val switch = onView(withId(R.id.switch_track_device_usage))
             switch.check(matches(isChecked()))
             switch.perform(click())
 
             verify(mockAppSettings).serviceEnabled = false
             verify(mockServiceHelper).stopObserveDeviceUsage()
+            onView(withId(R.id.switch_start_on_boot)).check(matches(not(isEnabled())))
+            onView(withId(R.id.button_edit_clean_interval)).check(matches(not(isEnabled())))
+            onView(withId(R.id.switch_overlay_enabled)).check(matches(not(isEnabled())))
+            onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
         }
     }
 
@@ -71,12 +82,21 @@ class SettingsActivityTest {
         whenever(mockAppSettings.serviceEnabled).thenReturn(false)
 
         launchActivity<SettingsActivity>().use {
+            onView(withId(R.id.switch_start_on_boot)).check(matches(not(isEnabled())))
+            onView(withId(R.id.button_edit_clean_interval)).check(matches(not(isEnabled())))
+            onView(withId(R.id.switch_overlay_enabled)).check(matches(not(isEnabled())))
+            onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
+
             val switch = onView(withId(R.id.switch_track_device_usage))
             switch.check(matches(isNotChecked()))
             switch.perform(click())
 
             verify(mockAppSettings).serviceEnabled = true
             verify(mockServiceHelper).startObserveDeviceUsage()
+            onView(withId(R.id.switch_start_on_boot)).check(matches(isEnabled()))
+            onView(withId(R.id.button_edit_clean_interval)).check(matches(isEnabled()))
+            onView(withId(R.id.switch_overlay_enabled)).check(matches(isEnabled()))
+            onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
         }
     }
 

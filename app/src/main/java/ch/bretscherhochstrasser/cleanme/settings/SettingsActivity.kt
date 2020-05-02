@@ -41,6 +41,7 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.switchTrackDeviceUsage.setOnCheckedChangeListener { _, isChecked ->
             appSettings.serviceEnabled = isChecked
+            setDependentSettingsEnabled(isChecked)
             if (isChecked) {
                 serviceHelper.startObserveDeviceUsage()
             } else {
@@ -112,6 +113,14 @@ class SettingsActivity : AppCompatActivity() {
         setCleanIntervalLabel(appSettings.cleanInterval)
         binding.sliderMaxOverlayParticles.value = appSettings.maxOverlayParticleCount.toFloat()
         setMaxParticleLabel(appSettings.maxOverlayParticleCount)
+        setDependentSettingsEnabled(appSettings.serviceEnabled)
+    }
+
+    private fun setDependentSettingsEnabled(serviceEnabled: Boolean) {
+        binding.switchStartOnBoot.isEnabled = serviceEnabled
+        binding.buttonEditCleanInterval.isEnabled = serviceEnabled
+        binding.switchOverlayEnabled.isEnabled = serviceEnabled
+        binding.sliderMaxOverlayParticles.isEnabled = serviceEnabled
     }
 
     private fun triggerUiRefresh() {
