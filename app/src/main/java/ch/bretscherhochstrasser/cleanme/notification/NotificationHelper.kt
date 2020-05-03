@@ -140,8 +140,9 @@ class NotificationHelper(
             val serviceNotificationChannel = NotificationChannel(
                 CHANNEL_ID_SERVICE,
                 context.getString(R.string.notification_channel_name_service),
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_MIN
             )
+            serviceNotificationChannel.setShowBadge(false)
             createNotificationChannel(serviceNotificationChannel)
 
             val reminderNotificationChannel = NotificationChannel(
