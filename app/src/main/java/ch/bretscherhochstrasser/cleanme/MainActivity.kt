@@ -14,6 +14,8 @@ import ch.bretscherhochstrasser.cleanme.helper.formatCountdownHoursAndMinutes
 import ch.bretscherhochstrasser.cleanme.service.ReminderManager
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import ch.bretscherhochstrasser.cleanme.settings.SettingsActivity
+import ch.bretscherhochstrasser.cleanme.welcome.WelcomeWizardActivity
+import com.stephentuso.welcome.WelcomeHelper
 import toothpick.ktp.KTP
 import toothpick.ktp.delegate.inject
 import toothpick.smoothie.lifecycle.closeOnDestroy
@@ -24,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private val reminderManager: ReminderManager by inject()
     private val appSettings: AppSettings by inject()
 
+    private val welcomeScreen = WelcomeHelper(this, WelcomeWizardActivity::class.java)
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         KTP.openScopes(ApplicationScope::class.java, this)
             .closeOnDestroy(this)
             .inject(this)
+
+        welcomeScreen.show(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -47,6 +53,11 @@ class MainActivity : AppCompatActivity() {
         binding.buttonSettings.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        welcomeScreen.onSaveInstanceState(outState)
     }
 
     private fun onUpdateDeviceStats(stats: DeviceUsageStats) {

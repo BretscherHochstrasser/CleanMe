@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">Clean Me</string>
 
+    <string name="welcome_intro_title">Welcome to Clean Me</string>
+    <string name="welcome_intro_text">Clean Me will help you remember to clean your device regularly.</string>
+    <string name="welcome_track_use_title">Tracking device use time</string>
+    <string name="welcome_track_use_text">Clean Me keeps track of the time while you are using the device. Use time starts when your device screen turns on and stops when the screen turns off.</string>
+    <string name="welcome_clean_reminder_title">Clean reminder</string>
+    <string name="welcome_clean_reminder_text">You will be reminded to clean your device after 2 hours of use. You can change the clean interval in the settings.</string>
+    <string name="welcome_clean_and_reset_title">Clean device and reset</string>
+    <string name="welcome_clean_and_reset_text">Clean your device and click the \"clean now\" button to reset the timer.</string>
+    <string name="welcome_overlay_title">Particle overlay</string>
+    <string name="welcome_overlay_text">Clean Me can display an overlay on top of all apps that fills up with particles over time to remind you that your device screen gets dirty by using it. The overlay is off by default. You can turn it on in the settings.</string>
+
     <string name="main_label_time_until_clean">use time remaining until clean reminder</string>
     <string name="main_label_time_since_interval">use time since clean reminder</string>
     <string name="main_button_clean_reset">Clean now</string>
