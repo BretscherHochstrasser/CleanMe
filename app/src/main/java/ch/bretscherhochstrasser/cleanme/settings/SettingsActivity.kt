@@ -103,6 +103,24 @@ class SettingsActivity : AppCompatActivity() {
         binding.sliderMaxOverlayParticles.setLabelFormatter {
             it.toInt().toString()
         }
+
+        binding.sliderParticleTransparency.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                setParticleTransparencyLabel(value.toInt())
+            }
+        }
+        binding.sliderParticleTransparency.addOnSliderTouchListener(object :
+            Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {}
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                appSettings.overlayParticleTransparency = slider.value.toInt()
+                triggerUiRefresh()
+            }
+        })
+        binding.sliderParticleTransparency.setLabelFormatter {
+            "${it.toInt()}%"
+        }
     }
 
     override fun onResume() {
@@ -113,6 +131,8 @@ class SettingsActivity : AppCompatActivity() {
         setCleanIntervalLabel(appSettings.cleanInterval)
         binding.sliderMaxOverlayParticles.value = appSettings.maxOverlayParticleCount.toFloat()
         setMaxParticleLabel(appSettings.maxOverlayParticleCount)
+        binding.sliderParticleTransparency.value = appSettings.overlayParticleTransparency.toFloat()
+        setParticleTransparencyLabel(appSettings.overlayParticleTransparency)
         setDependentSettingsEnabled(appSettings.serviceEnabled)
     }
 
@@ -121,6 +141,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.buttonEditCleanInterval.isEnabled = serviceEnabled
         binding.switchOverlayEnabled.isEnabled = serviceEnabled
         binding.sliderMaxOverlayParticles.isEnabled = serviceEnabled
+        binding.sliderParticleTransparency.isEnabled = serviceEnabled
     }
 
     private fun triggerUiRefresh() {
@@ -135,6 +156,11 @@ class SettingsActivity : AppCompatActivity() {
     private fun setMaxParticleLabel(maxParticleCount: Int) {
         binding.labelMaxOverlayParticles.text =
             getString(R.string.settings_label_max_particles, maxParticleCount)
+    }
+
+    private fun setParticleTransparencyLabel(particleTransparency: Int) {
+        binding.labelParticleTransparency.text =
+            getString(R.string.settings_label_particle_transparency, particleTransparency)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

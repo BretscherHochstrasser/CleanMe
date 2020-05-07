@@ -31,6 +31,15 @@ class ParticleOverlayView(context: Context) : View(context) {
             return particles.size
         }
 
+    var alpha: Int = 255
+        set(value) {
+            // invalidate if value has changed
+            if (value != field) {
+                field = value
+                invalidate()
+            }
+        }
+
     fun pushParticle(particle: Particle) {
         particles.push(particle)
         invalidate()
@@ -56,6 +65,7 @@ class ParticleOverlayView(context: Context) : View(context) {
             particles.forEach {
                 val particleDrawable = loadDrawable(it.type)
                 particleDrawable.setBounds(0, 0, particleSize, particleSize)
+                particleDrawable.alpha = alpha
 
                 val drawPos = rotationHelper.calculateOrientationCorrectedPosition(
                     it.relPosX, it.relPosY, availableWidth, availableHeight

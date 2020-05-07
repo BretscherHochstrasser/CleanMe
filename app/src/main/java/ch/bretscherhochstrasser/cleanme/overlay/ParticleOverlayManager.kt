@@ -28,6 +28,9 @@ class ParticleOverlayManager(
     fun update(deviceUseDuration: Long, timeUntilMaxParticles: Long) {
         Timber.d("Updating particle overlay use duration %dms.", deviceUseDuration)
         val targetParticleCount = calculateParticleCount(deviceUseDuration, timeUntilMaxParticles)
+        if (overlayShown) {
+            particleOverlay.alpha = appSettings.overlayParticleAlpha
+        }
         adaptOverlayToTargetParticleCount(targetParticleCount)
     }
 

@@ -30,6 +30,8 @@
     <string name="settings_description_enable_overlay">The overlay displays an ever increasing number of grime particles on the screen on top all application over time</string>
     <string name="settings_label_max_particles">Maximum number of overlay particles: %d</string>
     <string name="settings_description_max_particles">The maximum number of overlay grime particles to show at time of maximum dirtiness (time to clean)</string>
+    <string name="settings_label_particle_transparency">Particle transparency: %d%%</string>
+    <string name="settings_description_particle_transparency">Adjusts the transparency of the overlay particles.</string>
 
     <string name="clean_interval_30min">30 minutes</string>
     <string name="clean_interval_1hour">1 hour</string>

@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import com.google.android.material.slider.Slider
 import org.hamcrest.Description
 import org.hamcrest.TypeSafeMatcher
 
@@ -39,5 +40,19 @@ fun withDrawable(@DrawableRes id: Int) = object : TypeSafeMatcher<View>() {
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
         return bitmap
+    }
+}
+
+/**
+ * Checks if the slider has the given value
+ */
+fun withSliderValue(value: Float) = object : TypeSafeMatcher<View>() {
+
+    override fun describeTo(description: Description) {
+        description.appendText("Material Slider with value $value")
+    }
+
+    override fun matchesSafely(view: View): Boolean {
+        return view is Slider && view.value == value
     }
 }

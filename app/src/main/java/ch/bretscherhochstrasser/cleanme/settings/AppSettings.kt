@@ -20,9 +20,11 @@ class AppSettings(@AppContext private val context: Context) {
         private const val PREF_OVERLAY_ENABLED = "overlay_enabled"
         private const val PREF_CLEAN_INTERVAL = "clean_interval"
         private const val PREF_MAX_OVERLAY_PARTICLE_COUNT = "max_overlay_particle_count"
+        private const val PREF_OVERLAY_PARTICLE_ALPHA = "overlay_particle_alpha"
         private const val PREF_START_ON_BOOT = "start_on_boot"
 
         private const val DEFAULT_MAX_OVERLAY_PARTICLE_COUNT = 25
+        private const val DEFAULT_OVERLAY_PARTICLE_ALPHA = 191 // 25% transparency
     }
 
     private val settings: SharedPreferences
@@ -95,6 +97,35 @@ class AppSettings(@AppContext private val context: Context) {
         }
         set(value) {
             settings.edit().putBoolean(PREF_START_ON_BOOT, value).apply()
+        }
+
+    /**
+     * Transparency of overlay particles as alpha value.
+     * (0 = transparent, 255 opaque)
+     */
+    var overlayParticleAlpha: Int
+        get() {
+            return settings.getInt(
+                PREF_OVERLAY_PARTICLE_ALPHA,
+                DEFAULT_OVERLAY_PARTICLE_ALPHA
+            )
+        }
+        set(value) {
+            check(value in 0..255) { "overlay particle alpha must be in the range 0..255" }
+            settings.edit().putInt(PREF_OVERLAY_PARTICLE_ALPHA, value).apply()
+        }
+
+    /**
+     * Transparency of overly particles in percent
+     * (0 = opaque, 100 = transparent)
+     */
+    var overlayParticleTransparency: Int
+        get() {
+            return ((255f - overlayParticleAlpha) / 255 * 100).toInt()
+        }
+        set(value) {
+            check(value in 0..100)
+            overlayParticleAlpha = ((100f - value) / 100 * 255).toInt()
         }
 
 }
