@@ -8,7 +8,10 @@ import android.provider.Settings
 import toothpick.InjectConstructor
 
 @InjectConstructor
-class OverlayPermissionHelper(private val activity: Activity) {
+class OverlayPermissionHelper(
+    private val activity: Activity,
+    private val permissionWrapper: OverlayPermissionWrapper
+) {
 
     companion object {
         private const val REQUEST_CODE_OVERLAY_SETTINGS = 2352
@@ -19,11 +22,9 @@ class OverlayPermissionHelper(private val activity: Activity) {
 
     fun checkDrawOverlayPermission() {
         // check if we already  have permission to draw over other apps
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
-            Settings.canDrawOverlays(activity)
-        ) {
+        if (permissionWrapper.canDrawOverlay()) {
             onPermissionGranted?.invoke()
-        } else {
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // if not construct intent to request permission
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -39,14 +40,12 @@ class OverlayPermissionHelper(private val activity: Activity) {
         // is equal our requested code for draw permission
         if (requestCode == REQUEST_CODE_OVERLAY_SETTINGS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // if so check once again if we have permission
-            val canDrawOverlays = Settings.canDrawOverlays(activity)
-            if (canDrawOverlays) {
+            if (permissionWrapper.canDrawOverlay()) {
                 onPermissionGranted?.invoke()
             } else {
                 onPermissionDenied?.invoke()
             }
         }
     }
-
 
 }

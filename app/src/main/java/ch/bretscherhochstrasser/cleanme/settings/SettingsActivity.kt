@@ -3,6 +3,7 @@ package ch.bretscherhochstrasser.cleanme.settings
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
@@ -12,6 +13,7 @@ import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionHelper
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
+import com.google.android.material.switchmaterial.SwitchMaterial
 import toothpick.ktp.KTP
 import toothpick.ktp.binding.bind
 import toothpick.ktp.binding.module
@@ -27,6 +29,10 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
 
+    private lateinit var switchTrackDeviceUsageListener: CompoundButton.OnCheckedChangeListener
+    private lateinit var switchOverlayEnabledListener: CompoundButton.OnCheckedChangeListener
+    private lateinit var switchStartOnBootListener: CompoundButton.OnCheckedChangeListener
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         KTP.openScopes(ApplicationScope::class.java, this)
@@ -39,19 +45,21 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.switchTrackDeviceUsage.setOnCheckedChangeListener { _, isChecked ->
+        switchTrackDeviceUsageListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
             appSettings.serviceEnabled = isChecked
-            setDependentSettingsEnabled(isChecked)
+            setDependentSettingsEnabled(isChecked, appSettings.overlayEnabled)
             if (isChecked) {
                 serviceHelper.startObserveDeviceUsage()
             } else {
                 serviceHelper.stopObserveDeviceUsage()
             }
         }
+        binding.switchTrackDeviceUsage.setOnCheckedChangeListener(switchTrackDeviceUsageListener)
 
-        binding.switchStartOnBoot.setOnCheckedChangeListener { _, isChecked ->
+        switchStartOnBootListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
             appSettings.startOnBoot = isChecked
         }
+        binding.switchStartOnBoot.setOnCheckedChangeListener(switchStartOnBootListener)
 
         binding.buttonEditCleanInterval.setOnClickListener {
             MaterialAlertDialogBuilder(this).setSingleChoiceItems(
@@ -63,27 +71,35 @@ class SettingsActivity : AppCompatActivity() {
                 val selectedCleanInterval = CleanInterval.values()[which]
                 appSettings.cleanInterval = selectedCleanInterval
                 setCleanIntervalLabel(selectedCleanInterval)
-                triggerUiRefresh()
+                triggerOverlayRefresh()
                 dialog.dismiss()
             }.show()
         }
 
-        binding.switchOverlayEnabled.setOnCheckedChangeListener { _, isChecked ->
+        switchOverlayEnabledListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 overlayPermissionHelper.checkDrawOverlayPermission()
             } else {
                 appSettings.overlayEnabled = false
-                triggerUiRefresh()
+                setDependentSettingsEnabled(appSettings.serviceEnabled, false)
+                triggerOverlayRefresh()
             }
         }
+        binding.switchOverlayEnabled.setOnCheckedChangeListener(switchOverlayEnabledListener)
         overlayPermissionHelper.onPermissionGranted = {
             appSettings.overlayEnabled = true
-            triggerUiRefresh()
+            setDependentSettingsEnabled(appSettings.serviceEnabled, true)
+            triggerOverlayRefresh()
         }
         overlayPermissionHelper.onPermissionDenied = {
-            binding.switchOverlayEnabled.isChecked = false
+            setCheckedWithDisabledListener(
+                binding.switchOverlayEnabled,
+                false,
+                switchOverlayEnabledListener
+            )
             appSettings.overlayEnabled = false
-            triggerUiRefresh()
+            setDependentSettingsEnabled(appSettings.serviceEnabled, false)
+            triggerOverlayRefresh()
         }
 
         binding.sliderMaxOverlayParticles.addOnChangeListener { _, value, fromUser ->
@@ -97,7 +113,7 @@ class SettingsActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(slider: Slider) {
                 appSettings.maxOverlayParticleCount = slider.value.toInt()
-                triggerUiRefresh()
+                triggerOverlayRefresh()
             }
         })
         binding.sliderMaxOverlayParticles.setLabelFormatter {
@@ -115,7 +131,7 @@ class SettingsActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(slider: Slider) {
                 appSettings.overlayParticleTransparency = slider.value.toInt()
-                triggerUiRefresh()
+                triggerOverlayRefresh()
             }
         })
         binding.sliderParticleTransparency.setLabelFormatter {
@@ -125,26 +141,51 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        binding.switchTrackDeviceUsage.isChecked = appSettings.serviceEnabled
-        binding.switchOverlayEnabled.isChecked = appSettings.overlayEnabled
-        binding.switchStartOnBoot.isChecked = appSettings.startOnBoot
+        setCheckedWithDisabledListener(
+            binding.switchTrackDeviceUsage,
+            appSettings.serviceEnabled,
+            switchTrackDeviceUsageListener
+        )
+        setCheckedWithDisabledListener(
+            binding.switchOverlayEnabled,
+            appSettings.overlayEnabled,
+            switchOverlayEnabledListener
+        )
+        setCheckedWithDisabledListener(
+            binding.switchStartOnBoot,
+            appSettings.startOnBoot,
+            switchStartOnBootListener
+        )
         setCleanIntervalLabel(appSettings.cleanInterval)
         binding.sliderMaxOverlayParticles.value = appSettings.maxOverlayParticleCount.toFloat()
         setMaxParticleLabel(appSettings.maxOverlayParticleCount)
         binding.sliderParticleTransparency.value = appSettings.overlayParticleTransparency.toFloat()
         setParticleTransparencyLabel(appSettings.overlayParticleTransparency)
-        setDependentSettingsEnabled(appSettings.serviceEnabled)
+        setDependentSettingsEnabled(appSettings.serviceEnabled, appSettings.overlayEnabled)
     }
 
-    private fun setDependentSettingsEnabled(serviceEnabled: Boolean) {
+    /**
+     * Helper to set a switch checked state without triggering the OnCheckedChanged listener.
+     */
+    private fun setCheckedWithDisabledListener(
+        switchMaterial: SwitchMaterial,
+        isChecked: Boolean,
+        listener: CompoundButton.OnCheckedChangeListener
+    ) {
+        switchMaterial.setOnCheckedChangeListener(null) // remove listener
+        switchMaterial.isChecked = isChecked // apply value
+        switchMaterial.setOnCheckedChangeListener(listener) // set listener again
+    }
+
+    private fun setDependentSettingsEnabled(serviceEnabled: Boolean, overlayEnabled: Boolean) {
         binding.switchStartOnBoot.isEnabled = serviceEnabled
         binding.buttonEditCleanInterval.isEnabled = serviceEnabled
         binding.switchOverlayEnabled.isEnabled = serviceEnabled
-        binding.sliderMaxOverlayParticles.isEnabled = serviceEnabled
-        binding.sliderParticleTransparency.isEnabled = serviceEnabled
+        binding.sliderMaxOverlayParticles.isEnabled = serviceEnabled && overlayEnabled
+        binding.sliderParticleTransparency.isEnabled = serviceEnabled && overlayEnabled
     }
 
-    private fun triggerUiRefresh() {
+    private fun triggerOverlayRefresh() {
         usageStatsManager.updateUsageStats()
     }
 
