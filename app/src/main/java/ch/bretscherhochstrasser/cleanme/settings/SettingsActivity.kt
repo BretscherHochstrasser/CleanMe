@@ -22,10 +22,10 @@ import toothpick.smoothie.lifecycle.closeOnDestroy
 
 class SettingsActivity : AppCompatActivity() {
 
-    private val serviceHelper: ServiceHelper by inject()
-    private val overlayPermissionHelper: OverlayPermissionHelper by inject()
-    private val appSettings: AppSettings by inject()
-    private val usageStatsManager: DeviceUsageStatsManager by inject()
+    private val serviceHelper: ServiceHelper by inject<ServiceHelper>()
+    private val overlayPermissionHelper: OverlayPermissionHelper by inject<OverlayPermissionHelper>()
+    private val appSettings: AppSettings by inject<AppSettings>()
+    private val usageStatsManager: DeviceUsageStatsManager by inject<DeviceUsageStatsManager>()
 
     private lateinit var binding: ActivitySettingsBinding
 

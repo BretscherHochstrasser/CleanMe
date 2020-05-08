@@ -33,12 +33,12 @@ class CleanMeService : LifecycleService() {
         const val ACTION_STOP = "ACTION_STOP"
     }
 
-    private val deviceUsageStatsManager: DeviceUsageStatsManager by inject()
-    private val appSettings: AppSettings by inject()
-    private val observer: DeviceUsageObserver by inject()
-    private val overlayManager: ParticleOverlayManager by inject()
-    private val notificationHelper: NotificationHelper by inject()
-    private val reminderManager: ReminderManager by inject()
+    private val deviceUsageStatsManager: DeviceUsageStatsManager by inject<DeviceUsageStatsManager>()
+    private val appSettings: AppSettings by inject<AppSettings>()
+    private val observer: DeviceUsageObserver by inject<DeviceUsageObserver>()
+    private val overlayManager: ParticleOverlayManager by inject<ParticleOverlayManager>()
+    private val notificationHelper: NotificationHelper by inject<NotificationHelper>()
+    private val reminderManager: ReminderManager by inject<ReminderManager>()
 
     private var observingDeviceUsage = false
 

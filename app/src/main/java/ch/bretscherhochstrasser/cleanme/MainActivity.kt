@@ -22,9 +22,9 @@ import toothpick.smoothie.lifecycle.closeOnDestroy
 
 class MainActivity : AppCompatActivity() {
 
-    private val deviceUsageStatsManager: DeviceUsageStatsManager by inject()
-    private val reminderManager: ReminderManager by inject()
-    private val appSettings: AppSettings by inject()
+    private val deviceUsageStatsManager: DeviceUsageStatsManager by inject<DeviceUsageStatsManager>()
+    private val reminderManager: ReminderManager by inject<ReminderManager>()
+    private val appSettings: AppSettings by inject<AppSettings>()
 
     private val welcomeScreen = WelcomeHelper(this, WelcomeWizardActivity::class.java)
 
