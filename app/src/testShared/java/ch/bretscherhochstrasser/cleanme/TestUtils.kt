@@ -6,8 +6,12 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.google.android.material.slider.Slider
 import org.hamcrest.Description
+import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
 
 /**
@@ -55,4 +59,15 @@ fun withSliderValue(value: Float) = object : TypeSafeMatcher<View>() {
     override fun matchesSafely(view: View): Boolean {
         return view is Slider && view.value == value
     }
+}
+
+fun withFormattedText(@StringRes resId: Int, vararg formatArgs: Any): Matcher<View> {
+    val appContext = ApplicationProvider.getApplicationContext<App>()
+    val expectedText = appContext.getString(resId, *formatArgs)
+    return withText(expectedText)
+}
+
+fun getString(@StringRes resId: Int, vararg formatArgs: Any): String {
+    val appContext = ApplicationProvider.getApplicationContext<App>()
+    return appContext.getString(resId, *formatArgs)
 }

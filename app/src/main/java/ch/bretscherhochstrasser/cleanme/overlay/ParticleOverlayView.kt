@@ -16,7 +16,6 @@ import java.util.*
 class ParticleOverlayView(context: Context) : View(context) {
 
     companion object {
-        private const val PARTICLE_SIZE_DP = 24f
         private const val DEBUG_OVERLAY_ENABLED = false
     }
 
@@ -40,6 +39,16 @@ class ParticleOverlayView(context: Context) : View(context) {
             }
         }
 
+    var particleSize: Int = 24
+        set(value) {
+            check(value > 0)
+            // invalidate if value has changed
+            if (value != field) {
+                field = value
+                invalidate()
+            }
+        }
+
     fun pushParticle(particle: Particle) {
         particles.push(particle)
         invalidate()
@@ -55,7 +64,7 @@ class ParticleOverlayView(context: Context) : View(context) {
         super.draw(canvas)
         if (canvas != null) {
             val particleSize = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, PARTICLE_SIZE_DP, resources.displayMetrics
+                TypedValue.COMPLEX_UNIT_DIP, particleSize.toFloat(), resources.displayMetrics
             ).toInt()
             val availableWidth = width - particleSize
             val availableHeight = height - particleSize

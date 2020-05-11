@@ -27,6 +27,7 @@ class AppSettingsTest {
         assertThat(appSettings.maxOverlayParticleCount, Is(25))
         assertThat(appSettings.overlayParticleAlpha, Is(191))
         assertThat(appSettings.overlayParticleTransparency, Is(25))
+        assertThat(appSettings.overlayParticleSize, Is(24))
     }
 
     @Test
@@ -99,6 +100,22 @@ class AppSettingsTest {
     @Test(expected = IllegalStateException::class)
     fun testOverlayParticleTransparency_BelowZero() {
         appSettings.overlayParticleTransparency = -3
+    }
+
+    @Test
+    fun testOverlayParticleSize() {
+        appSettings.overlayParticleSize = 34
+        assertThat(appSettings.overlayParticleSize, Is(34))
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun testOverlayParticlesSize_Zero() {
+        appSettings.overlayParticleSize = 0
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun testOverlayParticlesSize_BelowZero() {
+        appSettings.overlayParticleSize = -24
     }
 
 }

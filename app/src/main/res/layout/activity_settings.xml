@@ -127,6 +127,28 @@
                 android:text="@string/settings_description_max_particles" />
 
             <TextView
+                android:id="@+id/label_particle_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/settings_label_particle_size"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_particle_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:value="24"
+                android:valueFrom="10"
+                android:valueTo="50" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_description_particle_size" />
+
+            <TextView
                 android:id="@+id/label_particle_transparency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -30,6 +30,7 @@ class ParticleOverlayManager(
         val targetParticleCount = calculateParticleCount(deviceUseDuration, timeUntilMaxParticles)
         if (overlayShown) {
             particleOverlay.alpha = appSettings.overlayParticleAlpha
+            particleOverlay.particleSize = appSettings.overlayParticleSize
         }
         adaptOverlayToTargetParticleCount(targetParticleCount)
     }

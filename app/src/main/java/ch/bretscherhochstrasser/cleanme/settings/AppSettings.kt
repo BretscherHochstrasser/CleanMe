@@ -21,10 +21,12 @@ class AppSettings(@AppContext private val context: Context) {
         private const val PREF_CLEAN_INTERVAL = "clean_interval"
         private const val PREF_MAX_OVERLAY_PARTICLE_COUNT = "max_overlay_particle_count"
         private const val PREF_OVERLAY_PARTICLE_ALPHA = "overlay_particle_alpha"
+        private const val PREF_OVERLAY_PARTICLE_SIZE = "overlay_particle_size"
         private const val PREF_START_ON_BOOT = "start_on_boot"
 
         private const val DEFAULT_MAX_OVERLAY_PARTICLE_COUNT = 25
         private const val DEFAULT_OVERLAY_PARTICLE_ALPHA = 191 // 25% transparency
+        private const val DEFAULT_OVERLAY_PARTICLE_SIZE = 24
     }
 
     private val settings: SharedPreferences
@@ -126,6 +128,18 @@ class AppSettings(@AppContext private val context: Context) {
         set(value) {
             check(value in 0..100)
             overlayParticleAlpha = ((100f - value) / 100 * 255).toInt()
+        }
+
+    /**
+     * Size of overlay particles in DP
+     */
+    var overlayParticleSize: Int
+        get() {
+            return settings.getInt(PREF_OVERLAY_PARTICLE_SIZE, DEFAULT_OVERLAY_PARTICLE_SIZE)
+        }
+        set(value) {
+            check(value > 0)
+            settings.edit().putInt(PREF_OVERLAY_PARTICLE_SIZE, value).apply()
         }
 
 }

@@ -1,6 +1,5 @@
 package ch.bretscherhochstrasser.cleanme.settings
 
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -9,12 +8,13 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import ch.bretscherhochstrasser.cleanme.App
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
+import ch.bretscherhochstrasser.cleanme.getString
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionWrapper
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
+import ch.bretscherhochstrasser.cleanme.withFormattedText
 import ch.bretscherhochstrasser.cleanme.withSliderValue
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -46,9 +46,10 @@ class SettingsActivityTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        // clean interval and max particle count must be set, so the activity can start
+        // clean interval and max particle count and size must be set, so the activity can start
         whenever(mockAppSettings.cleanInterval).thenReturn(CleanInterval.TWO_HOURS)
         whenever(mockAppSettings.maxOverlayParticleCount).thenReturn(25)
+        whenever(mockAppSettings.overlayParticleSize).thenReturn(24)
         //service and overlay enabled to enable all elements by default
         whenever(mockAppSettings.serviceEnabled).thenReturn(true)
         whenever(mockAppSettings.overlayEnabled).thenReturn(true)
@@ -72,6 +73,7 @@ class SettingsActivityTest {
             onView(withId(R.id.button_edit_clean_interval)).check(matches(isEnabled()))
             onView(withId(R.id.switch_overlay_enabled)).check(matches(isEnabled()))
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
+            onView(withId(R.id.slider_particle_size)).check(matches(isEnabled()))
             onView(withId(R.id.slider_particle_transparency)).check(matches(isEnabled()))
 
             val switch = onView(withId(R.id.switch_track_device_usage))
@@ -84,6 +86,7 @@ class SettingsActivityTest {
             onView(withId(R.id.button_edit_clean_interval)).check(matches(not(isEnabled())))
             onView(withId(R.id.switch_overlay_enabled)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
+            onView(withId(R.id.slider_particle_size)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_particle_transparency)).check(matches(not(isEnabled())))
         }
     }
@@ -97,6 +100,7 @@ class SettingsActivityTest {
             onView(withId(R.id.button_edit_clean_interval)).check(matches(not(isEnabled())))
             onView(withId(R.id.switch_overlay_enabled)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
+            onView(withId(R.id.slider_particle_size)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_particle_transparency)).check(matches(not(isEnabled())))
 
             val switch = onView(withId(R.id.switch_track_device_usage))
@@ -109,6 +113,7 @@ class SettingsActivityTest {
             onView(withId(R.id.button_edit_clean_interval)).check(matches(isEnabled()))
             onView(withId(R.id.switch_overlay_enabled)).check(matches(isEnabled()))
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
+            onView(withId(R.id.slider_particle_size)).check(matches(isEnabled()))
             onView(withId(R.id.slider_particle_transparency)).check(matches(isEnabled()))
         }
     }
@@ -143,19 +148,16 @@ class SettingsActivityTest {
     fun testSetCleanIntervalSelection() {
         whenever(mockAppSettings.cleanInterval).thenReturn(CleanInterval.ONE_HOUR)
 
-        val appContext = ApplicationProvider.getApplicationContext<App>()
-        val expectedLabelBefore = appContext.getString(
-            R.string.settings_label_clean_interval,
-            appContext.getString(CleanInterval.ONE_HOUR.text)
-        )
-        val expectedLabelAfter = appContext.getString(
-            R.string.settings_label_clean_interval,
-            appContext.getString(CleanInterval.FOUR_HOURS.text)
-        )
-
         launchActivity<SettingsActivity>().use {
             val label = onView(withId(R.id.label_clean_interval))
-            label.check(matches(withText(expectedLabelBefore)))
+            label.check(
+                matches(
+                    withFormattedText(
+                        R.string.settings_label_clean_interval,
+                        getString(CleanInterval.ONE_HOUR.text)
+                    )
+                )
+            )
 
             onView(withId(R.id.button_edit_clean_interval)).perform(scrollTo(), click())
             //selection dialog opens
@@ -163,7 +165,14 @@ class SettingsActivityTest {
 
             verify(mockAppSettings).cleanInterval = CleanInterval.FOUR_HOURS
             verify(mockUsageStatsManager).updateUsageStats()
-            label.check(matches(withText(expectedLabelAfter)))
+            label.check(
+                matches(
+                    withFormattedText(
+                        R.string.settings_label_clean_interval,
+                        getString(CleanInterval.FOUR_HOURS.text)
+                    )
+                )
+            )
         }
     }
 
@@ -174,6 +183,7 @@ class SettingsActivityTest {
         launchActivity<SettingsActivity>().use {
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_particle_transparency)).check(matches(not(isEnabled())))
+            onView(withId(R.id.slider_particle_size)).check(matches(not(isEnabled())))
 
             val switch = onView(withId(R.id.switch_overlay_enabled))
             switch.check(matches(isNotChecked()))
@@ -182,6 +192,7 @@ class SettingsActivityTest {
             verify(mockAppSettings).overlayEnabled = true
             verify(mockUsageStatsManager).updateUsageStats()
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
+            onView(withId(R.id.slider_particle_size)).check(matches(isEnabled()))
             onView(withId(R.id.slider_particle_transparency)).check(matches(isEnabled()))
         }
     }
@@ -192,6 +203,7 @@ class SettingsActivityTest {
 
         launchActivity<SettingsActivity>().use {
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
+            onView(withId(R.id.slider_particle_size)).check(matches(isEnabled()))
             onView(withId(R.id.slider_particle_transparency)).check(matches(isEnabled()))
 
             val switch = onView(withId(R.id.switch_overlay_enabled))
@@ -201,6 +213,7 @@ class SettingsActivityTest {
             verify(mockAppSettings).overlayEnabled = false
             verify(mockUsageStatsManager).updateUsageStats()
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
+            onView(withId(R.id.slider_particle_size)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_particle_transparency)).check(matches(not(isEnabled())))
         }
     }
@@ -209,11 +222,33 @@ class SettingsActivityTest {
     fun testSetMaxParticles() {
         whenever(mockAppSettings.maxOverlayParticleCount).thenReturn(42)
         launchActivity<SettingsActivity>().use {
+            onView(withId(R.id.label_max_overlay_particles)).perform(scrollTo())
+                .check(matches(withFormattedText(R.string.settings_label_max_particles, 42)))
             val slider = onView(withId(R.id.slider_max_overlay_particles))
             slider.check(matches(withSliderValue(42f)))
             slider.perform(scrollTo(), click())
 
+            onView(withId(R.id.label_max_overlay_particles)).perform(scrollTo())
+                .check(matches(withFormattedText(R.string.settings_label_max_particles, 52)))
             verify(mockAppSettings).maxOverlayParticleCount = 52
+            verify(mockUsageStatsManager).updateUsageStats()
+        }
+    }
+
+    @Test
+    fun testSetParticleSize() {
+        whenever(mockAppSettings.overlayParticleSize).thenReturn(24)
+
+        launchActivity<SettingsActivity>().use {
+            onView(withId(R.id.label_particle_size)).perform(scrollTo())
+                .check(matches(withFormattedText(R.string.settings_label_particle_size, 24)))
+            val slider = onView(withId(R.id.slider_particle_size))
+            slider.check(matches(withSliderValue(24f)))
+            slider.perform(scrollTo(), click())
+
+            onView(withId(R.id.label_particle_size)).perform(scrollTo())
+                .check(matches(withFormattedText(R.string.settings_label_particle_size, 29)))
+            verify(mockAppSettings).overlayParticleSize = 29
             verify(mockUsageStatsManager).updateUsageStats()
         }
     }
@@ -222,10 +257,28 @@ class SettingsActivityTest {
     fun testSetParticleTransparency() {
         whenever(mockAppSettings.overlayParticleTransparency).thenReturn(25)
         launchActivity<SettingsActivity>().use {
+            onView(withId(R.id.label_particle_transparency)).perform(scrollTo())
+                .check(
+                    matches(
+                        withFormattedText(
+                            R.string.settings_label_particle_transparency,
+                            25
+                        )
+                    )
+                )
             val slider = onView(withId(R.id.slider_particle_transparency))
             slider.check(matches(withSliderValue(25f)))
             slider.perform(scrollTo(), click())
 
+            onView(withId(R.id.label_particle_transparency)).perform(scrollTo())
+                .check(
+                    matches(
+                        withFormattedText(
+                            R.string.settings_label_particle_transparency,
+                            49
+                        )
+                    )
+                )
             verify(mockAppSettings).overlayParticleTransparency = 49
             verify(mockUsageStatsManager).updateUsageStats()
         }

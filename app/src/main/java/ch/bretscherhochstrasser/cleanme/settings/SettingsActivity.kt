@@ -120,6 +120,25 @@ class SettingsActivity : AppCompatActivity() {
             it.toInt().toString()
         }
 
+        binding.sliderParticleSize.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                setParticleSizeLabel(value.toInt())
+            }
+        }
+        binding.sliderParticleSize.addOnSliderTouchListener(object :
+            Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {}
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                appSettings.overlayParticleSize = slider.value.toInt()
+                triggerOverlayRefresh()
+            }
+
+        })
+        binding.sliderParticleSize.setLabelFormatter {
+            "${it.toInt()}dp"
+        }
+
         binding.sliderParticleTransparency.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
                 setParticleTransparencyLabel(value.toInt())
@@ -159,6 +178,8 @@ class SettingsActivity : AppCompatActivity() {
         setCleanIntervalLabel(appSettings.cleanInterval)
         binding.sliderMaxOverlayParticles.value = appSettings.maxOverlayParticleCount.toFloat()
         setMaxParticleLabel(appSettings.maxOverlayParticleCount)
+        binding.sliderParticleSize.value = appSettings.overlayParticleSize.toFloat()
+        setParticleSizeLabel(appSettings.overlayParticleSize)
         binding.sliderParticleTransparency.value = appSettings.overlayParticleTransparency.toFloat()
         setParticleTransparencyLabel(appSettings.overlayParticleTransparency)
         setDependentSettingsEnabled(appSettings.serviceEnabled, appSettings.overlayEnabled)
@@ -182,6 +203,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.buttonEditCleanInterval.isEnabled = serviceEnabled
         binding.switchOverlayEnabled.isEnabled = serviceEnabled
         binding.sliderMaxOverlayParticles.isEnabled = serviceEnabled && overlayEnabled
+        binding.sliderParticleSize.isEnabled = serviceEnabled && overlayEnabled
         binding.sliderParticleTransparency.isEnabled = serviceEnabled && overlayEnabled
     }
 
@@ -197,6 +219,11 @@ class SettingsActivity : AppCompatActivity() {
     private fun setMaxParticleLabel(maxParticleCount: Int) {
         binding.labelMaxOverlayParticles.text =
             getString(R.string.settings_label_max_particles, maxParticleCount)
+    }
+
+    private fun setParticleSizeLabel(particleSize: Int) {
+        binding.labelParticleSize.text =
+            getString(R.string.settings_label_particle_size, particleSize)
     }
 
     private fun setParticleTransparencyLabel(particleTransparency: Int) {
