@@ -32,6 +32,7 @@ class ParticleOverlayView(context: Context) : View(context) {
 
     var alpha: Int = 255
         set(value) {
+            check(alpha in 0..255)
             // invalidate if value has changed
             if (value != field) {
                 field = value

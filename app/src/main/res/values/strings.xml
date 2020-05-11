@@ -33,7 +33,7 @@
     <string name="settings_label_particle_size">Overlay particle size: %ddp</string>
     <string name="settings_description_particle_size">Adjusts the size of the overlay particles</string>
     <string name="settings_label_particle_transparency">Particle transparency: %d%%</string>
-    <string name="settings_description_particle_transparency">Adjusts the transparency of the overlay particles.</string>
+    <string name="settings_description_particle_transparency">Adjusts the transparency of the overlay particles</string>
 
     <string name="clean_interval_30min">30 minutes</string>
     <string name="clean_interval_1hour">1 hour</string>
