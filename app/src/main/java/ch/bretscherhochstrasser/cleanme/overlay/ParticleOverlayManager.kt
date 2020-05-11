@@ -3,8 +3,8 @@ package ch.bretscherhochstrasser.cleanme.overlay
 import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Build
-import android.provider.Settings
 import android.view.WindowManager
+import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionWrapper
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import timber.log.Timber
 import toothpick.InjectConstructor
@@ -18,6 +18,7 @@ class ParticleOverlayManager(
     private val context: Context,
     private val particleGenerator: ParticleGenerator,
     private val appSettings: AppSettings,
+    private val overlayPermissionWrapper: OverlayPermissionWrapper,
     private val windowManager: WindowManager
 ) {
 
@@ -40,9 +41,7 @@ class ParticleOverlayManager(
             // lazy init the particle overlay view the first time it is required
             if (!::particleOverlay.isInitialized) particleOverlay = ParticleOverlayView(context)
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || // pre API 23 always allow overlay
-                Settings.canDrawOverlays(context) // from API 23, check for permission
-            ) {
+            if (overlayPermissionWrapper.canDrawOverlay()) {
                 @Suppress("DEPRECATION")
                 val overlayType =
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)

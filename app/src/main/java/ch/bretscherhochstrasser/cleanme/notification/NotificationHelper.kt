@@ -7,7 +7,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -18,6 +17,7 @@ import ch.bretscherhochstrasser.cleanme.MainActivity
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
+import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionWrapper
 import ch.bretscherhochstrasser.cleanme.helper.formatCountdownHoursAndMinutes
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import ch.bretscherhochstrasser.cleanme.settings.SettingsActivity
@@ -31,7 +31,8 @@ import toothpick.InjectConstructor
 class NotificationHelper(
     @AppContext private val context: Context,
     private val notificationManager: NotificationManagerCompat,
-    private val appSettings: AppSettings
+    private val appSettings: AppSettings,
+    private val overlayPermissionWrapper: OverlayPermissionWrapper
 ) {
 
     companion object {
@@ -71,9 +72,7 @@ class NotificationHelper(
             .setContentIntent(mainActivityPendingIntent)
 
         // only show the show/hide action if the overlay permission is given to the app
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-            || Settings.canDrawOverlays(context)
-        ) {
+        if (overlayPermissionWrapper.canDrawOverlay()) {
             if (appSettings.overlayEnabled) {
                 builder.addAction(
                     R.drawable.ic_overlay_off_24dp,
