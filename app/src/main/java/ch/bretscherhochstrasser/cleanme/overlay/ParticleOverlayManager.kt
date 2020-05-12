@@ -1,6 +1,5 @@
 package ch.bretscherhochstrasser.cleanme.overlay
 
-import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Build
 import android.view.WindowManager
@@ -15,32 +14,25 @@ import toothpick.InjectConstructor
  */
 @InjectConstructor
 class ParticleOverlayManager(
-    private val context: Context,
+    private val particleOverlay: ParticleOverlayView,
     private val particleGenerator: ParticleGenerator,
     private val appSettings: AppSettings,
     private val overlayPermissionWrapper: OverlayPermissionWrapper,
     private val windowManager: WindowManager
 ) {
 
-    private lateinit var particleOverlay: ParticleOverlayView
-
     private var overlayShown = false
 
     fun update(deviceUseDuration: Long, timeUntilMaxParticles: Long) {
         Timber.d("Updating particle overlay use duration %dms.", deviceUseDuration)
+        particleOverlay.alpha = appSettings.overlayParticleAlpha
+        particleOverlay.particleSize = appSettings.overlayParticleSize
         val targetParticleCount = calculateParticleCount(deviceUseDuration, timeUntilMaxParticles)
-        if (overlayShown) {
-            particleOverlay.alpha = appSettings.overlayParticleAlpha
-            particleOverlay.particleSize = appSettings.overlayParticleSize
-        }
         adaptOverlayToTargetParticleCount(targetParticleCount)
     }
 
     fun showOverlay() {
         if (!overlayShown) {
-            // lazy init the particle overlay view the first time it is required
-            if (!::particleOverlay.isInitialized) particleOverlay = ParticleOverlayView(context)
-
             if (overlayPermissionWrapper.canDrawOverlay()) {
                 @Suppress("DEPRECATION")
                 val overlayType =

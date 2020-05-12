@@ -7,12 +7,14 @@ import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.content.res.AppCompatResources
+import toothpick.InjectConstructor
 import java.util.*
 
 /**
  * View to render [Particle]s based on relative coordinates. The view adapts rendering depending on
  * screen rotation and tries to keep the particles on roughly fixed positions on the physical screen
  */
+@InjectConstructor
 class ParticleOverlayView(context: Context) : View(context) {
 
     companion object {
