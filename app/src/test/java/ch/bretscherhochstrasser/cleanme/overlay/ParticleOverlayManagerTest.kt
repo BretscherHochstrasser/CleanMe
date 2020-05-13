@@ -40,7 +40,7 @@ class ParticleOverlayManagerTest {
         MockitoAnnotations.initMocks(this)
 
         // default mock behavior
-        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(true)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(true)
         whenever(mockParticleGenerator.generateParticle()).thenReturn(testParticle)
         whenever(mockAppSettings.maxOverlayParticleCount).thenReturn(10)
         whenever(mockAppSettings.overlayParticleSize).thenReturn(34)
@@ -150,7 +150,7 @@ class ParticleOverlayManagerTest {
 
     @Test
     fun showOverlay_DoesNothingWhenNoPermission() {
-        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(false)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(false)
 
         overlayManager.showOverlay()
         verify(mockWindowManager, never()).addView(any(), any())

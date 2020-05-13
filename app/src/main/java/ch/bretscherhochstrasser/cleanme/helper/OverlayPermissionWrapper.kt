@@ -12,12 +12,13 @@ import toothpick.InjectConstructor
 @InjectConstructor
 class OverlayPermissionWrapper(@AppContext private val context: Context) {
 
-    fun canDrawOverlay(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Settings.canDrawOverlays(context)
-        } else {
-            true
+    val canDrawOverlay: Boolean
+        get() {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Settings.canDrawOverlays(context)
+            } else {
+                true
+            }
         }
-    }
 
 }

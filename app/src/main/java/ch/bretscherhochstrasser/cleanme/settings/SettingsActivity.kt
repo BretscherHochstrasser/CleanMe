@@ -37,7 +37,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private val overlaySwitchEnabled: Boolean
         get() {
-            return appSettings.overlayEnabled && overlayPermissionWrapper.canDrawOverlay()
+            return appSettings.overlayEnabled && overlayPermissionWrapper.canDrawOverlay
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {

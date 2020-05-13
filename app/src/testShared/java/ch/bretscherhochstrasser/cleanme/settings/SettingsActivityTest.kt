@@ -61,7 +61,7 @@ class SettingsActivityTest {
         whenever(mockAppSettings.serviceEnabled).thenReturn(true)
         whenever(mockAppSettings.overlayEnabled).thenReturn(true)
         // overlay permission is enabled by default
-        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(true)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(true)
         Toothpick.openScope(ApplicationScope::class.java)
             .installTestModules(ToothPickTestModule(this))
     }
@@ -186,7 +186,7 @@ class SettingsActivityTest {
     @Test
     fun testEnableOverlay_InitialSwitchSetting_OverlayOnPermissionGranted() {
         whenever(mockAppSettings.overlayEnabled).thenReturn(true)
-        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(true)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(true)
         launchActivity<SettingsActivity>().use {
             checkOverlaySwitchOn()
         }
@@ -195,7 +195,7 @@ class SettingsActivityTest {
     @Test
     fun testEnableOverlay_InitialSwitchSetting_OverlayOnPermissionNotGranted() {
         whenever(mockAppSettings.overlayEnabled).thenReturn(true)
-        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(false)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(false)
         launchActivity<SettingsActivity>().use {
             checkOverlaySwitchOff()
         }
@@ -204,7 +204,7 @@ class SettingsActivityTest {
     @Test
     fun testEnableOverlay_InitialSwitchSetting_OverlayOffPermissionGranted() {
         whenever(mockAppSettings.overlayEnabled).thenReturn(false)
-        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(true)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(true)
         launchActivity<SettingsActivity>().use {
             checkOverlaySwitchOff()
         }
@@ -213,7 +213,7 @@ class SettingsActivityTest {
     @Test
     fun testEnableOverlay_InitialSwitchSetting_OverlayOffPermissionNotGranted() {
         whenever(mockAppSettings.overlayEnabled).thenReturn(false)
-        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(false)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(false)
         launchActivity<SettingsActivity>().use {
             checkOverlaySwitchOff()
         }
@@ -237,13 +237,13 @@ class SettingsActivityTest {
     @Test
     fun testEnableOverlay_SwitchOn_NoPermission_GrantedInSettings() {
         whenever(mockAppSettings.overlayEnabled).thenReturn(false)
-        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(false)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(false)
 
         Intents.init()
 
         // simulate user accepting permission in device settings
         intending(hasAction(ACTION_MANAGE_OVERLAY_PERMISSION)).respondWithFunction {
-            whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(true)
+            whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(true)
             // we must return the overlayEnabled setting as true, because the activity will read it
             // during onResume after onActivityResult
             whenever(mockAppSettings.overlayEnabled).thenReturn(true)
@@ -265,7 +265,7 @@ class SettingsActivityTest {
     @Test
     fun testEnableOverlay_SwitchOn_NoPermission_NotGrantedInSettings() {
         whenever(mockAppSettings.overlayEnabled).thenReturn(false)
-        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(false)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(false)
 
         Intents.init()
 

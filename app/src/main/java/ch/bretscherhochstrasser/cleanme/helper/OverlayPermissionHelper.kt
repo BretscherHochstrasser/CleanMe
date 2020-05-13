@@ -22,7 +22,7 @@ class OverlayPermissionHelper(
 
     fun checkDrawOverlayPermission() {
         // check if we already  have permission to draw over other apps
-        if (permissionWrapper.canDrawOverlay()) {
+        if (permissionWrapper.canDrawOverlay) {
             onPermissionGranted?.invoke()
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // if not construct intent to request permission
@@ -40,7 +40,7 @@ class OverlayPermissionHelper(
         // is equal our requested code for draw permission
         if (requestCode == REQUEST_CODE_OVERLAY_SETTINGS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // if so check once again if we have permission
-            if (permissionWrapper.canDrawOverlay()) {
+            if (permissionWrapper.canDrawOverlay) {
                 onPermissionGranted?.invoke()
             } else {
                 onPermissionDenied?.invoke()
