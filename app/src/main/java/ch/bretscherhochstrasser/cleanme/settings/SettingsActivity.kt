@@ -10,6 +10,7 @@ import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.databinding.ActivitySettingsBinding
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionHelper
+import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionWrapper
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
@@ -24,6 +25,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private val serviceHelper: ServiceHelper by inject<ServiceHelper>()
     private val overlayPermissionHelper: OverlayPermissionHelper by inject<OverlayPermissionHelper>()
+    private val overlayPermissionWrapper: OverlayPermissionWrapper by inject<OverlayPermissionWrapper>()
     private val appSettings: AppSettings by inject<AppSettings>()
     private val usageStatsManager: DeviceUsageStatsManager by inject<DeviceUsageStatsManager>()
 
@@ -32,6 +34,11 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var switchTrackDeviceUsageListener: CompoundButton.OnCheckedChangeListener
     private lateinit var switchOverlayEnabledListener: CompoundButton.OnCheckedChangeListener
     private lateinit var switchStartOnBootListener: CompoundButton.OnCheckedChangeListener
+
+    private val overlaySwitchEnabled: Boolean
+        get() {
+            return appSettings.overlayEnabled && overlayPermissionWrapper.canDrawOverlay()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +54,7 @@ class SettingsActivity : AppCompatActivity() {
 
         switchTrackDeviceUsageListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
             appSettings.serviceEnabled = isChecked
-            setDependentSettingsEnabled(isChecked, appSettings.overlayEnabled)
+            setDependentSettingsEnabled(isChecked, overlaySwitchEnabled)
             if (isChecked) {
                 serviceHelper.startObserveDeviceUsage()
             } else {
@@ -167,7 +174,7 @@ class SettingsActivity : AppCompatActivity() {
         )
         setCheckedWithDisabledListener(
             binding.switchOverlayEnabled,
-            appSettings.overlayEnabled,
+            overlaySwitchEnabled,
             switchOverlayEnabledListener
         )
         setCheckedWithDisabledListener(
@@ -182,7 +189,7 @@ class SettingsActivity : AppCompatActivity() {
         setParticleSizeLabel(appSettings.overlayParticleSize)
         binding.sliderParticleTransparency.value = appSettings.overlayParticleTransparency.toFloat()
         setParticleTransparencyLabel(appSettings.overlayParticleTransparency)
-        setDependentSettingsEnabled(appSettings.serviceEnabled, appSettings.overlayEnabled)
+        setDependentSettingsEnabled(appSettings.serviceEnabled, overlaySwitchEnabled)
     }
 
     /**

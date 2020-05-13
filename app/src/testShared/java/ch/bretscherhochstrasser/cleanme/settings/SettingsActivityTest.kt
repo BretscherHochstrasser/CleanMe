@@ -1,10 +1,16 @@
 package ch.bretscherhochstrasser.cleanme.settings
 
+import android.app.Activity
+import android.app.Instrumentation
+import android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intending
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -18,6 +24,7 @@ import ch.bretscherhochstrasser.cleanme.withFormattedText
 import ch.bretscherhochstrasser.cleanme.withSliderValue
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
@@ -177,24 +184,105 @@ class SettingsActivityTest {
     }
 
     @Test
-    fun testEnableOverlay_SwitchOn() {
+    fun testEnableOverlay_InitialSwitchSetting_OverlayOnPermissionGranted() {
+        whenever(mockAppSettings.overlayEnabled).thenReturn(true)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(true)
+        launchActivity<SettingsActivity>().use {
+            checkOverlaySwitchOn()
+        }
+    }
+
+    @Test
+    fun testEnableOverlay_InitialSwitchSetting_OverlayOnPermissionNotGranted() {
+        whenever(mockAppSettings.overlayEnabled).thenReturn(true)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(false)
+        launchActivity<SettingsActivity>().use {
+            checkOverlaySwitchOff()
+        }
+    }
+
+    @Test
+    fun testEnableOverlay_InitialSwitchSetting_OverlayOffPermissionGranted() {
+        whenever(mockAppSettings.overlayEnabled).thenReturn(false)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(true)
+        launchActivity<SettingsActivity>().use {
+            checkOverlaySwitchOff()
+        }
+    }
+
+    @Test
+    fun testEnableOverlay_InitialSwitchSetting_OverlayOffPermissionNotGranted() {
+        whenever(mockAppSettings.overlayEnabled).thenReturn(false)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(false)
+        launchActivity<SettingsActivity>().use {
+            checkOverlaySwitchOff()
+        }
+    }
+
+    @Test
+    fun testEnableOverlay_SwitchOn_WithPermission() {
         whenever(mockAppSettings.overlayEnabled).thenReturn(false)
 
         launchActivity<SettingsActivity>().use {
-            onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
-            onView(withId(R.id.slider_particle_transparency)).check(matches(not(isEnabled())))
-            onView(withId(R.id.slider_particle_size)).check(matches(not(isEnabled())))
+            checkOverlaySwitchOff()
 
-            val switch = onView(withId(R.id.switch_overlay_enabled))
-            switch.check(matches(isNotChecked()))
-            switch.perform(scrollTo(), click())
+            onView(withId(R.id.switch_overlay_enabled)).perform(scrollTo(), click())
 
             verify(mockAppSettings).overlayEnabled = true
             verify(mockUsageStatsManager).updateUsageStats()
-            onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
-            onView(withId(R.id.slider_particle_size)).check(matches(isEnabled()))
-            onView(withId(R.id.slider_particle_transparency)).check(matches(isEnabled()))
+            checkOverlaySwitchOn()
         }
+    }
+
+    @Test
+    fun testEnableOverlay_SwitchOn_NoPermission_GrantedInSettings() {
+        whenever(mockAppSettings.overlayEnabled).thenReturn(false)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(false)
+
+        Intents.init()
+
+        // simulate user accepting permission in device settings
+        intending(hasAction(ACTION_MANAGE_OVERLAY_PERMISSION)).respondWithFunction {
+            whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(true)
+            // we must return the overlayEnabled setting as true, because the activity will read it
+            // during onResume after onActivityResult
+            whenever(mockAppSettings.overlayEnabled).thenReturn(true)
+            Instrumentation.ActivityResult(Activity.RESULT_OK, null)
+        }
+
+        launchActivity<SettingsActivity>().use {
+            checkOverlaySwitchOff()
+
+            onView(withId(R.id.switch_overlay_enabled)).perform(scrollTo(), click())
+
+            verify(mockAppSettings).overlayEnabled = true
+            verify(mockUsageStatsManager).updateUsageStats()
+            checkOverlaySwitchOn()
+        }
+        Intents.release()
+    }
+
+    @Test
+    fun testEnableOverlay_SwitchOn_NoPermission_NotGrantedInSettings() {
+        whenever(mockAppSettings.overlayEnabled).thenReturn(false)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay()).thenReturn(false)
+
+        Intents.init()
+
+        // simulate user accepting permission in device settings
+        intending(allOf(hasAction(ACTION_MANAGE_OVERLAY_PERMISSION))).respondWithFunction {
+            Instrumentation.ActivityResult(Activity.RESULT_OK, null)
+        }
+
+        launchActivity<SettingsActivity>().use {
+            checkOverlaySwitchOff()
+
+            onView(withId(R.id.switch_overlay_enabled)).perform(scrollTo(), click())
+
+            verify(mockAppSettings).overlayEnabled = false
+            checkOverlaySwitchOff()
+        }
+        Intents.release()
     }
 
     @Test
@@ -202,20 +290,28 @@ class SettingsActivityTest {
         whenever(mockAppSettings.overlayEnabled).thenReturn(true)
 
         launchActivity<SettingsActivity>().use {
-            onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
-            onView(withId(R.id.slider_particle_size)).check(matches(isEnabled()))
-            onView(withId(R.id.slider_particle_transparency)).check(matches(isEnabled()))
+            checkOverlaySwitchOn()
 
-            val switch = onView(withId(R.id.switch_overlay_enabled))
-            switch.check(matches(isChecked()))
-            switch.perform(scrollTo(), click())
+            onView(withId(R.id.switch_overlay_enabled)).perform(scrollTo(), click())
 
             verify(mockAppSettings).overlayEnabled = false
             verify(mockUsageStatsManager).updateUsageStats()
-            onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
-            onView(withId(R.id.slider_particle_size)).check(matches(not(isEnabled())))
-            onView(withId(R.id.slider_particle_transparency)).check(matches(not(isEnabled())))
+            checkOverlaySwitchOff()
         }
+    }
+
+    private fun checkOverlaySwitchOn() {
+        onView(withId(R.id.switch_overlay_enabled)).check(matches(isChecked()))
+        onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
+        onView(withId(R.id.slider_particle_size)).check(matches(isEnabled()))
+        onView(withId(R.id.slider_particle_transparency)).check(matches(isEnabled()))
+    }
+
+    private fun checkOverlaySwitchOff() {
+        onView(withId(R.id.switch_overlay_enabled)).check(matches(isNotChecked()))
+        onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
+        onView(withId(R.id.slider_particle_transparency)).check(matches(not(isEnabled())))
+        onView(withId(R.id.slider_particle_size)).check(matches(not(isEnabled())))
     }
 
     @Test
