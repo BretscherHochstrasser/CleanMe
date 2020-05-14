@@ -15,6 +15,7 @@
     <string name="main_label_time_until_clean">use time remaining until clean reminder</string>
     <string name="main_label_time_since_interval">use time since clean reminder</string>
     <string name="main_button_clean_reset">Clean now</string>
+    <string name="main_menu_about">About</string>
 
     <string name="settings_title">Settings</string>
     <string name="settings_section_title_general">General</string>
@@ -34,6 +35,11 @@
     <string name="settings_description_particle_size">Adjusts the size of the overlay particles</string>
     <string name="settings_label_particle_transparency">Particle transparency: %d%%</string>
     <string name="settings_description_particle_transparency">Adjusts the transparency of the overlay particles</string>
+
+    <string name="about_title">About</string>
+    <string name="about_description_app_icon">app icon</string>
+    <string name="about_description_logo">Bretscher Hochstrasser logo</string>
+    <string name="about_label_developed_by">developed by:</string>
 
     <string name="clean_interval_30min">30 minutes</string>
     <string name="clean_interval_1hour">1 hour</string>

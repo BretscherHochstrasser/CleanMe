@@ -2,10 +2,13 @@ package ch.bretscherhochstrasser.cleanme
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import ch.bretscherhochstrasser.cleanme.about.AboutActivity
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.databinding.ActivityMainBinding
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
@@ -53,6 +56,18 @@ class MainActivity : AppCompatActivity() {
         binding.buttonSettings.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.main_menu_about) {
+            startActivity(Intent(this, AboutActivity::class.java))
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

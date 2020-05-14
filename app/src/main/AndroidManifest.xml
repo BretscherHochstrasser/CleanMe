@@ -20,6 +20,10 @@
             android:label="@string/settings_title"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".about.AboutActivity"
+            android:label="@string/about_title"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".welcome.WelcomeWizardActivity"
             android:theme="@style/WelcomeScreenTheme" />
         <activity
