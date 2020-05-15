@@ -1,5 +1,6 @@
 package ch.bretscherhochstrasser.cleanme
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
@@ -8,8 +9,12 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.google.android.material.slider.Slider
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
@@ -65,6 +70,13 @@ fun withFormattedText(@StringRes resId: Int, vararg formatArgs: Any): Matcher<Vi
     val appContext = ApplicationProvider.getApplicationContext<App>()
     val expectedText = appContext.getString(resId, *formatArgs)
     return withText(expectedText)
+}
+
+fun chooser(intentMatcher: Matcher<Intent>): Matcher<Intent> {
+    return allOf(
+        hasAction(Intent.ACTION_CHOOSER),
+        hasExtra(`is`(Intent.EXTRA_INTENT), intentMatcher)
+    )
 }
 
 fun getString(@StringRes resId: Int, vararg formatArgs: Any): String {
