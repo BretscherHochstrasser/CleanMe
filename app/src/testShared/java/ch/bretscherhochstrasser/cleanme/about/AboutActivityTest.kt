@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
@@ -15,11 +16,13 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import ch.bretscherhochstrasser.cleanme.BuildConfig
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.chooser
 import ch.bretscherhochstrasser.cleanme.getString
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.After
@@ -137,4 +140,13 @@ class AboutActivityTest {
         }
     }
 
+    @Test
+    fun testOpen3rdPartyLicenseActivity() {
+        launchActivity<AboutActivity>().use {
+            openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().context)
+            onView(withText(R.string.about_menu_3rd_party_licenses)).perform(click())
+
+            intended(hasComponent(OssLicensesMenuActivity::class.java.name))
+        }
+    }
 }

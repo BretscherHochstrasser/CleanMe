@@ -45,6 +45,7 @@
     <string name="about_share_subject">Clean Me App</string>
     <string name="about_share_text">Check out the Clean Me App on Google Play: %s</string>
     <string name="about_share_chooser_title">Share app link</string>
+    <string name="about_menu_3rd_party_licenses">3rd party licenses</string>
     <string name="about_feedback_choose_email_app">Send email with</string>
     <string name="about_feedback_no_email_app">No email app found</string>
     <string name="about_feedback_subject">Clean Me App - Feedback</string>

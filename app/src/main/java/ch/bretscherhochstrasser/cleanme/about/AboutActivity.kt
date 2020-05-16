@@ -5,12 +5,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ch.bretscherhochstrasser.cleanme.BuildConfig
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.databinding.ActivityAboutBinding
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import toothpick.ktp.KTP
 import toothpick.smoothie.lifecycle.closeOnDestroy
 
@@ -42,6 +45,21 @@ class AboutActivity : AppCompatActivity() {
         binding.buttonShare.setOnClickListener { shareAppLink() }
 
         binding.buttonFeedback.setOnClickListener { sendFeedbackEmail() }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.about_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.about_menu_3rd_party_licenses -> {
+                startActivity(Intent(this, OssLicensesMenuActivity::class.java))
+                true
+            }
+            else -> false
+        }
     }
 
     private fun goToWebsite() {
