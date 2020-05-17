@@ -71,10 +71,22 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/about_description_logo"
         android:src="@drawable/bretscher_hochstrasser_logo"
-        app:layout_constraintBottom_toTopOf="@+id/button_feedback"
+        app:layout_constraintBottom_toTopOf="@+id/button_share"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/divider"
         app:layout_constraintTop_toBottomOf="@+id/label_developed_by" />
+
+    <Button
+        android:id="@+id/button_share"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/about_button_share"
+        app:icon="@drawable/ic_share_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_feedback"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider" />
 
     <Button
         android:id="@+id/button_feedback"

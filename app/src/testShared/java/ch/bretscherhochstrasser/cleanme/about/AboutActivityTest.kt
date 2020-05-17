@@ -1,5 +1,7 @@
 package ch.bretscherhochstrasser.cleanme.about
 
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Intent
 import android.net.Uri
 import androidx.test.core.app.launchActivity
@@ -8,6 +10,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -52,6 +55,12 @@ class AboutActivityTest {
 
     @Test
     fun testOpenWebsite() {
+        intending(hasAction(Intent.ACTION_VIEW)).respondWith(
+            Instrumentation.ActivityResult(
+                Activity.RESULT_CANCELED, null
+            )
+        )
+
         launchActivity<AboutActivity>().use {
             onView(withId(R.id.image_developer_logo)).perform(click())
 
@@ -65,7 +74,43 @@ class AboutActivityTest {
     }
 
     @Test
+    fun testShareAppLink() {
+        intending(hasAction(Intent.ACTION_CHOOSER)).respondWith(
+            Instrumentation.ActivityResult(
+                Activity.RESULT_CANCELED, null
+            )
+        )
+
+        launchActivity<AboutActivity>().use {
+            onView(withId(R.id.button_share)).perform(click())
+
+            intended(
+                chooser(
+                    allOf(
+                        hasAction(Intent.ACTION_SEND),
+                        hasExtra(Intent.EXTRA_SUBJECT, getString(R.string.about_share_subject)),
+                        hasExtra(
+                            Intent.EXTRA_TEXT,
+                            getString(
+                                R.string.about_share_text,
+                                "https://play.google.com/store/apps/details?id=ch.bretscherhochstrasser.cleanme"
+                            )
+                        ),
+                        hasType("text/plain")
+                    )
+                )
+            )
+        }
+    }
+
+    @Test
     fun testSendFeedback() {
+        intending(hasAction(Intent.ACTION_CHOOSER)).respondWith(
+            Instrumentation.ActivityResult(
+                Activity.RESULT_CANCELED, null
+            )
+        )
+
         launchActivity<AboutActivity>().use {
             onView(withId(R.id.button_feedback)).perform(click())
 

@@ -40,7 +40,11 @@
     <string name="about_description_app_icon">app icon</string>
     <string name="about_description_logo">Bretscher Hochstrasser logo</string>
     <string name="about_label_developed_by">developed by:</string>
+    <string name="about_button_share">Share</string>
     <string name="about_button_feedback">Feedback</string>
+    <string name="about_share_subject">Clean Me App</string>
+    <string name="about_share_text">Check out the Clean Me App on Google Play: %s</string>
+    <string name="about_share_chooser_title">Share app link</string>
 
     <string name="clean_interval_30min">30 minutes</string>
     <string name="clean_interval_1hour">1 hour</string>
