@@ -72,8 +72,8 @@ class AboutActivityTest {
             intended(
                 chooser(
                     allOf(
-                        hasAction(Intent.ACTION_SEND),
-                        hasType("message/rfc822"),
+                        hasAction(Intent.ACTION_SENDTO),
+                        hasData("mailto:"),
                         hasExtra(
                             Intent.EXTRA_EMAIL,
                             arrayOf("bretscherhochstrasser@gmail.com")

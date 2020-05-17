@@ -3,6 +3,7 @@ package ch.bretscherhochstrasser.cleanme.helper
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import ch.bretscherhochstrasser.cleanme.BuildConfig
@@ -23,14 +24,12 @@ class FeedbackHelper(private val activity: Activity) {
         val subject = activity.getString(R.string.feedback_subject)
         val body = "\n\n\n\n\n${deviceInfo}"
 
-        val emailIntent = Intent(Intent.ACTION_SEND)
-        emailIntent.putExtra(
-            Intent.EXTRA_EMAIL,
-            arrayOf(EMAIL_ADDRESS)
-        )
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
-        emailIntent.putExtra(Intent.EXTRA_TEXT, body)
-        emailIntent.type = "message/rfc822"
+        val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(EMAIL_ADDRESS))
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, body)
+        }
         try {
             activity.startActivity(
                 Intent.createChooser(
