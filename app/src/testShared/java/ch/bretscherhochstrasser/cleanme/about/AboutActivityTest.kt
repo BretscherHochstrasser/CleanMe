@@ -125,7 +125,7 @@ class AboutActivityTest {
                         ),
                         hasExtra(
                             Intent.EXTRA_SUBJECT,
-                            getString(R.string.feedback_subject)
+                            getString(R.string.about_feedback_subject)
                         ),
                         hasExtra(
                             Is(Intent.EXTRA_TEXT),
