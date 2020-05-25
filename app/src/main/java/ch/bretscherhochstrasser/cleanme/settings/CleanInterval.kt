@@ -13,7 +13,8 @@ enum class CleanInterval(@StringRes val text: Int, val durationMinutes: Int) {
     ONE_HOUR(R.string.clean_interval_1hour, 60),
     TWO_HOURS(R.string.clean_interval_2hours, 120),
     FOUR_HOURS(R.string.clean_interval_4hours, 240),
-    SIX_HOURS(R.string.clean_interval_6hours, 360);
+    SIX_HOURS(R.string.clean_interval_6hours, 360),
+    EIGHT_HOURS(R.string.clean_interval_8hours, 480);
 
     val durationMillis = durationMinutes * 60000L
 
@@ -24,7 +25,8 @@ enum class CleanInterval(@StringRes val text: Int, val durationMinutes: Int) {
                 minutes < 120 -> ONE_HOUR
                 minutes < 240 -> TWO_HOURS
                 minutes < 360 -> FOUR_HOURS
-                else -> SIX_HOURS
+                minutes < 480 -> SIX_HOURS
+                else -> EIGHT_HOURS
             }
         }
 
