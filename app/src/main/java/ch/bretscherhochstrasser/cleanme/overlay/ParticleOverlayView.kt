@@ -17,10 +17,6 @@ import java.util.*
 @InjectConstructor
 class ParticleOverlayView(context: Context) : View(context) {
 
-    companion object {
-        private const val DEBUG_OVERLAY_ENABLED = false
-    }
-
     private val particles = LinkedList<Particle>()
 
     private val drawableCache = EnumMap<ParticleType, Drawable>(ParticleType::class.java)
@@ -95,10 +91,6 @@ class ParticleOverlayView(context: Context) : View(context) {
                 particleDrawable.draw(canvas)
 
                 canvas.restore()
-            }
-
-            if (DEBUG_OVERLAY_ENABLED) {
-                DebugInfo().drawDebugInfo(canvas, rotationHelper)
             }
         }
     }
