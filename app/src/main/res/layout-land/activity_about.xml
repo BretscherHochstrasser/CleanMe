@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="96dp"
         android:contentDescription="@string/about_description_app_icon"
-        android:src="@drawable/ic_drop_reminder"
+        android:src="@drawable/ic_app_icon_round"
         app:layout_constraintBottom_toTopOf="@+id/label_app_name"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toStartOf="@+id/divider"

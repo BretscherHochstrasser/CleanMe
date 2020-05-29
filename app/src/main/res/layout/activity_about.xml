@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        android:src="@drawable/ic_drop_reminder" />
+        android:src="@drawable/ic_app_icon_round" />
 
     <TextView
         android:id="@+id/label_app_name"
