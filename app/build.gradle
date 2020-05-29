@@ -54,6 +54,7 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
     sourceSets {
@@ -111,11 +112,13 @@ dependencies {
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test:core-ktx:1.2.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito-inline:2.25.1'
     androidTestImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     androidTestImplementation 'com.github.stephanenicolas.toothpick:toothpick-testing-junit4:3.1.0'
+    androidTestUtil 'androidx.test:orchestrator:1.2.0'
 
 }
 
