@@ -43,6 +43,7 @@ class ParticleOverlayManagerTest {
         whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(true)
         whenever(mockParticleGenerator.generateParticle()).thenReturn(testParticle)
         whenever(mockAppSettings.maxOverlayParticleCount).thenReturn(10)
+        whenever(mockAppSettings.overlayParticleGrowthModel).thenReturn(ParticleGrowthModel.LINEAR)
         whenever(mockAppSettings.overlayParticleSize).thenReturn(34)
         whenever(mockAppSettings.overlayParticleAlpha).thenReturn(200)
 

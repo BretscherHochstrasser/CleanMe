@@ -2,6 +2,7 @@ package ch.bretscherhochstrasser.cleanme.settings
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.bretscherhochstrasser.cleanme.overlay.ParticleGrowthModel
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -28,6 +29,7 @@ class AppSettingsTest {
         assertThat(appSettings.overlayParticleAlpha, Is(191))
         assertThat(appSettings.overlayParticleTransparency, Is(25))
         assertThat(appSettings.overlayParticleSize, Is(24))
+        assertThat(appSettings.overlayParticleGrowthModel, Is(ParticleGrowthModel.EXPONENTIAL))
     }
 
     @Test
@@ -118,4 +120,12 @@ class AppSettingsTest {
         appSettings.overlayParticleSize = -24
     }
 
+    @Test
+    fun testOverlayParticleGrowthModel() {
+        appSettings.overlayParticleGrowthModel = ParticleGrowthModel.LINEAR
+        assertThat(appSettings.overlayParticleGrowthModel, Is(ParticleGrowthModel.LINEAR))
+
+        appSettings.overlayParticleGrowthModel = ParticleGrowthModel.EXPONENTIAL
+        assertThat(appSettings.overlayParticleGrowthModel, Is(ParticleGrowthModel.EXPONENTIAL))
+    }
 }

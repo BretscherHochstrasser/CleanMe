@@ -3,6 +3,7 @@ package ch.bretscherhochstrasser.cleanme.settings
 import android.content.Context
 import android.content.SharedPreferences
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
+import ch.bretscherhochstrasser.cleanme.overlay.ParticleGrowthModel
 import toothpick.InjectConstructor
 import javax.inject.Singleton
 
@@ -22,6 +23,7 @@ class AppSettings(@AppContext private val context: Context) {
         private const val PREF_MAX_OVERLAY_PARTICLE_COUNT = "max_overlay_particle_count"
         private const val PREF_OVERLAY_PARTICLE_ALPHA = "overlay_particle_alpha"
         private const val PREF_OVERLAY_PARTICLE_SIZE = "overlay_particle_size"
+        private const val PREF_OVERLAY_PARICLE_GROWTH_MODEL = "overlay_particle_growth_model"
         private const val PREF_START_ON_BOOT = "start_on_boot"
 
         private const val DEFAULT_MAX_OVERLAY_PARTICLE_COUNT = 25
@@ -140,6 +142,21 @@ class AppSettings(@AppContext private val context: Context) {
         set(value) {
             check(value > 0)
             settings.edit().putInt(PREF_OVERLAY_PARTICLE_SIZE, value).apply()
+        }
+
+    /**
+     * Growth model for overlay particles
+     */
+    var overlayParticleGrowthModel: ParticleGrowthModel
+        get() {
+            return ParticleGrowthModel.valueOfSafely(
+                settings.getString(
+                    PREF_OVERLAY_PARICLE_GROWTH_MODEL, ParticleGrowthModel.EXPONENTIAL.name
+                )
+            )
+        }
+        set(value) {
+            settings.edit().putString(PREF_OVERLAY_PARICLE_GROWTH_MODEL, value.name).apply()
         }
 
 }

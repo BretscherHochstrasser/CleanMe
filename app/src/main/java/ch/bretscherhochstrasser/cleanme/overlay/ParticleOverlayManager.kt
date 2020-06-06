@@ -27,7 +27,12 @@ class ParticleOverlayManager(
         Timber.d("Updating particle overlay use duration %dms.", deviceUseDuration)
         particleOverlay.alpha = appSettings.overlayParticleAlpha
         particleOverlay.particleSize = appSettings.overlayParticleSize
-        val targetParticleCount = calculateParticleCount(deviceUseDuration, timeUntilMaxParticles)
+        val growthModel = appSettings.overlayParticleGrowthModel
+        val targetParticleCount = growthModel.calculateParticleCount(
+            deviceUseDuration,
+            timeUntilMaxParticles,
+            appSettings.maxOverlayParticleCount
+        )
         adaptOverlayToTargetParticleCount(targetParticleCount)
     }
 
@@ -61,18 +66,6 @@ class ParticleOverlayManager(
             windowManager.removeView(particleOverlay)
             overlayShown = false
         }
-    }
-
-    private fun calculateParticleCount(deviceUsageTime: Long, timeUntilMaxParticles: Long): Int {
-        val limitedDeviceUsageTime = deviceUsageTime.coerceAtMost(timeUntilMaxParticles)
-        // for now we only to linear particle creation
-        val relativeProgress = limitedDeviceUsageTime.toDouble() / timeUntilMaxParticles
-        val targetParticleCount = (appSettings.maxOverlayParticleCount * relativeProgress).toInt()
-        Timber.d(
-            "Target particle count %d (%.0f%%) for %dms device usage",
-            targetParticleCount, relativeProgress * 100, deviceUsageTime
-        )
-        return targetParticleCount
     }
 
     private fun adaptOverlayToTargetParticleCount(targetParticleCount: Int) {
