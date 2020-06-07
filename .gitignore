@@ -13,3 +13,5 @@
 /captures
 .externalNativeBuild
 .cxx
+/.idea/$CACHE_FILE$
+/.idea/shelf
