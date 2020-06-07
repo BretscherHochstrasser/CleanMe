@@ -127,6 +127,51 @@
                 android:text="@string/settings_description_max_particles" />
 
             <TextView
+                android:id="@+id/label_particle_growth_model"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/settings_label_particle_growth_model"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/button_group_growth_model"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:selectionRequired="true"
+                app:singleSelection="true"
+                tools:checkedButton="@+id/button_growth_model_linear">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_growth_model_linear"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/settings_button_overlay_growth_model_linear"
+                    app:icon="@drawable/ic_growth_linear" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_growth_model_exponential"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/settings_button_overlay_growth_model_exponential"
+                    app:icon="@drawable/ic_growth_exponential" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_description_particle_growth_model" />
+
+            <TextView
                 android:id="@+id/label_particle_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

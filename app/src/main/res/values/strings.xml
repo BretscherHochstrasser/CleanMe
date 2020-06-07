@@ -35,6 +35,10 @@
     <string name="settings_description_particle_size">Adjusts the size of the overlay particles</string>
     <string name="settings_label_particle_transparency">Particle transparency: %d%%</string>
     <string name="settings_description_particle_transparency">Adjusts the transparency of the overlay particles</string>
+    <string name="settings_label_particle_growth_model">Growth model for particle count</string>
+    <string name="settings_description_particle_growth_model">Adjusts how particles are added to the overlay over time</string>
+    <string name="settings_button_overlay_growth_model_linear">Linear</string>
+    <string name="settings_button_overlay_growth_model_exponential">Exponential</string>
 
     <string name="about_title">About</string>
     <string name="about_description_app_icon">app icon</string>

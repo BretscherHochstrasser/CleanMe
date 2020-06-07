@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.CompoundButton
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
@@ -11,7 +12,9 @@ import ch.bretscherhochstrasser.cleanme.databinding.ActivitySettingsBinding
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionHelper
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionWrapper
+import ch.bretscherhochstrasser.cleanme.overlay.ParticleGrowthModel
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -34,6 +37,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var switchTrackDeviceUsageListener: CompoundButton.OnCheckedChangeListener
     private lateinit var switchOverlayEnabledListener: CompoundButton.OnCheckedChangeListener
     private lateinit var switchStartOnBootListener: CompoundButton.OnCheckedChangeListener
+    private lateinit var buttonGroupGrowthModelListener: MaterialButtonToggleGroup.OnButtonCheckedListener
 
     private val overlaySwitchEnabled: Boolean
         get() {
@@ -127,6 +131,20 @@ class SettingsActivity : AppCompatActivity() {
             it.toInt().toString()
         }
 
+        buttonGroupGrowthModelListener =
+            MaterialButtonToggleGroup.OnButtonCheckedListener { _, checkedId, isChecked ->
+                if (isChecked) {
+                    when (checkedId) {
+                        R.id.button_growth_model_linear -> appSettings.overlayParticleGrowthModel =
+                            ParticleGrowthModel.LINEAR
+                        R.id.button_growth_model_exponential -> appSettings.overlayParticleGrowthModel =
+                            ParticleGrowthModel.EXPONENTIAL
+                    }
+                    triggerOverlayRefresh()
+                }
+            }
+        binding.buttonGroupGrowthModel.addOnButtonCheckedListener(buttonGroupGrowthModelListener)
+
         binding.sliderParticleSize.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
                 setParticleSizeLabel(value.toInt())
@@ -185,6 +203,16 @@ class SettingsActivity : AppCompatActivity() {
         setCleanIntervalLabel(appSettings.cleanInterval)
         binding.sliderMaxOverlayParticles.value = appSettings.maxOverlayParticleCount.toFloat()
         setMaxParticleLabel(appSettings.maxOverlayParticleCount)
+        val growthModelCheckedButtonId =
+            when (appSettings.overlayParticleGrowthModel) {
+                ParticleGrowthModel.LINEAR -> R.id.button_growth_model_linear
+                else -> R.id.button_growth_model_exponential
+            }
+        setCheckedWithDisabledListener(
+            binding.buttonGroupGrowthModel,
+            growthModelCheckedButtonId,
+            buttonGroupGrowthModelListener
+        )
         binding.sliderParticleSize.value = appSettings.overlayParticleSize.toFloat()
         setParticleSizeLabel(appSettings.overlayParticleSize)
         binding.sliderParticleTransparency.value = appSettings.overlayParticleTransparency.toFloat()
@@ -205,11 +233,23 @@ class SettingsActivity : AppCompatActivity() {
         switchMaterial.setOnCheckedChangeListener(listener) // set listener again
     }
 
+    private fun setCheckedWithDisabledListener(
+        buttonToggleGroup: MaterialButtonToggleGroup,
+        @IdRes checkedId: Int,
+        listener: MaterialButtonToggleGroup.OnButtonCheckedListener
+    ) {
+        buttonToggleGroup.removeOnButtonCheckedListener(listener)
+        buttonToggleGroup.check(checkedId)
+        buttonToggleGroup.addOnButtonCheckedListener(listener)
+    }
+
     private fun setDependentSettingsEnabled(serviceEnabled: Boolean, overlayEnabled: Boolean) {
         binding.switchStartOnBoot.isEnabled = serviceEnabled
         binding.buttonEditCleanInterval.isEnabled = serviceEnabled
         binding.switchOverlayEnabled.isEnabled = serviceEnabled
         binding.sliderMaxOverlayParticles.isEnabled = serviceEnabled && overlayEnabled
+        binding.buttonGrowthModelLinear.isEnabled = serviceEnabled && overlayEnabled
+        binding.buttonGrowthModelExponential.isEnabled = serviceEnabled && overlayEnabled
         binding.sliderParticleSize.isEnabled = serviceEnabled && overlayEnabled
         binding.sliderParticleTransparency.isEnabled = serviceEnabled && overlayEnabled
     }

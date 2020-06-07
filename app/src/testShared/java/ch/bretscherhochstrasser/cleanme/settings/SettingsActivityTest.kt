@@ -19,6 +19,7 @@ import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.getString
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionWrapper
+import ch.bretscherhochstrasser.cleanme.overlay.ParticleGrowthModel
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
 import ch.bretscherhochstrasser.cleanme.withFormattedText
 import ch.bretscherhochstrasser.cleanme.withSliderValue
@@ -53,9 +54,10 @@ class SettingsActivityTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        // clean interval and max particle count and size must be set, so the activity can start
+        // clean interval, max particle count, size, and growth model must be set, so the activity can start
         whenever(mockAppSettings.cleanInterval).thenReturn(CleanInterval.TWO_HOURS)
         whenever(mockAppSettings.maxOverlayParticleCount).thenReturn(25)
+        whenever(mockAppSettings.overlayParticleGrowthModel).thenReturn(ParticleGrowthModel.LINEAR)
         whenever(mockAppSettings.overlayParticleSize).thenReturn(24)
         //service and overlay enabled to enable all elements by default
         whenever(mockAppSettings.serviceEnabled).thenReturn(true)
@@ -80,6 +82,8 @@ class SettingsActivityTest {
             onView(withId(R.id.button_edit_clean_interval)).check(matches(isEnabled()))
             onView(withId(R.id.switch_overlay_enabled)).check(matches(isEnabled()))
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
+            onView(withId(R.id.button_growth_model_linear)).check(matches(isEnabled()))
+            onView(withId(R.id.button_growth_model_exponential)).check(matches(isEnabled()))
             onView(withId(R.id.slider_particle_size)).check(matches(isEnabled()))
             onView(withId(R.id.slider_particle_transparency)).check(matches(isEnabled()))
 
@@ -93,6 +97,8 @@ class SettingsActivityTest {
             onView(withId(R.id.button_edit_clean_interval)).check(matches(not(isEnabled())))
             onView(withId(R.id.switch_overlay_enabled)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
+            onView(withId(R.id.button_growth_model_linear)).check(matches(not(isEnabled())))
+            onView(withId(R.id.button_growth_model_exponential)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_particle_size)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_particle_transparency)).check(matches(not(isEnabled())))
         }
@@ -107,6 +113,8 @@ class SettingsActivityTest {
             onView(withId(R.id.button_edit_clean_interval)).check(matches(not(isEnabled())))
             onView(withId(R.id.switch_overlay_enabled)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
+            onView(withId(R.id.button_growth_model_linear)).check(matches(not(isEnabled())))
+            onView(withId(R.id.button_growth_model_exponential)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_particle_size)).check(matches(not(isEnabled())))
             onView(withId(R.id.slider_particle_transparency)).check(matches(not(isEnabled())))
 
@@ -120,6 +128,8 @@ class SettingsActivityTest {
             onView(withId(R.id.button_edit_clean_interval)).check(matches(isEnabled()))
             onView(withId(R.id.switch_overlay_enabled)).check(matches(isEnabled()))
             onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
+            onView(withId(R.id.button_growth_model_linear)).check(matches(isEnabled()))
+            onView(withId(R.id.button_growth_model_exponential)).check(matches(isEnabled()))
             onView(withId(R.id.slider_particle_size)).check(matches(isEnabled()))
             onView(withId(R.id.slider_particle_transparency)).check(matches(isEnabled()))
         }
@@ -303,6 +313,8 @@ class SettingsActivityTest {
     private fun checkOverlaySwitchOn() {
         onView(withId(R.id.switch_overlay_enabled)).check(matches(isChecked()))
         onView(withId(R.id.slider_max_overlay_particles)).check(matches(isEnabled()))
+        onView(withId(R.id.button_growth_model_linear)).check(matches(isEnabled()))
+        onView(withId(R.id.button_growth_model_exponential)).check(matches(isEnabled()))
         onView(withId(R.id.slider_particle_size)).check(matches(isEnabled()))
         onView(withId(R.id.slider_particle_transparency)).check(matches(isEnabled()))
     }
@@ -310,8 +322,38 @@ class SettingsActivityTest {
     private fun checkOverlaySwitchOff() {
         onView(withId(R.id.switch_overlay_enabled)).check(matches(isNotChecked()))
         onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isEnabled())))
+        onView(withId(R.id.button_growth_model_linear)).check(matches(not(isEnabled())))
+        onView(withId(R.id.button_growth_model_exponential)).check(matches(not(isEnabled())))
         onView(withId(R.id.slider_particle_transparency)).check(matches(not(isEnabled())))
         onView(withId(R.id.slider_particle_size)).check(matches(not(isEnabled())))
+    }
+
+    @Test
+    fun testParticleGrowthModel_SetLinear() {
+        whenever(mockAppSettings.overlayParticleGrowthModel).thenReturn(ParticleGrowthModel.EXPONENTIAL)
+
+        launchActivity<SettingsActivity>().use {
+            onView(withId(R.id.button_growth_model_exponential)).check(matches(isChecked()))
+            val switch = onView(withId(R.id.button_growth_model_linear))
+            switch.check(matches(isNotChecked()))
+            switch.perform(scrollTo(), click())
+
+            verify(mockAppSettings).overlayParticleGrowthModel = ParticleGrowthModel.LINEAR
+        }
+    }
+
+    @Test
+    fun testParticleGrowthModel_SetExponential() {
+        whenever(mockAppSettings.overlayParticleGrowthModel).thenReturn(ParticleGrowthModel.LINEAR)
+
+        launchActivity<SettingsActivity>().use {
+            onView(withId(R.id.button_growth_model_linear)).check(matches(isChecked()))
+            val switch = onView(withId(R.id.button_growth_model_exponential))
+            switch.check(matches(isNotChecked()))
+            switch.perform(scrollTo(), click())
+
+            verify(mockAppSettings).overlayParticleGrowthModel = ParticleGrowthModel.EXPONENTIAL
+        }
     }
 
     @Test
