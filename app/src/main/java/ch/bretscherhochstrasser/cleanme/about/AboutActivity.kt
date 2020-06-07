@@ -22,7 +22,7 @@ import toothpick.smoothie.lifecycle.closeOnDestroy
 class AboutActivity : AppCompatActivity() {
 
     companion object {
-        private const val WEB_SITE_URL = "https://bretscherhochstrasser.ch"
+        private const val WEB_SITE_URL = "https://www.bretscherhochstrasser.ch"
         private const val PLAY_STORE_URL =
             "https://play.google.com/store/apps/details?id=ch.bretscherhochstrasser.cleanme"
         private const val EMAIL_ADDRESS = "bretscherhochstrasser@gmail.com"

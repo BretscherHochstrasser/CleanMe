@@ -71,7 +71,7 @@ class AboutActivityTest {
             intended(
                 allOf(
                     hasAction(Intent.ACTION_VIEW),
-                    hasData(Uri.parse("https://bretscherhochstrasser.ch"))
+                    hasData(Uri.parse("https://www.bretscherhochstrasser.ch"))
                 )
             )
         }
