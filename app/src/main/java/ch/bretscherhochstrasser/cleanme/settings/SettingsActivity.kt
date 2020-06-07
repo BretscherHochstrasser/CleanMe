@@ -161,7 +161,7 @@ class SettingsActivity : AppCompatActivity() {
 
         })
         binding.sliderParticleSize.setLabelFormatter {
-            "${it.toInt()}dp"
+            "${it.toInt()}"
         }
 
         binding.sliderParticleTransparency.addOnChangeListener { _, value, fromUser ->
