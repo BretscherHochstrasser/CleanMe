@@ -12,6 +12,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.intending
+import androidx.test.espresso.intent.matcher.ComponentNameMatchers
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -137,6 +138,14 @@ class AboutActivityTest {
                     )
                 )
             )
+        }
+    }
+
+    @Test
+    fun testShowWelcomeWizardAgain() {
+        launchActivity<AboutActivity>().use {
+            onView(withText(R.string.about_button_replay_welcome)).perform(click())
+            intended(hasComponent(ComponentNameMatchers.hasShortClassName(".welcome.WelcomeWizardActivity")))
         }
     }
 

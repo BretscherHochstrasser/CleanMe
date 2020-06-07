@@ -46,6 +46,7 @@
     <string name="about_label_developed_by">developed by:</string>
     <string name="about_button_share">Share</string>
     <string name="about_button_feedback">Feedback</string>
+    <string name="about_button_replay_welcome">Show app intro again</string>
     <string name="about_share_subject">Clean Me App</string>
     <string name="about_share_text">Check out the Clean Me App on Google Play: %s</string>
     <string name="about_share_chooser_title">Share app link</string>

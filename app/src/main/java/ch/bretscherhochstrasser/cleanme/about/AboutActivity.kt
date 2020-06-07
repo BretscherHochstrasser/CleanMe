@@ -13,7 +13,9 @@ import ch.bretscherhochstrasser.cleanme.BuildConfig
 import ch.bretscherhochstrasser.cleanme.R
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.databinding.ActivityAboutBinding
+import ch.bretscherhochstrasser.cleanme.welcome.WelcomeWizardActivity
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.stephentuso.welcome.WelcomeHelper
 import toothpick.ktp.KTP
 import toothpick.smoothie.lifecycle.closeOnDestroy
 
@@ -27,6 +29,8 @@ class AboutActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityAboutBinding
+
+    private val welcomeScreen = WelcomeHelper(this, WelcomeWizardActivity::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +49,8 @@ class AboutActivity : AppCompatActivity() {
         binding.buttonShare.setOnClickListener { shareAppLink() }
 
         binding.buttonFeedback.setOnClickListener { sendFeedbackEmail() }
+
+        binding.buttonReplayWelcome.setOnClickListener { showWelcomeScreenAgain() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -116,5 +122,9 @@ class AboutActivity : AppCompatActivity() {
             Android API: ${Build.VERSION.SDK_INT}
             App version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
             """.trimIndent()
+
+    private fun showWelcomeScreenAgain() {
+        welcomeScreen.forceShow()
+    }
 
 }
