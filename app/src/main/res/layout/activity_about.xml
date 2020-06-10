@@ -10,13 +10,14 @@
     <ImageView
         android:id="@+id/image_app_icon"
         android:layout_width="0dp"
-        android:layout_height="96dp"
+        android:layout_height="0dp"
         android:contentDescription="@string/about_description_app_icon"
         android:src="@drawable/ic_app_icon_round"
         app:layout_constraintBottom_toTopOf="@+id/label_app_name"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHeight_max="96dp"
+        app:layout_constraintHeight_min="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
@@ -60,12 +61,15 @@
 
     <ImageView
         android:id="@+id/image_developer_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:contentDescription="@string/about_description_logo"
         android:src="@drawable/bretscher_hochstrasser_logo"
         app:layout_constraintBottom_toTopOf="@+id/button_share"
+        app:layout_constraintDimensionRatio="w,27:10"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="100dp"
+        app:layout_constraintHeight_min="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/label_developed_by" />
 
