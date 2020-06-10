@@ -30,10 +30,13 @@
     <string name="settings_switch_enable_overlay_label">Show particle screen overlay</string>
     <string name="settings_description_enable_overlay">The overlay displays an ever increasing number of grime particles on the screen on top all application over time</string>
     <string name="settings_label_max_particles">Maximum number of overlay particles: %d</string>
+    <string name="settings_slider_description_max_particles">slider maximum particle count</string>
     <string name="settings_description_max_particles">The maximum number of overlay grime particles to show at time of maximum dirtiness (time to clean)</string>
     <string name="settings_label_particle_size">Overlay particle size: %d</string>
+    <string name="settings_slider_description_particle_size">slider particle size</string>
     <string name="settings_description_particle_size">Adjusts the size of the overlay particles</string>
     <string name="settings_label_particle_transparency">Particle transparency: %d%%</string>
+    <string name="settings_slider_description_particle_transparency">slider particle transparency</string>
     <string name="settings_description_particle_transparency">Adjusts the transparency of the overlay particles</string>
     <string name="settings_label_particle_growth_model">Growth model for particle count</string>
     <string name="settings_description_particle_growth_model">Adjusts how particles are added to the overlay over time</string>

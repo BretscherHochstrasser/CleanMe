@@ -117,6 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:contentDescription="@string/settings_slider_description_max_particles"
                 android:value="50"
                 android:valueFrom="5"
                 android:valueTo="100" />
@@ -184,6 +185,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:contentDescription="@string/settings_slider_description_particle_size"
                 android:value="24"
                 android:valueFrom="10"
                 android:valueTo="50" />
@@ -206,6 +208,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:contentDescription="@string/settings_slider_description_particle_transparency"
                 android:value="50"
                 android:valueFrom="0"
                 android:valueTo="100" />
