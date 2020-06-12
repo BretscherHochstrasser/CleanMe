@@ -22,7 +22,7 @@
     <string name="settings_switch_label_track_device_usage">Track device use time</string>
     <string name="settings_description_track_device_usage">Clean Me needs to track the device use time (screen-on-time) to remind you when it is time to clean the device</string>
     <string name="settings_switch_label_start_on_boot">Start on device boot</string>
-    <string name="settings_description_start_on_boot">Automatically start the CleanMe app when the device is boots up</string>
+    <string name="settings_description_start_on_boot">Automatically start the CleanMe app when the device boots up</string>
     <string name="settings_section_title_reminder">Clean Reminder</string>
     <string name="settings_label_clean_interval">Remind me to clean my device after %s of use</string>
     <string name="settings_button_edit_clean_interval">edit clean reminder interval</string>
