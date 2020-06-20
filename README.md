@@ -8,10 +8,10 @@ Additionally, the app can display a screen overlay with particles that increase 
 ## Key Features
 * Configurable device use time until clean reminder
 * Particle overlay with customisable
- * particle size
- * maximum number of particles
- * particle transparency
- * growth rate (linear or exponential)
+  * particle size
+  * maximum number of particles
+  * particle transparency
+  * growth rate (linear or exponential)
 * Quick action to enable/disable particle overlay from service notification
 * Explanatory welcome wizard
 
