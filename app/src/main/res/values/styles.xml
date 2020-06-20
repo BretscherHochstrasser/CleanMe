@@ -14,4 +14,10 @@
         <item name="android:textColorLink">@color/primaryColor</item>
     </style>
 
+    <!-- Custom WelcomeScreenTheme to override button texts for translations -->
+    <style name="CleanMeWelcomeScreenTheme" parent="WelcomeScreenTheme">
+        <item name="welcomeButtonDoneText">@string/welcome_button_done</item>
+        <item name="welcomeButtonSkipText">@string/welcome_button_skip</item>
+    </style>
+
 </resources>

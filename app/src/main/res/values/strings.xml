@@ -11,6 +11,8 @@
     <string name="welcome_clean_and_reset_text">Clean your device and click the \"clean now\" button to reset the timer.</string>
     <string name="welcome_overlay_title">Particle overlay</string>
     <string name="welcome_overlay_text">Clean Me can display an overlay on top of all apps that fills up with particles over time to remind you that your device screen gets dirty by using it. The overlay is off by default. You can turn it on in the settings.</string>
+    <string name="welcome_button_done">Done</string>
+    <string name="welcome_button_skip">Skip</string>
 
     <string name="main_label_time_until_clean">use time remaining until clean reminder</string>
     <string name="main_label_time_since_interval">use time since clean reminder</string>

@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Clean Me</string>
+
+    <string name="welcome_intro_title">Wilkommen in der Clean Me App</string>
+    <string name="welcome_intro_text">Clean Me wird dich dran erinnern, dein Gerät regelmässig zu reinigen.</string>
+    <string name="welcome_track_use_title">Nutzungszeit stoppen</string>
+    <string name="welcome_track_use_text">Clean Me stoppt die Zeit, in der du dein Gerät benutzt. Die Nutzungszeit startet, wenn der Bildschirm eingeschaltet einschaltet und stoppt, wenn der Bildschirm wieder ausschaltet.</string>
+    <string name="welcome_clean_reminder_title">Reinigungserinnerung</string>
+    <string name="welcome_clean_reminder_text">Du erhälst eine Erinnerung, dein Gerät zu reinigen, wenn du es für 2 Stunden benutzt hast.\nDu kannst das Erinnerungsintervall in den Einstellungen ändern.</string>
+    <string name="welcome_clean_and_reset_title">Gerät reinigen, Timer zurücksetzen</string>
+    <string name="welcome_clean_and_reset_text">Reinige dein Gerät und klicke auf \"Jetzt Reinigen\", um die Nutzungszeit zurückzusetzen.</string>
+    <string name="welcome_overlay_title">Bildschirm-Overlay</string>
+    <string name="welcome_overlay_text">Clean Me kann ein Bildschirm-Overlay über allen Apps anzeigen, der sich mit der Zeit mit Partikeln füllt. Dies soll dich zusätzlich daran erinnern, dass dein Gerät durch die Benutzung dreckiger wird.\nDer Bildschirm-Overlay ist in der Grundeinstellung ausgeschaltet. Du kannst ihn in den Einstellungen einschalten.</string>
+    <string name="welcome_button_done">Fertig</string>
+    <string name="welcome_button_skip">Überspringen</string>
+
+    <string name="main_label_time_until_clean">Nutzungszeit übrig bis zur Erinnerung</string>
+    <string name="main_label_time_since_interval">Nutzungszeit seit der Erinnerung</string>
+    <string name="main_button_clean_reset">Jetzt Reinigen</string>
+    <string name="main_menu_about">App Info</string>
+
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_section_title_general">Allgemein</string>
+    <string name="settings_switch_label_track_device_usage">Nutzungszeit stoppen</string>
+    <string name="settings_description_track_device_usage">Clean Me muss die Nutzungszeit des Gerätes stoppen (Zeit mit Bildschirm an), um dich erinnern zu können, wenn es Zeit ist, dein Gerät zu reinigen.</string>
+    <string name="settings_switch_label_start_on_boot">Auto-Start bei Gerätestart</string>
+    <string name="settings_description_start_on_boot">Starte die Clean Me App automatisch, wenn das Gerät hochfährt.</string>
+    <string name="settings_section_title_reminder">Erinnerung</string>
+    <string name="settings_label_clean_interval">Erinnere mich, das Gerät zu reinigen, nachdem ich es für %s benutzt habe.</string>
+    <string name="settings_button_edit_clean_interval">Intervall ändern</string>
+    <string name="settings_section_title_overlay">Partikel-Overlay</string>
+    <string name="settings_switch_enable_overlay_label">Zeige den Bidschirm-Overlay</string>
+    <string name="settings_description_enable_overlay">Zeige über allen Apps eine steigende Anzahl Verschmutzungspartikel an, je länger das Gerät benutzt wurde.</string>
+    <string name="settings_label_max_particles">Maximale Partikelzahl: %d</string>
+    <string name="settings_slider_description_max_particles">Slider maximale Partikelzahl</string>
+    <string name="settings_description_max_particles">Die Anzahl Partikel, die bei maximaler Verschmutzung (Zeitpunkt der Erinnerung) angezeigt werden.</string>
+    <string name="settings_label_particle_size">Partikelgrösse: %d</string>
+    <string name="settings_slider_description_particle_size">Slider Partikelgrösse</string>
+    <string name="settings_description_particle_size">Ändert die Partikelgrösse auf dem Bildschirm-Overlay.</string>
+    <string name="settings_label_particle_transparency">Partikeltransparenz: %d%%</string>
+    <string name="settings_slider_description_particle_transparency">Slider Partikeltransparenz</string>
+    <string name="settings_description_particle_transparency">Ändert die Transparenz der Partikel auf dem Bildschirm-Overlay.</string>
+    <string name="settings_label_particle_growth_model">Wachstumsfunktion der Partikelzahl</string>
+    <string name="settings_description_particle_growth_model">Legt fest, wie die Anzahl der Partikel über die Zeit wächst.</string>
+    <string name="settings_button_overlay_growth_model_linear">Linear</string>
+    <string name="settings_button_overlay_growth_model_exponential">Exponentiell</string>
+
+    <string name="about_title">App Info</string>
+    <string name="about_description_app_icon">App-Icon</string>
+    <string name="about_description_logo">Bretscher Hochstrasser Logo</string>
+    <string name="about_label_developed_by">Entwickelt von:</string>
+    <string name="about_button_share">Teilen</string>
+    <string name="about_button_feedback">Feedback</string>
+    <string name="about_button_replay_welcome">Zeige App-Intro nochmals</string>
+    <string name="about_share_subject">Clean Me App</string>
+    <string name="about_share_text">Die Clean Me App auf Google Play: %s</string>
+    <string name="about_share_chooser_title">App-Link Teilen</string>
+    <string name="about_menu_3rd_party_licenses">Open Source Lizenzen</string>
+    <string name="about_feedback_choose_email_app">Email senden mit</string>
+    <string name="about_feedback_no_email_app">Keine Email-App gefunden</string>
+    <string name="about_feedback_subject">Clean Me App - Feedback</string>
+
+    <string name="clean_interval_30min">30 Minuten</string>
+    <string name="clean_interval_1hour">1 Stunde</string>
+    <string name="clean_interval_2hours">2 Stunden</string>
+    <string name="clean_interval_4hours">4 Stunden</string>
+    <string name="clean_interval_6hours">6 Stunden</string>
+    <string name="clean_interval_8hours">8 Stunden</string>
+
+    <string name="notification_channel_name_service">Benachritigungen Service</string>
+    <string name="notification_channel_name_reminder">Benachrigigungen Erinnerung</string>
+    <string name="notification_service_title">Clean Me läuft</string>
+    <string name="notification_service_text_time_until_clean">Nutzungzeit bis nächste Reinigung: %s</string>
+    <string name="notification_service_text_time_since_interval">Nutzungszeit seit Erinnerung: %s</string>
+    <string name="notification_service_action_hide_overlay">Overlay Aus</string>
+    <string name="notification_service_action_show_overlay">Overlay Ein</string>
+    <string name="notification_service_action_settings">Einstellungen</string>
+    <string name="notification_reminder_title">Zeit zum Reinigen!</string>
+    <string name="notification_reminder_text">Dies ist deine Erinnerung, das Gerät zu reinigen.</string>
+
+</resources>
