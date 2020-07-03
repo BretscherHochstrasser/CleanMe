@@ -65,8 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/settings_label_clean_interval"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                android:text="@string/settings_label_clean_interval" />
 
             <Button
                 android:id="@+id/button_edit_clean_interval"
