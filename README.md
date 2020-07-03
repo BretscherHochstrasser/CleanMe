@@ -1,4 +1,6 @@
 # Clean Me App
+![latest tag](https://img.shields.io/github/v/tag/bretscherhochstrasser/cleanme?label=latest%20tag)
+
 Clean Me is an Android app that reminds the user to regularly clean the device after it has been used for some time.
 
 Additionally, the app can display a screen overlay with particles that increase in number over the devices use time as a reminder how the device gets dirtier over time.
@@ -34,11 +36,11 @@ Once the user clicks the *Clean Now* button on the main screen, the device usage
 ### Build with gradle
 1. Clone the git repo
 2. Either set the `ANDROID_SDK_ROOT` environment variable or create a `local.properties` file with a `sdk.dir` property and point it to your Android SDK installation
-3. build the app with `gralew app:assembleDebug` or drectly run it with `gralew app:installDebug`
+3. build the app with `gradlew app:assembleDebug` or drectly run it with `gradlew app:installDebug`
 
 ### Testing
 
-To run all unit tests run `gralew app:testDebugUnitTest`. This will run all tests from **app/src/test** and **app/src/testShared**.
+To run all unit tests run `gradlew app:testDebugUnitTest`. This will run all tests from **app/src/test** and **app/src/testShared**.
 
 To run connected tests on a device or emulator run `gralew app:connectedAndroidTest`. This will run all tests from **app/src/androidTest** and **app/src/testShared** on a emulator or device.
 
