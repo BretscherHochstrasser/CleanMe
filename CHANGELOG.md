@@ -1,5 +1,13 @@
 # Change Log
 
+## Version 0.9.0
+
+*2020-07-05*
+
+* Added German translation
+* Improved particle positioning 
+* Fix: Small formatting error on settings screen 
+
 ## Version 0.8.0
 
 *2020-06-12*
