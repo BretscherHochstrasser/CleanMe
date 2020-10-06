@@ -1,0 +1,6 @@
+<resources>
+    <!-- set primary dark color to black in dark mode, so the status bar is black -->
+    <color name="primaryDarkColor">#000000</color>
+    <!-- make onBackgroundLight darker on the dark mode background -->
+    <color name="onBackgroundLightColor">#444444</color>
+</resources>
