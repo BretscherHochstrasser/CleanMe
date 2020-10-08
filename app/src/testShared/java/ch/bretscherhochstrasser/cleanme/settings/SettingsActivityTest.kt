@@ -3,8 +3,13 @@ package ch.bretscherhochstrasser.cleanme.settings
 import android.app.Activity
 import android.app.Instrumentation
 import android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION
+import android.view.InputDevice
+import android.view.MotionEvent
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.GeneralClickAction
+import androidx.test.espresso.action.Press
+import androidx.test.espresso.action.Tap
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -245,6 +250,46 @@ class SettingsActivityTest {
     }
 
     @Test
+    fun testEnableOverlay_SwitchOn_NoPermission_CancelInfoDialogButton() {
+        whenever(mockAppSettings.overlayEnabled).thenReturn(false)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(false)
+
+        launchActivity<SettingsActivity>().use {
+            checkOverlaySwitchOff()
+
+            onView(withId(R.id.switch_overlay_enabled)).perform(scrollTo(), click())
+            checkPermissionInfoDialogShown()
+            onView(withId(android.R.id.button2)).inRoot(isDialog()).perform(click())
+
+            verify(mockAppSettings).overlayEnabled = false
+            checkOverlaySwitchOff()
+        }
+    }
+
+    @Test
+    fun testEnableOverlay_SwitchOn_NoPermission_CancelInfoDialogOutside() {
+        whenever(mockAppSettings.overlayEnabled).thenReturn(false)
+        whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(false)
+
+        launchActivity<SettingsActivity>().use {
+            checkOverlaySwitchOff()
+
+            onView(withId(R.id.switch_overlay_enabled)).perform(scrollTo(), click())
+            checkPermissionInfoDialogShown()
+            // click top left of screen at 100/100, outside of the dialog window
+            onView(withText(R.string.settings_dialog_overlay_permission_info_message)).perform(
+                GeneralClickAction(
+                    Tap.SINGLE, { FloatArray(2) { 100f } }, Press.FINGER,
+                    InputDevice.SOURCE_UNKNOWN, MotionEvent.BUTTON_PRIMARY, null
+                )
+            )
+
+            verify(mockAppSettings).overlayEnabled = false
+            checkOverlaySwitchOff()
+        }
+    }
+
+    @Test
     fun testEnableOverlay_SwitchOn_NoPermission_GrantedInSettings() {
         whenever(mockAppSettings.overlayEnabled).thenReturn(false)
         whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(false)
@@ -264,6 +309,8 @@ class SettingsActivityTest {
             checkOverlaySwitchOff()
 
             onView(withId(R.id.switch_overlay_enabled)).perform(scrollTo(), click())
+            checkPermissionInfoDialogShown()
+            onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click())
 
             verify(mockAppSettings).overlayEnabled = true
             verify(mockUsageStatsManager).updateUsageStats()
@@ -288,6 +335,8 @@ class SettingsActivityTest {
             checkOverlaySwitchOff()
 
             onView(withId(R.id.switch_overlay_enabled)).perform(scrollTo(), click())
+            checkPermissionInfoDialogShown()
+            onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click())
 
             verify(mockAppSettings).overlayEnabled = false
             checkOverlaySwitchOff()
@@ -326,6 +375,19 @@ class SettingsActivityTest {
         onView(withId(R.id.button_growth_model_exponential)).check(matches(not(isEnabled())))
         onView(withId(R.id.slider_particle_transparency)).check(matches(not(isEnabled())))
         onView(withId(R.id.slider_particle_size)).check(matches(not(isEnabled())))
+    }
+
+    private fun checkPermissionInfoDialogShown() {
+        onView(withText(R.string.settings_dialog_overlay_permission_info_title))
+            .inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText(R.string.settings_dialog_overlay_permission_info_message))
+            .inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withId(android.R.id.button1))
+            .inRoot(isDialog()).check(matches(
+                withText(R.string.settings_dialog_overlay_permission_info_open_settings_button)))
+        onView(withId(android.R.id.button2))
+            .inRoot(isDialog()).check(matches(
+                withText(android.R.string.cancel)))
     }
 
     @Test

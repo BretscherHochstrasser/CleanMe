@@ -44,6 +44,9 @@
     <string name="settings_description_particle_growth_model">Adjusts how particles are added to the overlay over time</string>
     <string name="settings_button_overlay_growth_model_linear">Linear</string>
     <string name="settings_button_overlay_growth_model_exponential">Exponential</string>
+    <string name="settings_dialog_overlay_permission_info_title">Overlay Permission</string>
+    <string name="settings_dialog_overlay_permission_info_message">Clean Me requires permission by the system to display the particle overlay on top of all applications. You can give this permission in the system settings.</string>
+    <string name="settings_dialog_overlay_permission_info_open_settings_button">open system settings</string>
 
     <string name="about_title">About</string>
     <string name="about_description_app_icon">app icon</string>
