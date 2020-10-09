@@ -15,3 +15,8 @@ jobs:
         run: ./gradlew assembleDebug
       - name: Unit test the app
         run: ./gradlew testDebugUnitTest
+      - name: Upload unit test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit-test-report
+          path: app/build/reports/tests/testDebugUnitTest/
