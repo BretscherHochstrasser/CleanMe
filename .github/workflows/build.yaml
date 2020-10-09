@@ -1,0 +1,40 @@
+# Main build workflow: compile and test
+name: Build
+
+# Triggers the workflow on push or pull request events
+on: [push, pull_request]
+
+jobs:
+
+  # compile, assemble and run unit tests (incl. Robolectric)
+  assemble-and-unitTest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Assemble the app
+        run: ./gradlew assembleDebug
+      - name: Unit test the app
+        run: ./gradlew testDebugUnitTest
+      - name: Upload unit test report
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit-test-report
+          path: app/build/reports/tests/testDebugUnitTest/
+
+  # Run connected tests on Android emulator
+  connected-test:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Run connected tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew connectedDebugAndroidTest
+      - name: Upload connected test report
+        uses: actions/upload-artifact@v2
+        with:
+          name: connected-test-report
+          path: app/build/reports/androidTests/connected/
