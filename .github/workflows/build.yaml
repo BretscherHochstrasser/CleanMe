@@ -1,0 +1,17 @@
+# Main build workflow: compile and test
+name: Build
+
+# Triggers the workflow on push or pull request events
+on: [push, pull_request]
+
+jobs:
+  # compile, assemble and run unit tests (incl. Robolectric)
+  assemble-and-unitTest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Build (assemble) the app
+        run: ./gradlew assembleDebug
+      - name: Unit test the app
+        run: ./gradlew testDebugUnitTest
