@@ -26,6 +26,7 @@ Additionally, the app can display a screen overlay with particles that increase 
   * growth rate (linear or exponential)
 * Quick action to enable/disable particle overlay from service notification
 * Explanatory welcome wizard
+* Dark mode support
 
 ## How it works
 Clean Me runs a foreground service that listens to screen-on/screen-off event broadcasts by the Android operating system.
@@ -41,7 +42,7 @@ Once the user clicks the *Clean Now* button on the main screen, the device usage
 ### Build with Android Studio
 1. Clone the git repo
 2. Import the project into AndroidStudio
-3. Complie the app and run the app on a Android emulator or connected device
+3. Compile the app and run the app on a Android emulator or connected device
 
 ### Build with gradle
 1. Clone the git repo
@@ -52,7 +53,7 @@ Once the user clicks the *Clean Now* button on the main screen, the device usage
 
 To run all unit tests run `gradlew app:testDebugUnitTest`. This will run all tests from **app/src/test** and **app/src/testShared**.
 
-To run connected tests on a device or emulator run `gralew app:connectedAndroidTest`. This will run all tests from **app/src/androidTest** and **app/src/testShared** on a emulator or device.
+To run connected tests on a device or emulator run `gradlew app:connectedAndroidTest`. This will run all tests from **app/src/androidTest** and **app/src/testShared** on a emulator or device.
 
 ### Release build
 Building for release requires a correctly configured signing configuration. This requires the following gradle properties to be set:
