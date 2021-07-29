@@ -4,8 +4,7 @@ buildscript {
     ext.kotlin_version = '1.5.21'
     repositories {
         google()
-        jcenter()
-        
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.0'
@@ -18,8 +17,9 @@ buildscript {
 allprojects {
     repositories {
         google()
+        mavenCentral()
+        // we must keep the jcenter repo for now because of com.stephentuso:welcome
         jcenter()
-        
     }
 }
 
