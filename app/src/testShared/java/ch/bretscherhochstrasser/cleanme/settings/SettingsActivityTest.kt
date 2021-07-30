@@ -28,8 +28,6 @@ import ch.bretscherhochstrasser.cleanme.overlay.ParticleGrowthModel
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
 import ch.bretscherhochstrasser.cleanme.withFormattedText
 import ch.bretscherhochstrasser.cleanme.withSliderValue
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
@@ -38,6 +36,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import toothpick.Toothpick
 import toothpick.testing.ToothPickTestModule
 

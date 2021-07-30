@@ -16,7 +16,6 @@ import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.service.ReminderManager
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import ch.bretscherhochstrasser.cleanme.settings.CleanInterval
-import com.nhaarman.mockitokotlin2.whenever
 import com.stephentuso.welcome.WelcomeSharedPreferencesHelper
 import org.junit.After
 import org.junit.Before
@@ -24,6 +23,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.whenever
 import toothpick.Toothpick
 import toothpick.testing.ToothPickTestModule
 import org.hamcrest.CoreMatchers.`is` as Is
