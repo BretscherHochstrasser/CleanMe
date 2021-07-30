@@ -13,7 +13,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
-import ch.bretscherhochstrasser.cleanme.service.ReminderManager
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
 import ch.bretscherhochstrasser.cleanme.settings.CleanInterval
 import com.stephentuso.welcome.WelcomeSharedPreferencesHelper
@@ -22,7 +21,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.whenever
 import toothpick.Toothpick
 import toothpick.testing.ToothPickTestModule
@@ -30,7 +28,7 @@ import org.hamcrest.CoreMatchers.`is` as Is
 
 
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest {
+class MainActivityTest: MockitoTest() {
 
     @Mock
     private lateinit var mockAppSettings: AppSettings
@@ -38,12 +36,8 @@ class MainActivityTest {
     @Mock
     private lateinit var mockUsageStatsManager: DeviceUsageStatsManager
 
-    @Mock
-    private lateinit var mockReminderManager: ReminderManager
-
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
         // clean interval and device usage stats are required for the activity to start up
         whenever(mockAppSettings.cleanInterval).thenReturn(CleanInterval.TWO_HOURS)
         whenever(mockUsageStatsManager.deviceUsageStats).thenReturn(

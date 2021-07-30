@@ -19,15 +19,12 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import ch.bretscherhochstrasser.cleanme.R
+import ch.bretscherhochstrasser.cleanme.*
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
-import ch.bretscherhochstrasser.cleanme.getString
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionWrapper
 import ch.bretscherhochstrasser.cleanme.overlay.ParticleGrowthModel
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
-import ch.bretscherhochstrasser.cleanme.withFormattedText
-import ch.bretscherhochstrasser.cleanme.withSliderValue
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
@@ -35,14 +32,13 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import toothpick.Toothpick
 import toothpick.testing.ToothPickTestModule
 
 @RunWith(AndroidJUnit4::class)
-class SettingsActivityTest {
+class SettingsActivityTest: MockitoTest() {
 
     @Mock
     private lateinit var mockAppSettings: AppSettings
@@ -58,7 +54,6 @@ class SettingsActivityTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
         // clean interval, max particle count, size, and growth model must be set, so the activity can start
         whenever(mockAppSettings.cleanInterval).thenReturn(CleanInterval.TWO_HOURS)
         whenever(mockAppSettings.maxOverlayParticleCount).thenReturn(25)
