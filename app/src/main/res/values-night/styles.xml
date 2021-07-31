@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- The actual app theme dark-mode version -->
+    <style name="AppTheme" parent="AppTheme.Base">
+        <!-- we need a custom action bar theme to make the action bar a bit lighter than material theme default-->
+        <item name="actionBarTheme">@style/ThemeOverlay.AppTheme.ActionBar.Night</item>
+    </style>
+
+    <!-- a tweaked action bar theme overlay to tweak the surface color (action bar color) -->
+    <style name="ThemeOverlay.AppTheme.ActionBar.Night" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="colorSurface">@color/actionBarNightSurfaceColor</item>
+    </style>
+</resources>

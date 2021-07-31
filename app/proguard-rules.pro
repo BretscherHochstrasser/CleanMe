@@ -50,5 +50,6 @@
 -keep @javax.inject.Singleton class *
 # You need to keep your custom scopes too, e.g.
 # -keepnames @foo.bar.ActivityScope class *
-
 -keepnames @ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope class *
+# keep qualifier annotation names
+-keepnames @javax.inject.Qualifier class *
