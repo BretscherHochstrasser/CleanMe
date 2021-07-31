@@ -1,5 +1,11 @@
 # Change Log
 
+## Version 0.10.0
+
+*2021-07-31*
+
+* Added dark mode
+
 ## Version 0.9.0
 
 *2020-07-05*

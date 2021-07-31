@@ -11,7 +11,7 @@ android {
         applicationId "ch.bretscherhochstrasser.cleanme"
         minSdkVersion 15
         targetSdkVersion 30
-        versionName "0.9.0"
+        versionName "0.10.0"
         versionCode versionCodeFromName(versionName)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
