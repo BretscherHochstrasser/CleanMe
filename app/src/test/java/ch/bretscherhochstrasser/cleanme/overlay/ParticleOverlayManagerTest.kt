@@ -1,18 +1,15 @@
 package ch.bretscherhochstrasser.cleanme.overlay
 
 import android.view.WindowManager
+import ch.bretscherhochstrasser.cleanme.MockitoTest
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionWrapper
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
-import com.nhaarman.mockitokotlin2.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.*
 
-/**
- *
- */
-class ParticleOverlayManagerTest {
+class ParticleOverlayManagerTest: MockitoTest() {
 
     @Mock
     private lateinit var mockParticleOverlay: ParticleOverlayView
@@ -37,8 +34,6 @@ class ParticleOverlayManagerTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
-
         // default mock behavior
         whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(true)
         whenever(mockParticleGenerator.generateParticle()).thenReturn(testParticle)

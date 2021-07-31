@@ -1,25 +1,25 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.4.10'
+    ext.kotlin_version = '1.5.21'
     repositories {
         google()
-        jcenter()
-        
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.android.tools.build:gradle:7.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
-        classpath 'com.google.android.gms:oss-licenses-plugin:0.10.2'
+        classpath 'com.google.android.gms:oss-licenses-plugin:0.10.4'
     }
 }
 
 allprojects {
     repositories {
         google()
+        mavenCentral()
+        // we must keep the jcenter repo for now because of com.stephentuso:welcome
         jcenter()
-        
     }
 }
 

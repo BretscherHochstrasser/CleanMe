@@ -26,6 +26,11 @@ jobs:
   connected-test:
     runs-on: macos-latest
     steps:
+      - name: Setup JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
       - name: Checkout the code
         uses: actions/checkout@v2
       - name: Run connected tests
