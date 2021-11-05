@@ -72,13 +72,6 @@
     <string name="about_feedback_no_email_app">Keine Email-App gefunden</string>
     <string name="about_feedback_subject">Clean Me App - Feedback</string>
 
-    <string name="clean_interval_30min">30 Minuten</string>
-    <string name="clean_interval_1hour">1 Stunde</string>
-    <string name="clean_interval_2hours">2 Stunden</string>
-    <string name="clean_interval_4hours">4 Stunden</string>
-    <string name="clean_interval_6hours">6 Stunden</string>
-    <string name="clean_interval_8hours">8 Stunden</string>
-
     <string name="notification_channel_name_service">Benachritigungen Service</string>
     <string name="notification_channel_name_reminder">Benachrigigungen Erinnerung</string>
     <string name="notification_service_title">Clean Me läuft</string>
