@@ -25,4 +25,11 @@
         <item name="welcomeButtonSkipText">@string/welcome_button_skip</item>
     </style>
 
+    <!-- Override TimeDurationPickerDialog's style to apply primary color to duration background -->
+    <style name="Widget.TimeDurationPicker.Dialog">
+        <item name="durationDisplayBackground">?colorPrimary</item>
+        <item name="textAppearanceDisplay">@style/TextAppearance.TimeDurationPicker.Display.Large.Dark</item>
+        <item name="textAppearanceUnit">@style/TextAppearance.TimeDurationPicker.Unit.Large.Dark</item>
+    </style>
+
 </resources>

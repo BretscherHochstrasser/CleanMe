@@ -45,7 +45,7 @@ class NotificationHelper(
     fun createServiceNotification(deviceUsageStats: DeviceUsageStats): Notification {
         val title = context.getString(R.string.notification_service_title)
         val timeUntilClean =
-            appSettings.cleanInterval.durationMillis - deviceUsageStats.deviceUseDuration
+            appSettings.cleanInterval.toMillis() - deviceUsageStats.deviceUseDuration
         val formattedUseTime =
             formatCountdownHoursAndMinutes(
                 timeUntilClean

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.IBinder
 import android.view.WindowManager
 import androidx.lifecycle.LifecycleService
-import androidx.lifecycle.Observer
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageObserver
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStats
@@ -54,7 +53,7 @@ class CleanMeService : LifecycleService() {
             .inject(this)
 
         notificationHelper.createNotificationChannels()
-        deviceUsageStatsManager.deviceUsageStats.observe(this, Observer {
+        deviceUsageStatsManager.deviceUsageStats.observe(this, {
             onDeviceUsageUpdate(it)
         })
         Timber.d("Service created")
@@ -112,7 +111,7 @@ class CleanMeService : LifecycleService() {
             overlayManager.showOverlay()
             overlayManager.update(
                 deviceUsageStats.deviceUseDuration,
-                appSettings.cleanInterval.durationMillis
+                appSettings.cleanInterval.toMillis()
             )
         } else {
             overlayManager.hideOverlay()

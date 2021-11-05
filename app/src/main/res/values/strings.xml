@@ -27,6 +27,15 @@
     <string name="settings_description_start_on_boot">Automatically start the CleanMe app when the device boots up</string>
     <string name="settings_section_title_reminder">Clean Reminder</string>
     <string name="settings_label_clean_interval">Remind me to clean my device after %s of use</string>
+    <plurals name="settings_label_clean_interval_hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <string name="settings_label_clean_interval_and"> and</string>
+    <plurals name="settings_label_clean_interval_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
     <string name="settings_button_edit_clean_interval">edit clean reminder interval</string>
     <string name="settings_section_title_overlay">Particle Overlay</string>
     <string name="settings_switch_enable_overlay_label">Show particle screen overlay</string>
@@ -62,13 +71,6 @@
     <string name="about_feedback_choose_email_app">Send email with</string>
     <string name="about_feedback_no_email_app">No email app found</string>
     <string name="about_feedback_subject">Clean Me App - Feedback</string>
-
-    <string name="clean_interval_30min">30 minutes</string>
-    <string name="clean_interval_1hour">1 hour</string>
-    <string name="clean_interval_2hours">2 hours</string>
-    <string name="clean_interval_4hours">4 hours</string>
-    <string name="clean_interval_6hours">6 hours</string>
-    <string name="clean_interval_8hours">8 hours</string>
 
     <string name="notification_channel_name_service">Service notifications</string>
     <string name="notification_channel_name_reminder">Reminder notifications</string>

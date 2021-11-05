@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import ch.bretscherhochstrasser.cleanme.overlay.ParticleGrowthModel
+import org.threeten.bp.Duration
 import toothpick.InjectConstructor
 import javax.inject.Singleton
 
@@ -26,6 +27,7 @@ class AppSettings(@AppContext private val context: Context) {
         private const val PREF_OVERLAY_PARICLE_GROWTH_MODEL = "overlay_particle_growth_model"
         private const val PREF_START_ON_BOOT = "start_on_boot"
 
+        private const val DEFAULT_CLEAN_INTERVAL = 120 // 2 hours
         private const val DEFAULT_MAX_OVERLAY_PARTICLE_COUNT = 25
         private const val DEFAULT_OVERLAY_PARTICLE_ALPHA = 191 // 25% transparency
         private const val DEFAULT_OVERLAY_PARTICLE_SIZE = 24
@@ -59,19 +61,18 @@ class AppSettings(@AppContext private val context: Context) {
         }
 
     /**
-     * Clean interval in minutes
+     * Clean interval duration
      */
-    var cleanInterval: CleanInterval
+    var cleanInterval: Duration
         get() {
-            return CleanInterval.fromMinutes(
-                settings.getInt(
-                    PREF_CLEAN_INTERVAL,
-                    CleanInterval.TWO_HOURS.durationMinutes
-                )
+            val durationInMinutes = settings.getInt(
+                PREF_CLEAN_INTERVAL,
+                DEFAULT_CLEAN_INTERVAL
             )
+            return Duration.ofMinutes(durationInMinutes.toLong())
         }
         set(value) {
-            settings.edit().putInt(PREF_CLEAN_INTERVAL, value.durationMinutes).apply()
+            settings.edit().putInt(PREF_CLEAN_INTERVAL, value.toMinutes().toInt()).apply()
         }
 
     /**

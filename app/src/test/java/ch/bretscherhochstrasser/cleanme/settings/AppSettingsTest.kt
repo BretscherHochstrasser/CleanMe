@@ -7,6 +7,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.threeten.bp.Duration
 import org.hamcrest.CoreMatchers.`is` as Is
 
 @RunWith(AndroidJUnit4::class)
@@ -23,7 +24,7 @@ class AppSettingsTest {
     fun testDefaults() {
         assertThat(appSettings.serviceEnabled, Is(true))
         assertThat(appSettings.startOnBoot, Is(false))
-        assertThat(appSettings.cleanInterval, Is(CleanInterval.TWO_HOURS))
+        assertThat(appSettings.cleanInterval, Is(Duration.ofHours(2)))
         assertThat(appSettings.overlayEnabled, Is(false))
         assertThat(appSettings.maxOverlayParticleCount, Is(25))
         assertThat(appSettings.overlayParticleAlpha, Is(191))
@@ -46,8 +47,8 @@ class AppSettingsTest {
 
     @Test
     fun testCleanInterval() {
-        appSettings.cleanInterval = CleanInterval.SIX_HOURS
-        assertThat(appSettings.cleanInterval, Is(CleanInterval.SIX_HOURS))
+        appSettings.cleanInterval = Duration.ofHours(6)
+        assertThat(appSettings.cleanInterval, Is(Duration.ofHours(6)))
     }
 
     @Test

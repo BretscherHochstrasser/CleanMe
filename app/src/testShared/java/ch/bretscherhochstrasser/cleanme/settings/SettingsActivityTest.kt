@@ -5,6 +5,7 @@ import android.app.Instrumentation
 import android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION
 import android.view.InputDevice
 import android.view.MotionEvent
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.GeneralClickAction
@@ -23,6 +24,7 @@ import ch.bretscherhochstrasser.cleanme.*
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionWrapper
+import ch.bretscherhochstrasser.cleanme.helper.formatCleanInterval
 import ch.bretscherhochstrasser.cleanme.overlay.ParticleGrowthModel
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
 import org.hamcrest.CoreMatchers.allOf
@@ -34,11 +36,12 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.threeten.bp.Duration
 import toothpick.Toothpick
 import toothpick.testing.ToothPickTestModule
 
 @RunWith(AndroidJUnit4::class)
-class SettingsActivityTest: MockitoTest() {
+class SettingsActivityTest : MockitoTest() {
 
     @Mock
     private lateinit var mockAppSettings: AppSettings
@@ -55,7 +58,7 @@ class SettingsActivityTest: MockitoTest() {
     @Before
     fun setUp() {
         // clean interval, max particle count, size, and growth model must be set, so the activity can start
-        whenever(mockAppSettings.cleanInterval).thenReturn(CleanInterval.TWO_HOURS)
+        whenever(mockAppSettings.cleanInterval).thenReturn(Duration.ofHours(2))
         whenever(mockAppSettings.maxOverlayParticleCount).thenReturn(25)
         whenever(mockAppSettings.overlayParticleGrowthModel).thenReturn(ParticleGrowthModel.LINEAR)
         whenever(mockAppSettings.overlayParticleSize).thenReturn(24)
@@ -163,7 +166,7 @@ class SettingsActivityTest: MockitoTest() {
 
     @Test
     fun testSetCleanIntervalSelection() {
-        whenever(mockAppSettings.cleanInterval).thenReturn(CleanInterval.ONE_HOUR)
+        whenever(mockAppSettings.cleanInterval).thenReturn(Duration.ofHours(1))
 
         launchActivity<SettingsActivity>().use {
             val label = onView(withId(R.id.label_clean_interval))
@@ -171,22 +174,35 @@ class SettingsActivityTest: MockitoTest() {
                 matches(
                     withFormattedText(
                         R.string.settings_label_clean_interval,
-                        getString(CleanInterval.ONE_HOUR.text)
+                        formatCleanInterval(
+                            Duration.ofHours(1),
+                            ApplicationProvider.getApplicationContext<App>()
+                        )
                     )
                 )
             )
 
             onView(withId(R.id.button_edit_clean_interval)).perform(scrollTo(), click())
-            //selection dialog opens
-            onView(withText(CleanInterval.FOUR_HOURS.text)).inRoot(isDialog()).perform(click())
+            // selection dialog opens
+            onView(withId(R.id.hours)).inRoot(isDialog()).check(matches(withText("01")))
+            onView(withId(R.id.minutes)).inRoot(isDialog()).check(matches(withText("00")))
+            // enter new time
+            onView(withId(R.id.clear)).inRoot(isDialog()).perform(click())
+            onView(withId(R.id.numPad4)).inRoot(isDialog()).perform(click())
+            onView(withId(R.id.numPad3)).inRoot(isDialog()).perform(click())
+            onView(withId(R.id.numPad0)).inRoot(isDialog()).perform(click())
+            onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click())
 
-            verify(mockAppSettings).cleanInterval = CleanInterval.FOUR_HOURS
+            verify(mockAppSettings).cleanInterval = Duration.ofHours(4).plusMinutes(30)
             verify(mockUsageStatsManager).updateUsageStats()
             label.check(
                 matches(
                     withFormattedText(
                         R.string.settings_label_clean_interval,
-                        getString(CleanInterval.FOUR_HOURS.text)
+                        formatCleanInterval(
+                            Duration.ofHours(4).plusMinutes(30),
+                            ApplicationProvider.getApplicationContext<App>()
+                        )
                     )
                 )
             )
@@ -378,11 +394,17 @@ class SettingsActivityTest: MockitoTest() {
         onView(withText(R.string.settings_dialog_overlay_permission_info_message))
             .inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withId(android.R.id.button1))
-            .inRoot(isDialog()).check(matches(
-                withText(R.string.settings_dialog_overlay_permission_info_open_settings_button)))
+            .inRoot(isDialog()).check(
+                matches(
+                    withText(R.string.settings_dialog_overlay_permission_info_open_settings_button)
+                )
+            )
         onView(withId(android.R.id.button2))
-            .inRoot(isDialog()).check(matches(
-                withText(android.R.string.cancel)))
+            .inRoot(isDialog()).check(
+                matches(
+                    withText(android.R.string.cancel)
+                )
+            )
     }
 
     @Test

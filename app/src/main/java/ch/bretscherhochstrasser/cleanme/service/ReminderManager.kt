@@ -17,14 +17,14 @@ class ReminderManager(
     private val notificationHelper: NotificationHelper
 ) {
 
-    private var reminderShown = false;
+    private var reminderShown = false
 
     /**
      * Checks whether the clean reminder should be shown and triggers the notification if necessary.
      * This function can be safely called every time [DeviceUsageStats] are updated.
      */
     fun showReminderIfRequired(deviceUsageStats: DeviceUsageStats) {
-        if (deviceUsageStats.deviceUseDuration > appSettings.cleanInterval.durationMillis) {
+        if (deviceUsageStats.deviceUseDuration > appSettings.cleanInterval.toMillis()) {
             Timber.d("Device use time > clean interval: clean reminder needed")
             if (reminderShown) {
                 Timber.d("Already showing reminder. Not triggering again.")

@@ -7,7 +7,6 @@ import android.view.MenuItem
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import ch.bretscherhochstrasser.cleanme.about.AboutActivity
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.databinding.ActivityMainBinding
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        deviceUsageStatsManager.deviceUsageStats.observe(this, Observer {
+        deviceUsageStatsManager.deviceUsageStats.observe(this, {
             onUpdateDeviceStats(it)
         })
 
@@ -76,11 +75,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onUpdateDeviceStats(stats: DeviceUsageStats) {
-        val timeUntilNextClean = appSettings.cleanInterval.durationMillis - stats.deviceUseDuration
+        val timeUntilNextClean = appSettings.cleanInterval.toMillis() - stats.deviceUseDuration
         binding.textTimeUntilClean.text = formatCountdownHoursAndMinutes(timeUntilNextClean)
 
         val remainingPercent =
-            (timeUntilNextClean.toFloat() / appSettings.cleanInterval.durationMillis * 100)
+            (timeUntilNextClean.toFloat() / appSettings.cleanInterval.toMillis() * 100)
                 .coerceAtMost(100f)
 
         val waveProgress = (100 - remainingPercent.toInt()).coerceAtLeast(0)

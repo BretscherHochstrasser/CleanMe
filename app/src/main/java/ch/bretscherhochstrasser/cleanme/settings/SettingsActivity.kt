@@ -12,12 +12,15 @@ import ch.bretscherhochstrasser.cleanme.databinding.ActivitySettingsBinding
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionHelper
 import ch.bretscherhochstrasser.cleanme.helper.OverlayPermissionWrapper
+import ch.bretscherhochstrasser.cleanme.helper.formatCleanInterval
 import ch.bretscherhochstrasser.cleanme.overlay.ParticleGrowthModel
 import ch.bretscherhochstrasser.cleanme.service.ServiceHelper
 import com.google.android.material.button.MaterialButtonToggleGroup
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
 import com.google.android.material.switchmaterial.SwitchMaterial
+import mobi.upod.timedurationpicker.TimeDurationPicker
+import mobi.upod.timedurationpicker.TimeDurationPickerDialog
+import org.threeten.bp.Duration
 import toothpick.ktp.KTP
 import toothpick.ktp.binding.bind
 import toothpick.ktp.binding.module
@@ -73,18 +76,17 @@ class SettingsActivity : AppCompatActivity() {
         binding.switchStartOnBoot.setOnCheckedChangeListener(switchStartOnBootListener)
 
         binding.buttonEditCleanInterval.setOnClickListener {
-            MaterialAlertDialogBuilder(this).setSingleChoiceItems(
-                CleanInterval.getTextValues(
-                    this
-                ),
-                appSettings.cleanInterval.ordinal
-            ) { dialog, which ->
-                val selectedCleanInterval = CleanInterval.values()[which]
-                appSettings.cleanInterval = selectedCleanInterval
-                setCleanIntervalLabel(selectedCleanInterval)
-                triggerOverlayRefresh()
-                dialog.dismiss()
-            }.show()
+            TimeDurationPickerDialog(
+                this,
+                { _: TimeDurationPicker, interval: Long ->
+                    val newCleanInterval = Duration.ofMillis(interval)
+                    appSettings.cleanInterval = newCleanInterval
+                    setCleanIntervalLabel(newCleanInterval)
+                    triggerOverlayRefresh()
+                },
+                appSettings.cleanInterval.toMillis(),
+                TimeDurationPicker.HH_MM
+            ).show()
         }
 
         switchOverlayEnabledListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
@@ -258,9 +260,12 @@ class SettingsActivity : AppCompatActivity() {
         usageStatsManager.updateUsageStats()
     }
 
-    private fun setCleanIntervalLabel(cleanInterval: CleanInterval) {
+    private fun setCleanIntervalLabel(cleanInterval: Duration) {
         binding.labelCleanInterval.text =
-            getString(R.string.settings_label_clean_interval, getString(cleanInterval.text))
+            getString(
+                R.string.settings_label_clean_interval,
+                formatCleanInterval(cleanInterval, this)
+            )
     }
 
     private fun setMaxParticleLabel(maxParticleCount: Int) {
