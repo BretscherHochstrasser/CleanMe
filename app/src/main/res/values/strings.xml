@@ -27,6 +27,15 @@
     <string name="settings_description_start_on_boot">Automatically start the CleanMe app when the device boots up</string>
     <string name="settings_section_title_reminder">Clean Reminder</string>
     <string name="settings_label_clean_interval">Remind me to clean my device after %s of use</string>
+    <plurals name="settings_label_clean_interval_hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <string name="settings_label_clean_interval_and"> and</string>
+    <plurals name="settings_label_clean_interval_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
     <string name="settings_button_edit_clean_interval">edit clean reminder interval</string>
     <string name="settings_section_title_overlay">Particle Overlay</string>
     <string name="settings_switch_enable_overlay_label">Show particle screen overlay</string>
