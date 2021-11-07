@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import ch.bretscherhochstrasser.cleanme.annotation.ApplicationScope
 import ch.bretscherhochstrasser.cleanme.deviceusage.DeviceUsageStatsManager
 import ch.bretscherhochstrasser.cleanme.settings.AppSettings
@@ -39,7 +40,12 @@ class NotificationActionReceiver : BroadcastReceiver() {
         private fun getPendingIntent(action: String, context: Context): PendingIntent? {
             val intent = Intent(context, NotificationActionReceiver::class.java)
             intent.action = action
-            return PendingIntent.getBroadcast(context, 0, intent, 0)
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.FLAG_IMMUTABLE
+            } else {
+                0
+            }
+            return PendingIntent.getBroadcast(context, 0, intent, flags)
         }
 
     }

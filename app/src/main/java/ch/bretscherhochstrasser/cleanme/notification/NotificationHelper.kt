@@ -89,9 +89,13 @@ class NotificationHelper(
         }
 
         val settingsIntent = Intent(context, SettingsActivity::class.java)
+        var flags = PendingIntent.FLAG_UPDATE_CURRENT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            flags = flags or PendingIntent.FLAG_IMMUTABLE
+        }
         val settingsPendingIntent: PendingIntent? = TaskStackBuilder.create(context)
             .addNextIntentWithParentStack(settingsIntent)
-            .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+            .getPendingIntent(0, flags)
 
         builder.addAction(
             R.drawable.ic_settings_24dp,
@@ -158,7 +162,12 @@ class NotificationHelper(
             val mainActivityIntent = Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
-            return PendingIntent.getActivity(context, 0, mainActivityIntent, 0)
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.FLAG_IMMUTABLE
+            } else {
+                0
+            }
+            return PendingIntent.getActivity(context, 0, mainActivityIntent, flags)
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
