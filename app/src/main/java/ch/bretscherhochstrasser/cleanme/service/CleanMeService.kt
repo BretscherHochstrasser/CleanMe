@@ -107,7 +107,7 @@ class CleanMeService : LifecycleService() {
     }
 
     private fun refreshOverlay(deviceUsageStats: DeviceUsageStats) {
-        if (appSettings.overlayEnabled && observingDeviceUsage) {
+        if (appSettings.overlaySupported && appSettings.overlayEnabled && observingDeviceUsage) {
             overlayManager.showOverlay()
             overlayManager.update(
                 deviceUsageStats.deviceUseDuration,

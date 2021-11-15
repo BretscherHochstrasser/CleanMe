@@ -71,8 +71,9 @@ class NotificationHelper(
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setContentIntent(mainActivityPendingIntent)
 
-        // only show the show/hide action if the overlay permission is given to the app
-        if (overlayPermissionWrapper.canDrawOverlay) {
+        // only show the show/hide action if overlay is supported and the overlay permission
+        // has been given to the app
+        if (appSettings.overlaySupported && overlayPermissionWrapper.canDrawOverlay) {
             if (appSettings.overlayEnabled) {
                 builder.addAction(
                     R.drawable.ic_overlay_off_24dp,

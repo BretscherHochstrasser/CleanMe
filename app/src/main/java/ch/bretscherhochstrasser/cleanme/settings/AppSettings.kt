@@ -2,6 +2,7 @@ package ch.bretscherhochstrasser.cleanme.settings
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import ch.bretscherhochstrasser.cleanme.annotation.AppContext
 import ch.bretscherhochstrasser.cleanme.overlay.ParticleGrowthModel
 import org.threeten.bp.Duration
@@ -159,5 +160,13 @@ class AppSettings(@AppContext private val context: Context) {
         set(value) {
             settings.edit().putString(PREF_OVERLAY_PARICLE_GROWTH_MODEL, value.name).apply()
         }
+
+    /**
+     * Indicates whether the particle overlay is supported on this device or not.
+     */
+    val overlaySupported: Boolean
+        // Android 12+ does not allow input through overlay windows on other apps.
+        // Therefore the particle overlay feature is unusable and must be disabled :-(
+        get() = Build.VERSION.SDK_INT < Build.VERSION_CODES.S
 
 }

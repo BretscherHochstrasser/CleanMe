@@ -41,6 +41,7 @@ class ParticleOverlayManagerTest: MockitoTest() {
         whenever(mockAppSettings.overlayParticleGrowthModel).thenReturn(ParticleGrowthModel.LINEAR)
         whenever(mockAppSettings.overlayParticleSize).thenReturn(34)
         whenever(mockAppSettings.overlayParticleAlpha).thenReturn(200)
+        whenever(mockAppSettings.overlaySupported).thenReturn(true)
 
         // mock particle stack behavior
         whenever(mockParticleOverlay.particleCount).then { overlayParticleCount }
@@ -147,6 +148,14 @@ class ParticleOverlayManagerTest: MockitoTest() {
     @Test
     fun showOverlay_DoesNothingWhenNoPermission() {
         whenever(mockOverlayPermissionWrapper.canDrawOverlay).thenReturn(false)
+
+        overlayManager.showOverlay()
+        verify(mockWindowManager, never()).addView(any(), any())
+    }
+
+    @Test
+    fun showOverlay_DoesNothingWhenNotSupported() {
+        whenever(mockAppSettings.overlaySupported).thenReturn(false)
 
         overlayManager.showOverlay()
         verify(mockWindowManager, never()).addView(any(), any())

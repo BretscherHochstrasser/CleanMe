@@ -63,6 +63,7 @@ class SettingsActivityTest : MockitoTest() {
         whenever(mockAppSettings.overlayParticleGrowthModel).thenReturn(ParticleGrowthModel.LINEAR)
         whenever(mockAppSettings.overlayParticleSize).thenReturn(24)
         //service and overlay enabled to enable all elements by default
+        whenever(mockAppSettings.overlaySupported).thenReturn(true)
         whenever(mockAppSettings.serviceEnabled).thenReturn(true)
         whenever(mockAppSettings.overlayEnabled).thenReturn(true)
         // overlay permission is enabled by default
@@ -500,4 +501,51 @@ class SettingsActivityTest : MockitoTest() {
             verify(mockUsageStatsManager).updateUsageStats()
         }
     }
+
+    @Test
+    fun testOverlaySupported_Supported() {
+        whenever(mockAppSettings.overlaySupported).thenReturn(true)
+
+        launchActivity<SettingsActivity>().use {
+            onView(withId(R.id.description_overlay_not_supported)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.switch_overlay_enabled)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.description_enable_overlay)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.label_max_overlay_particles)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.slider_max_overlay_particles)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.description_max_overlay_particles)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.label_particle_growth_model)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.button_group_growth_model)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.description_particle_growth_model)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.label_particle_size)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.slider_particle_size)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.description_particle_size)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.label_particle_transparency)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.slider_particle_transparency)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.description_particle_transparency)).perform(scrollTo()).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    fun testOverlaySupported_NotSupported() {
+        whenever(mockAppSettings.overlaySupported).thenReturn(false)
+
+        launchActivity<SettingsActivity>().use {
+            onView(withId(R.id.description_overlay_not_supported)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withId(R.id.switch_overlay_enabled)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.description_enable_overlay)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.label_max_overlay_particles)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.slider_max_overlay_particles)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.description_max_overlay_particles)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.label_particle_growth_model)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.button_group_growth_model)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.description_particle_growth_model)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.label_particle_size)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.slider_particle_size)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.description_particle_size)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.label_particle_transparency)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.slider_particle_transparency)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.description_particle_transparency)).check(matches(not(isDisplayed())))
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package ch.bretscherhochstrasser.cleanme.settings
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.CompoundButton
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
@@ -87,6 +88,14 @@ class SettingsActivity : AppCompatActivity() {
                 appSettings.cleanInterval.toMillis(),
                 TimeDurationPicker.HH_MM
             ).show()
+        }
+
+        if (appSettings.overlaySupported) {
+            binding.descriptionOverlayNotSupported.visibility = View.GONE
+            setAllOverlaySettingsVisibility(View.VISIBLE)
+        } else {
+            binding.descriptionOverlayNotSupported.visibility = View.VISIBLE
+            setAllOverlaySettingsVisibility(View.GONE)
         }
 
         switchOverlayEnabledListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
@@ -254,6 +263,23 @@ class SettingsActivity : AppCompatActivity() {
         binding.buttonGrowthModelExponential.isEnabled = serviceEnabled && overlayEnabled
         binding.sliderParticleSize.isEnabled = serviceEnabled && overlayEnabled
         binding.sliderParticleTransparency.isEnabled = serviceEnabled && overlayEnabled
+    }
+
+    private fun setAllOverlaySettingsVisibility(visibility: Int) {
+        binding.switchOverlayEnabled.visibility = visibility
+        binding.descriptionEnableOverlay.visibility = visibility
+        binding.labelMaxOverlayParticles.visibility = visibility
+        binding.sliderMaxOverlayParticles.visibility = visibility
+        binding.descriptionMaxOverlayParticles.visibility = visibility
+        binding.labelParticleGrowthModel.visibility = visibility
+        binding.buttonGroupGrowthModel.visibility = visibility
+        binding.descriptionParticleGrowthModel.visibility = visibility
+        binding.labelParticleSize.visibility = visibility
+        binding.sliderParticleSize.visibility = visibility
+        binding.descriptionParticleSize.visibility = visibility
+        binding.labelParticleTransparency.visibility = visibility
+        binding.sliderParticleTransparency.visibility = visibility
+        binding.descriptionParticleTransparency.visibility = visibility
     }
 
     private fun triggerOverlayRefresh() {
