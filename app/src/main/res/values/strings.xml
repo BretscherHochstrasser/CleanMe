@@ -38,6 +38,7 @@
     </plurals>
     <string name="settings_button_edit_clean_interval">edit clean reminder interval</string>
     <string name="settings_section_title_overlay">Particle Overlay</string>
+    <string name="settings_description_overlay_not_supported">The particle overlay feature is not supported on Android 12 or later.\n\nSince Android 12 all input is blocked if an overlay window is displayed above other apps. This new operating system behavior renders the particle overlay unusable.</string>
     <string name="settings_switch_enable_overlay_label">Show particle screen overlay</string>
     <string name="settings_description_enable_overlay">The overlay displays an ever increasing number of grime particles on the screen on top all application over time</string>
     <string name="settings_label_max_particles">Maximum number of overlay particles: %d</string>

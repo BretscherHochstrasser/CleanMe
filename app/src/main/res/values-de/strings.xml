@@ -38,6 +38,7 @@
     </plurals>
     <string name="settings_button_edit_clean_interval">Intervall ändern</string>
     <string name="settings_section_title_overlay">Partikel-Overlay</string>
+    <string name="settings_description_overlay_not_supported">Das Paritkel-Overlay-Feature ist auf Android 12 und höher nicht unterstützt.\n\nSeit Android 12 wird sämtlicher Input geblockt, wenn ein Overlay-Fenster über anderen Applikation angezeigt wird. Dieses neue Betriebssystemverhalten verunmöglicht die Benützung des Partikel-Overlays.</string>
     <string name="settings_switch_enable_overlay_label">Zeige den Bidschirm-Overlay</string>
     <string name="settings_description_enable_overlay">Zeige über allen Apps eine steigende Anzahl Verschmutzungspartikel an, je länger das Gerät benutzt wurde.</string>
     <string name="settings_label_max_particles">Maximale Partikelzahl: %d</string>

@@ -71,8 +71,9 @@ class NotificationHelper(
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setContentIntent(mainActivityPendingIntent)
 
-        // only show the show/hide action if the overlay permission is given to the app
-        if (overlayPermissionWrapper.canDrawOverlay) {
+        // only show the show/hide action if overlay is supported and the overlay permission
+        // has been given to the app
+        if (appSettings.overlaySupported && overlayPermissionWrapper.canDrawOverlay) {
             if (appSettings.overlayEnabled) {
                 builder.addAction(
                     R.drawable.ic_overlay_off_24dp,
@@ -89,9 +90,13 @@ class NotificationHelper(
         }
 
         val settingsIntent = Intent(context, SettingsActivity::class.java)
+        var flags = PendingIntent.FLAG_UPDATE_CURRENT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            flags = flags or PendingIntent.FLAG_IMMUTABLE
+        }
         val settingsPendingIntent: PendingIntent? = TaskStackBuilder.create(context)
             .addNextIntentWithParentStack(settingsIntent)
-            .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+            .getPendingIntent(0, flags)
 
         builder.addAction(
             R.drawable.ic_settings_24dp,
@@ -158,7 +163,12 @@ class NotificationHelper(
             val mainActivityIntent = Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
-            return PendingIntent.getActivity(context, 0, mainActivityIntent, 0)
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.FLAG_IMMUTABLE
+            } else {
+                0
+            }
+            return PendingIntent.getActivity(context, 0, mainActivityIntent, flags)
         }
 
     @RequiresApi(Build.VERSION_CODES.O)

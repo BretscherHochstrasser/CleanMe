@@ -37,7 +37,7 @@ class ParticleOverlayManager(
     }
 
     fun showOverlay() {
-        if (!overlayShown) {
+        if (!overlayShown && appSettings.overlaySupported) {
             if (overlayPermissionWrapper.canDrawOverlay) {
                 @Suppress("DEPRECATION")
                 val overlayType =

@@ -90,6 +90,14 @@
                 android:text="@string/settings_section_title_overlay"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
+            <TextView
+                android:id="@+id/description_overlay_not_supported"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/settings_description_overlay_not_supported" />
+
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switch_overlay_enabled"
                 android:layout_width="match_parent"
@@ -122,6 +130,7 @@
                 android:valueTo="100" />
 
             <TextView
+                android:id="@+id/description_max_overlay_particles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_description_max_particles" />
@@ -167,6 +176,7 @@
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <TextView
+                android:id="@+id/description_particle_growth_model"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_description_particle_growth_model" />
@@ -190,6 +200,7 @@
                 android:valueTo="50" />
 
             <TextView
+                android:id="@+id/description_particle_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_description_particle_size" />
@@ -213,6 +224,7 @@
                 android:valueTo="100" />
 
             <TextView
+                android:id="@+id/description_particle_transparency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
