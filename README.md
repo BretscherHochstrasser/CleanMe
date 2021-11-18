@@ -1,5 +1,5 @@
 # Clean Me App
-![latest tag](https://img.shields.io/github/v/tag/bretscherhochstrasser/cleanme?label=latest%20tag)
+![latest tag](https://img.shields.io/github/v/tag/bretscherhochstrasser/cleanme?label=latest%20tag) [![Build](https://github.com/BretscherHochstrasser/CleanMe/actions/workflows/build.yaml/badge.svg)](https://github.com/BretscherHochstrasser/CleanMe/actions/workflows/build.yaml)
 
 Clean Me is an Android app that reminds the user to regularly clean the device after it has been used for some time.
 
