@@ -19,7 +19,7 @@ Additionally, the app can display a screen overlay with particles that increase 
 
 ## Key Features
 * Configurable device use time until clean reminder
-* Particle overlay with customisable
+* Particle overlay (Android 11 and lower) with customisable
   * particle size
   * maximum number of particles
   * particle transparency
@@ -34,6 +34,7 @@ Clean Me runs a foreground service that listens to screen-on/screen-off event br
 As long as the device is in use, the app counts down a timer until the configured time interval for cleaning has been reached. Then the app shows a reminder notification.
 
 If the particle overlay is enabled, the app adds particles randomly when the device is in use. The more time of the clean interval has elapsed, the more particles are shown until the time to clean has been reached.
+_Note:_ The particle overlay is not available for devices running Android 12 or newer. Android 12 introduced new security features that renders the particle overlay unusable.
 
 Once the user clicks the *Clean Now* button on the main screen, the device usage timer and overlay particles are reset.
 
@@ -47,7 +48,7 @@ Once the user clicks the *Clean Now* button on the main screen, the device usage
 ### Build with gradle
 1. Clone the git repo
 2. Either set the `ANDROID_SDK_ROOT` environment variable or create a `local.properties` file with a `sdk.dir` property and point it to your Android SDK installation
-3. build the app with `gradlew app:assembleDebug` or drectly run it with `gradlew app:installDebug`
+3. build the app with `gradlew app:assembleDebug` or directly run it with `gradlew app:installDebug`
 
 ### Testing
 
