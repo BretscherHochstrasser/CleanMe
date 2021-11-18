@@ -1,5 +1,13 @@
 # Change Log
 
+## Version 1.0.0
+
+*2022-03-12*
+
+* Added freely customizable clean interval
+* Adapted for Android 12
+* Disabled particle overlay for Android 12 and up
+
 ## Version 0.10.0
 
 *2021-07-31*
