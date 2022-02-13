@@ -13,7 +13,7 @@ import org.hamcrest.CoreMatchers.`is` as Is
 @RunWith(AndroidJUnit4::class)
 class AppSettingsTest {
 
-    lateinit var appSettings: AppSettings
+    private lateinit var appSettings: AppSettings
 
     @Before
     fun setUp() {
