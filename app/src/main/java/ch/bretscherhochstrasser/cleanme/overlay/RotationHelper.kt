@@ -12,19 +12,19 @@ enum class RotationHelper(
 ) {
 
     ROTATION_0(
-        { relPosX: Double, relPosY: Double -> Pair<Double, Double>(relPosX, relPosY) },
+        { relPosX: Double, relPosY: Double -> Pair(relPosX, relPosY) },
         0f
     ),
     ROTATION_90(
-        { relPosX: Double, relPosY: Double -> Pair<Double, Double>(relPosY, 1 - relPosX) },
+        { relPosX: Double, relPosY: Double -> Pair(relPosY, 1 - relPosX) },
         -90f
     ),
     ROTATION_180(
-        { relPosX: Double, relPosY: Double -> Pair<Double, Double>(1 - relPosX, 1 - relPosY) },
+        { relPosX: Double, relPosY: Double -> Pair(1 - relPosX, 1 - relPosY) },
         -180f
     ),
     ROTATION_270(
-        { relPosX: Double, relPosY: Double -> Pair<Double, Double>(1 - relPosY, relPosX) },
+        { relPosX: Double, relPosY: Double -> Pair(1 - relPosY, relPosX) },
         -270f
     );
 

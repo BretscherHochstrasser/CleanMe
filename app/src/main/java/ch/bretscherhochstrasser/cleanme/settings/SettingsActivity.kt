@@ -1,7 +1,5 @@
 package ch.bretscherhochstrasser.cleanme.settings
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
@@ -52,7 +50,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         KTP.openScopes(ApplicationScope::class.java, this)
             .installModules(module {
-                bind(Activity::class).toInstance(this@SettingsActivity)
+                bind(AppCompatActivity::class).toInstance(this@SettingsActivity)
             })
             .closeOnDestroy(this)
             .inject(this)
@@ -307,11 +305,6 @@ class SettingsActivity : AppCompatActivity() {
     private fun setParticleTransparencyLabel(particleTransparency: Int) {
         binding.labelParticleTransparency.text =
             getString(R.string.settings_label_particle_transparency, particleTransparency)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        overlayPermissionHelper.onActivityResult(requestCode)
     }
 
 }

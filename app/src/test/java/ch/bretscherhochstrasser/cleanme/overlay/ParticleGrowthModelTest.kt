@@ -7,7 +7,7 @@ import org.hamcrest.CoreMatchers.`is` as Is
 
 class ParticleGrowthModelTest {
 
-    var model: ParticleGrowthModel? = null
+    private var model: ParticleGrowthModel? = null
 
     @Test
     fun calculateParticleCount_Linear() {
